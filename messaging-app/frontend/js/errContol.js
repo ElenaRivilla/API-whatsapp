@@ -1,4 +1,4 @@
-export function validateLogin(username, password) { // TODO Revisar como exportar toda la clase.
+export function loginValid(username, password) { // TODO Revisar como exportar toda la clase.
     // El required ya está puesto en el html.
     const regex = /(^[0-9]{7}[A-Z]$)|(^[0-9]{8}$)/;
     const regexUser = /^[^0-9]*$/;
