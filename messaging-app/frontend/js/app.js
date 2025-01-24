@@ -7,12 +7,15 @@ document.addEventListener("DOMContentLoaded", init);
 function manageErrors(error){
     const errorContainer = document.querySelector("#error");
     if (error){
-        
+
     }
 }
 
 // 
 function init(){
+    let login = new Promise((resolve, reject) => {
+        
+    });
     const username = document.querySelector("#username");
     const pwd = document.querySelector("#pwd");
     try{
