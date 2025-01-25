@@ -18,16 +18,3 @@ export async function userExists(username, password) {
         throw error;
     }
 }
-
-//USO DE LA FUNCIÓN
-/* userExists("helen", "123abc")
-        .then(data => {
-            if (data) {
-                return true;
-            } else {
-                return false;
-            }
-        })
-        .catch(error => {
-            console.error("Error al llamar a la función userExists:", error);
-        }); */

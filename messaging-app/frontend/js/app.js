@@ -2,100 +2,92 @@
 import * as errControl from "/./errControl.js";
 import * as apiManager from "/./apiManager.js";
 
-// Switch statement to check the current URL and decide what action to take.
-// TODO: Change the URL to the correct one and add any additional cases.
-switch(window.location.href){
-    case "login_url":
-        // When the page loads, initialize the login process by calling the `init` function.
-        document.addEventListener("DOMContentLoaded", init);
-        break;
-    default:
-        // No action needed for other URLs, just break out of the switch.
-        break;
-}
-
-// Function to initialize the login form and handle validation and login processes.
-function init(){
-    // Select the necessary DOM elements for the login form, username, and password fields.
+// Function to handle the login process, including validation and authentication.
+function login(){
+    // Select the form and the input fields for username and password.
     const form = document.querySelector("#loginForm");
     const username = document.querySelector("#username");
     const pwd = document.querySelector("#pwd");
 
-    // Create a promise for validating the login input (username and password).
-    // The promise checks if the inputs are valid using the `loginValid` function from `errControl`.
+    // Promise for validating the login input (username and password).
     let validation = new Promise((resolve, reject) => {
         try {
-            // If the login is valid (username and password pass validation), resolve the promise.
+            // Check if the username and password meet the validation criteria.
             if (errControl.loginValid(username.value, pwd.value)) {
-                resolve();
+                resolve();  // Validation passed
             }
         } catch (error) {
-            // If an error occurs during validation, reject the promise with the error message.
-            reject(error.message);
+            reject(error.message);  // Validation failed with an error
         }
     });
 
-    // Create a promise for checking whether the user exists using the `userExists` function from `apiManager`.
-    // This function checks the credentials against the backend system.
+    // Promise to verify if the user exists with the provided credentials.
     let login = new Promise((resolve, reject) => {
         try {
-            // If the user exists (valid credentials), resolve the promise with the username.
+            // If the credentials are correct, the user exists, so resolve the promise.
             if(apiManager.userExists(username.value, pwd.value)){
                 resolve(username.value);
             }
             else{
-                // If the user does not exist or the credentials are incorrect, reject the promise with an error message.
-                reject("Usuario o contraseña incorrectos");
+                reject("Incorrect username or password.");
             }
         } catch (error) {
-            // If an error occurs with the server interaction, reject the promise with a server error message.
-            reject("Hay un fallo con el servidor, por favor inténtalo de nuevo más tarde.");
+            reject("Server error, please try again later.");
         }
     });
       
-    // Function to display error messages on the page if validation or login fails.
+    // Function to display error messages when validation or login fails.
     function manageErrors(error){
-        // Select the error container in the DOM where error messages are displayed.
         const errorContainer = document.querySelector("#error");
-        // Set the error message to be displayed in the error container.
-        errorContainer.innerText = error;
+        errorContainer.innerText = error;  // Display the error message in the UI.
         return;
     }
 
-    // Function to validate the login credentials by checking both validation and user existence.
-    // This function handles the chaining of the `validation` and `login` promises.
+    // Function to handle the full login process, including both validation and user existence check.
     function validateLogin(){
-        // Start by checking if the validation promise resolves successfully.
         validation.then(() => {
-            // If validation is successful, proceed to check the login promise.
+            // If validation passes, proceed to check if the user exists.
             return login.then((username) => {
-                // If the login is successful, store the username in localStorage for session management.
+                // Store the username in localStorage upon successful login.
                 localStorage.setItem('username', username);
-                // Return true to indicate the login process was successful.
-                return true;
+                return true;  // Login successful
             }).catch((error) => {
-                // If login fails (wrong username/password), call `manageErrors` to display the error message.
-                manageErrors(error);
-                // Return false to indicate the login failed.
-                return false;
+                manageErrors(error);  // Display error if login fails
+                return false;  // Login failed
             });
         }).catch((error) => {
-            // If validation fails (input is invalid), call `manageErrors` to display the validation error message.
-            manageErrors(error);
-            // Return false to indicate the validation failed.
-            return false;
+            manageErrors(error);  // Display error if validation fails
+            return false;  // Validation failed
         });
     }
 
-    // Event listener for form submission.
+    // Function to redirect the user to another page after a successful login.
+    function redirect(){
+        // TODO: Change the URL to the appropriate one for the next page after a successful login.
+        window.location.href = '/nuevo_directorio/nueva_pagina.html';
+    }
+
+    // Event listener to handle form submission.
     form.addEventListener("submit", function(event) {
-        // Prevent the default form submission behavior (which would cause a page refresh).
-        event.preventDefault(); 
-        // Call `validateLogin` and proceed only if the validation is successful (returns true).
+        event.preventDefault();  // Prevent the default form submission (page reload).
         if (validateLogin()) {
-            // TODO: Change the URL to the appropriate one for the next page after a successful login.
-            // Redirect the user to a new page after successful login.
-            window.location.href = '/nuevo_directorio/nueva_pagina.html';
+            redirect();  // Redirect to the new page if login is successful.
         }
     });
 }
+
+// Function to initialize the page based on the current URL.
+// TODO: Change the login URL to the correct one and add any additional cases.
+function init(){
+    switch(window.location.href){
+        case "login_url":
+            login();  // Initialize the login process if on the login page.
+            break;
+        default:
+            // No action needed for other URLs, just break out of the switch.
+            break;
+    }
+}
+
+// Run the init function when the document is fully loaded.
+document.addEventListener("DOMContentLoaded", init);

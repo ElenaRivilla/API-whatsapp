@@ -7,7 +7,7 @@ export function loginValid(username, password) { // TODO Revisar como exportar t
     }
 
     if (!regex.test(password)) {
-        throw new Error("La contraseña en NIE necesita 7 dígitos + 1 letra en mayúsculas o el DNI con 8 dígitos.");
+        throw new Error("La contraseña debe ser un NIE de siete dígitos y una letra mayúscula o un DNI con ocho dígitos.");
     }
     return true;
 }
