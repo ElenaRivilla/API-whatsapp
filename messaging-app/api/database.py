@@ -51,6 +51,8 @@ class database(object):
         self.cursor.execute(sql)
         ResQuery=self.cursor.fetchone()
         self.desconecta()
+        if not ResQuery:
+            raise Exception("Non-existant user")
         return ResQuery['id']
 
     def userExists(self, userId):
@@ -65,12 +67,12 @@ class database(object):
     
     def deleteUser(self, userId):
         if not self.userExists(userId):
-            return {"status": "Non-existant user"}
+            raise Exception("Non-existant group")
         self.conecta()
         sql=f'DELETE from usuarisclase where id = "{userId}";'
         self.cursor.execute(sql)
         self.desconecta()
-        return {"status": "Succesfully deleted"}
+        return
     
     def groupExists(self, groupId):
         self.conecta()
@@ -84,12 +86,12 @@ class database(object):
     
     def deleteGroup(self, groupId):
         if not self.userExists(groupId):
-            return {"status": "Non-existant group"}
+            raise Exception("Non-existant group")
         self.conecta()
         sql=f'DELETE from groups where id = {groupId};'
         self.cursor.execute(sql)
         self.desconecta()
-        return {"status": "Succesfully deleted"}
+        return
     
     def messageExists(self, messageId):
         self.conecta()
@@ -102,13 +104,13 @@ class database(object):
         return False
     
     def deleteMessage(self, messageId):
-        if not self.userExists(messageId):
-            return {"status": "Non-existant message"}
+        if not self.messageExists(messageId):
+            raise Exception("Non-existant message")
         self.conecta()
         sql=f'DELETE from message where id = {messageId};'
         self.cursor.execute(sql)
         self.desconecta()
-        return {"status": "Succesfully deleted"}
+        return
     
     def userExistsInGroup(self, userId, groupId):
         self.conecta()
@@ -122,9 +124,32 @@ class database(object):
     
     def deleteUserFromGroup(self, userId, groupId):
         if not self.userExistsInGroup(userId, groupId):
-            return {"status": "User not registered in group"}
+            raise Exception("User not registered in group")
         self.conecta()
         sql=f'DELETE from user_group where where id_user = {userId} and id_group = {groupId};'
         self.cursor.execute(sql)
         self.desconecta()
-        return {"status": "Succesfully deleted"}
+        return
+    
+    def setMessageStatus(self, messageId, newStatus):
+        self.conecta()
+        sql = f'UPDATE message set status = "{newStatus}" where id = {messageId};'
+        self.cursor.execute(sql)
+        self.desconecta()
+        return
+
+    def checkMessage(self, messageId):
+        if not self.messageExists(messageId):
+            raise Exception("Non-existant message")
+        self.conecta()
+        sql=f'SELECT status from message where id = {messageId};'
+        self.cursor.execute(sql)
+        ResQuery=self.cursor.fetchone()
+        self.desconecta()
+        if ResQuery['status'] == 'sent':
+            self.setMessageStatus(messageId, 'received')
+        elif ResQuery['status'] == 'received':
+            self.setMessageStatus(messageId, 'seen')
+        elif ResQuery['status'] == 'seen':
+            raise Exception("Message already seen")
+        return
