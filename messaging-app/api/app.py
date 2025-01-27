@@ -16,3 +16,9 @@ def getGroupMessages(loadSize, idGroup):
 def getUsersMessages(loadSize, user1, user2):
     messages = db.getMessages(loadSize, user1, user2)
     return messages
+
+# Function to get specific user friends
+@app.get('/getFriends/{username}')
+def getFriends(username: str):
+    friendsList = db.getFriends(username)
+    return friendsList
