@@ -1,7 +1,7 @@
 export async function userExists(username, password) {
-    const endpoint = ""; //URL del endpoint de la API 
+    const endpoint = ""; // URL del endpoint de la API
 
-    //Construir la url con los parámetros de consulta
+    // Construir la url con los parámetros de consulta
     let url = `${endpoint}?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
 
     try {
@@ -9,12 +9,26 @@ export async function userExists(username, password) {
         let response = await fetch(url, {
             method: "GET",
             headers: {
-                // "Content-Type": "application/json", Configura el tipo de contenido, en el objeto headers se pueden pasar auth ej: 'Authorization': 'Bearer tu-token'
-            },
+                // "Content-Type": "application/json", Configura el tipo de contenido
+            }
         });
-        return response.json["exists"];
 
+        // Verificar que la respuesta sea exitosa
+        if (!response.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        }
+
+        // Parsear la respuesta JSON
+        const data = await response.json();
+
+        // Comprobar si el usuario existe
+        if (!data.exists) {
+            throw new Error("Usuario o contraseña incorrectos.");
+        }
+
+        return;
     } catch (error) {
-        throw error;
+        // Lanzar un error general si hay algún problema en la solicitud
+        throw new Error("Hay un error en el servidor, por favor, inténtalo de nuevo más tarde.");
     }
 }
