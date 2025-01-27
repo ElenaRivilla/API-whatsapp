@@ -2,8 +2,9 @@
 export function loginValid(username, password) { 
     return  new Promise((resolve, reject) => {
         // El required ya está puesto en el html.
-        const regex = /(^[0-9]{7}[A-Z]$)|(^[0-9]{8}$)/;
-        const regexUser = /^[^0-9]*$/;
+        const regexUser = /^[A-Za-z]{1,50}$/;
+        const regex = /^([0-9]{7}[A-Z]|[0-9]{8})$/;
+        
         if (!regexUser.test(username)) {
             reject(new Error("El nombre de usuario no puede contener números."));
         }
