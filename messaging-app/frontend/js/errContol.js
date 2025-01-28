@@ -13,3 +13,13 @@ export function loginValid(username, password) {
         resolve();
     });
 }
+
+// TODO pendiente revisar y cambiar
+export function responseValid(response){
+    return  new Promise((resolve, reject) => {
+        if (!response.ok) {
+            reject(new Error(`Error en la respuesta del servidor: ${response.status}`));
+        }
+        resolve();
+    });
+}
