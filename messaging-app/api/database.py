@@ -37,6 +37,14 @@ class database(object):
         self.desconecta()
         return ResQuery
     
+    def getFriends(self, userId):
+        self.conecta()
+        sql="SELECT id, username, password, bio FROM usuarisclase WHERE id != %s"
+        self.cursor.execute(sql, (userId))
+        ResQuery=self.cursor.fetchall()
+        self.desconecta()
+        return ResQuery
+    
     def getUserGroup(self):
         self.conecta()
         sql="SELECT * from user_group;"
