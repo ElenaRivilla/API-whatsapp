@@ -29,14 +29,35 @@ class database(object):
         self.desconecta()
         return ResQuery
     
-    def getMessages(self):
+    def getMessagesUsers(self, loadSize, user1_id, user2_id):
         self.conecta()
-        sql="SELECT * from message;"
-        self.cursor.execute(sql)
-        ResQuery=self.cursor.fetchall()
+        sql = """
+                SELECT m.* FROM message m
+                JOIN usuarisclase u ON u.id = m.sender_id
+                WHERE m.sender_id = %s AND m.receiver_id = %s
+                ORDER BY m.date DESC
+                LIMIT %s;
+        """
+        self.cursor.execute(sql, (user1_id, user2_id, loadSize))
+        ResQuery = self.cursor.fetchall()
         self.desconecta()
         return ResQuery
     
+    def getMessagesGroups(self, loadSize, group_id):
+        self.conecta()
+        sql = """
+                SELECT m.* FROM message m
+                JOIN groups g ON g.id = m.group_id
+                WHERE m.group_id = %s
+                ORDER BY m.date DESC
+                LIMIT %s;
+        """
+        self.cursor.execute(sql, (group_id, loadSize))
+        ResQuery = self.cursor.fetchall()
+        print(ResQuery)
+        self.desconecta()
+        return ResQuery
+
     def getFriends(self, userId):
         self.conecta()
         sql="SELECT id, username, password, bio FROM usuarisclase WHERE id != %s"
@@ -55,8 +76,8 @@ class database(object):
     
     def getUserId(self, username):
         self.conecta()
-        sql=f'SELECT id from usuarisclase where username = "{username}";'
-        self.cursor.execute(sql)
+        sql='SELECT id from usuarisclase where username = %s;'
+        self.cursor.execute(sql, (username,))
         ResQuery=self.cursor.fetchone()
         self.desconecta()
         if not ResQuery:
