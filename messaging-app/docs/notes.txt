@@ -6,7 +6,7 @@
 /* userExists("helen", "123abc")
         .then(data => {
             if (data) {
-                return true;
+                return true; //maybe hay que hacer un return response.json()
             } else {
                 return false;
             }

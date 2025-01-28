@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 import datetime
 from database import database
+from models import Group, UsuarisClase, UserGroup, Message
 
 db = database()
 app = FastAPI()
@@ -9,7 +10,11 @@ app = FastAPI()
 @app.get('/getMessages/{loadSize}/{idGroup}')
 def getGroupMessages(loadSize: int, idGroup: int):
     try:
-        messages = db.getMessages(loadSize, idGroup)
+        messages = db.getMessagesGroups(loadSize, idGroup)
+        for message in messages:
+            date_time = message['date']
+            format = date_time.strftime('%Y-%m-%d %H:%M:%S') # convertir el objeto datetime a una cadena en formato ISO 8601 antes de devolverlo como parte de la respuesta JSON.
+            message['date'] = format
         return messages
     except Exception as e:
         raise e
@@ -18,7 +23,11 @@ def getGroupMessages(loadSize: int, idGroup: int):
 @app.get('/getMessages/{loadSize}/{user1}/{user2}')
 def getUsersMessages(loadSize: int, user1: str , user2: str):
     try:
-        messages = db.getMessages(loadSize, db.getUserId(user1), db.getUserId(user2))
+        messages = db.getMessagesUsers(loadSize, db.getUserId(user1), db.getUserId(user2))
+        for message in messages:
+            date_time = message['date']
+            format = date_time.strftime('%Y-%m-%d %H:%M:%S') # convertir el objeto datetime a una cadena en formato ISO 8601 antes de devolverlo como parte de la respuesta JSON.
+            message['date'] = format
         return messages
     except Exception as e:
         raise e
