@@ -9,8 +9,8 @@ const chatListUrl = "";
 function login(){
     // Select the form and the input fields for username and password.
     const form = document.querySelector("#loginForm");
-    const username = document.querySelector("#username").value;
-    const pwd = document.querySelector("#pwd").value;
+    const username = document.querySelector(".username").value;
+    const pwd = document.querySelector(".password").value;
       
     // Function to display error messages when validation or login fails.
     function manageErrors(error){
