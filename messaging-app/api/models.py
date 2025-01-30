@@ -2,29 +2,29 @@ from pydantic import BaseModel
 from datetime import date, datetime
 
 class Group(BaseModel):
-    id: int
-    name: str
-    description: str
-    size: int
-    creation_date: date
+    ID: int
+    NAME: str
+    DESCRIPTION: str
+    SIZE: int
+    CREATION_DATE: date
     
 class UsuarisClase(BaseModel):
-    id:int
-    username: str
-    password: str
-    bio: str
-
+    ID: int
+    USERNAME: str
+    PASSWORD: str
+    BIO: str
+    
 class UserGroup(BaseModel):
-    id_group: int
-    id_user: int
-    join_date: datetime
-    admin: int  #revisar el tinyint de la DB es un bool
+    ID_GROUP: int
+    ID_USER: int
+    JOIN_DATE: datetime
+    ADMIN: int  #revisar el tinyint de la DB es un bool
     
 class Message(BaseModel):
-    id: int
-    date: datetime
-    status: str
-    body: str
-    sender_id: int
-    receiver_id: int
-    group_id: int 
+    ID: int
+    DATE: datetime
+    STATUS: str
+    BODY: str
+    SENDER_ID: int
+    RECEIVER_ID: int
+    GROUP_ID: int 
