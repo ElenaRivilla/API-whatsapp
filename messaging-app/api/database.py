@@ -1,4 +1,6 @@
 import pymysql.cursors
+from datetime import datetime
+from models import UserGroup
 
 class database(object):
     def conecta(self):
@@ -43,7 +45,7 @@ class database(object):
         self.desconecta()
         return ResQuery
     
-    def getMessagesGroups(self, loadSize, group_id):
+    def getMessagesGroups(self, loadSize, group_id: int):
         self.conecta()
         sql = """
                 SELECT m.* FROM message m
@@ -54,7 +56,6 @@ class database(object):
         """
         self.cursor.execute(sql, (group_id, loadSize))
         ResQuery = self.cursor.fetchall()
-        print(ResQuery)
         self.desconecta()
         return ResQuery
 
@@ -151,6 +152,13 @@ class database(object):
             return True
         return False
     
+    def addUserToGroup(self, user_group: UserGroup, join_date,):
+       self.conecta()
+       sql="INSERT INTO user_group VALUES (%s, %s, %s, 0);"
+       self.cursor.execute(sql,(user_group.ID_GROUP, user_group.ID_USER, join_date))
+       self.cursor.fetchone()
+       self.desconecta()
+        
     def deleteUserFromGroup(self, userId, groupId):
         if not self.userExistsInGroup(userId, groupId):
             raise Exception("User not registered in group")
