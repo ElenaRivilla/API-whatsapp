@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status
-import datetime
+from datetime import datetime
 from database import database
 from models import Group, UsuarisClase, UserGroup, Message
 
@@ -49,3 +49,44 @@ def check(messageId: int):
         return
     except Exception as e:
         raise e
+
+
+@app.post('/sendMessage')
+def sendMessage(message: dict):
+    try:                              
+        date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        status = "sent"
+        completedMessage = {
+            "date": date,
+            "status": status,
+            **message
+        }
+        if not completedMessage['receiver_id']:
+            db.sendGroupMessage(completedMessage)    
+        else:
+            db.sendUsersMessage(completedMessage)
+    except Exception as e:
+        raise e
+
+# End-point to change admin status
+@app.post('/updateUserAdminStatus')
+def changeUserAdminStatus(userId: int, groupId: int):
+    try:
+        db.updateUserAdminStatus(userId, groupId)
+        return {"message": "Admin status changed"}
+    except Exception as e:
+        raise e
+    
+    
+# ME QUEDA CAMBIAR A ADMIN EL USUARIO MAS RECIENTE SI EL USERADMIN DEL GRUPO SE VA.
+@app.post('/deleteUserFromGroup')
+def deleteUserFromGroup(userId: int, groupId: int):
+    try:
+        if db.userExistsInGroup(userId, groupId):
+            db.deleteUserFromGroup(userId, groupId)
+            return {"message": "User successfully deleted"} 
+        else:    
+            return {"message": "User deleted or does not exist"}      
+    except Exception as e:
+        raise e
+

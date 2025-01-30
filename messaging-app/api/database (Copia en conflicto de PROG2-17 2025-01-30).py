@@ -83,16 +83,6 @@ class database(object):
         if not ResQuery:
             raise Exception("Non-existant user")
         return ResQuery['id']
-    
-    def getGroupId(self, group_name):
-        self.conecta()
-        sql='SELECT id from groups where name = %s;'
-        self.cursor.execute(sql, (group_name,))
-        ResQuery=self.cursor.fetchone()
-        self.desconecta()
-        if not ResQuery:
-            raise Exception("Non-existant group")
-        return ResQuery['id']
 
     def userExists(self, userId):
         self.conecta()
@@ -165,9 +155,8 @@ class database(object):
         if not self.userExistsInGroup(userId, groupId):
             raise Exception("User not registered in group")
         self.conecta()
-        sql=f'DELETE from user_group where id_user = {userId} and id_group = {groupId};'
+        sql=f'DELETE from user_group where where id_user = {userId} and id_group = {groupId};'
         self.cursor.execute(sql)
-        self.cursor.fetchone()
         self.desconecta()
         return
     
@@ -192,37 +181,20 @@ class database(object):
             self.setMessageStatus(messageId, 'seen')
         elif ResQuery['status'] == 'seen':
             raise Exception("Message already seen")
-        return
-    
-    def sendGroupMessage(self, message: dict):
+        return    
+        
+    def sendGroupMessage(self, date, status, body, sender_id, group_id):
         self.conecta()
         sql = "INSERT INTO message (date, status, body, sender_id, group_id) VALUES (%s, %s, %s, %s, %s);"
-        self.cursor.execute(sql, (message['date'], message['status'], message['body'], message['sender_id'], message['group_id']))
+        self.cursor.execute(sql, (date, status, body, sender_id, group_id))
+        self.cursor.fetchone()
         self.desconecta()
         return 
         
-    def sendUsersMessage(self, message: dict):
+    def sendUsersMessage(self, date, status, body, sender_id, reciever_id):
         self.conecta()
-        sql = "INSERT INTO message (date, status, body, sender_id, receiver_id) VALUES (%s, %s, %s, %s, %s);"
-        self.cursor.execute(sql, (message['date'], message['status'], message['body'], message['sender_id'], message['receiver_id']))
-        self.desconecta()
-        return
-
-    def isUserAdmin(self, userId, groupId):
-        self.conecta()
-        sql="SELECT * from user_group where id_user = %s and id_group = %s;"
-        self.cursor.execute(sql, (userId, groupId))
-        ResQuery=self.cursor.fetchone()
-        self.desconecta()    
-        return ResQuery     
-    
-    def updateUserAdminStatus(self, userId, groupId):
-        user = self.isUserAdmin(userId, groupId)
-        newStatus = 0 if user['admin'] == 1 else 1         
-        self.conecta()
-        sql="UPDATE user_group SET admin = %s WHERE id_user = %s;"
-        self.cursor.execute(sql, (newStatus, userId))
+        sql = "INSERT INTO message (date, status, body, sender_id, reciever_id) VALUES (%s, %s, %s, %s, %s);"
+        self.cursor.execute(sql, (date, status, body, sender_id, reciever_id))
         self.cursor.fetchone()
         self.desconecta()
-
-    
+        return
