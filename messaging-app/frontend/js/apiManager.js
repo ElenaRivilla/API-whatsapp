@@ -1,34 +1,33 @@
-export async function userExists(username, password) {
-    const endpoint = ""; // URL del endpoint de la API
+import * as errControl from "/./errControl.js"; // Import error control module
 
-    // Construir la url con los parámetros de consulta
-    let url = `${endpoint}?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+// Function to check if a user exists by sending a POST request with username and password
+export function userExists(username, password) {
+    const domain = "http://localhost:";
+    const port = 8000;
+    const endpoint = "/login"; // API endpoint URL
+    
+    // Construct the URL with query parameters (if needed)
+    const url = `${domain}${port}${endpoint}`;
 
-    try {
-        // Realizar la solicitud GET usando fetch
-        let response = await fetch(url, {
-            method: "GET",
+    // Perform the GET request using fetch
+    return new Promise((resolve, reject) => {
+        fetch(url, { 
+            method: "POST", // Use POST method for sending data
             headers: {
-                // "Content-Type": "application/json", Configura el tipo de contenido
-            }
+                "Content-Type": "application/json", // Set content type to JSON
+                "Accept": "application/json" // Accept JSON response
+            },
+            body: JSON.stringify({
+                'username': username, // Include username in the request body
+                'password': password // Include password in the request body
+            }) 
+        }).then((response) => {
+            // Validate the response using the error control module
+            errControl.responseValid(response).then(() => {
+               resolve(response.json()); // Resolve the promise with the JSON response
+            }).catch((error) => {
+                 reject(error); // Reject the promise if there's an error
+            });
         });
-
-        // Verificar que la respuesta sea exitosa
-        if (!response.ok) {
-            throw new Error("Error en la respuesta del servidor");
-        }
-
-        // Parsear la respuesta JSON
-        const data = await response.json();
-
-        // Comprobar si el usuario existe
-        if (!data.exists) {
-            throw new Error("Usuario o contraseña incorrectos.");
-        }
-
-        return;
-    } catch (error) {
-        // Lanzar un error general si hay algún problema en la solicitud
-        throw new Error("Hay un error en el servidor, por favor, inténtalo de nuevo más tarde.");
-    }
+    });
 }
