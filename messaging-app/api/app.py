@@ -107,7 +107,7 @@ def deleteUserFromGroup(userId: int, groupId: int):
             return {"message": "Usuario borrado o inexistente"}
     except Exception as e:
         raise e
-
+    
 @app.post('/addUserToGroup')
 def addUserToGroup( user_group: UserGroup):
     try: 
