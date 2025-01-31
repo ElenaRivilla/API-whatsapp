@@ -165,11 +165,33 @@ class database(object):
         if not self.userExistsInGroup(userId, groupId):
             raise Exception("User not registered in group")
         self.conecta()
-        sql=f'DELETE from user_group where id_user = {userId} and id_group = {groupId};'
-        self.cursor.execute(sql)
-        self.cursor.fetchone()
+        sql="DELETE from user_group where id_user = %s and id_group = %s;"
+        self.cursor.execute(sql, (userId, groupId))
+        sql2="UPDATE groups SET size = size - 1 WHERE id = %s;"
+        self.cursor.execute(sql2, (groupId))
+        sql3="SELECT size FROM groups WHERE id = %s"
+        self.cursor.execute(sql3, (groupId))
+        size=self.cursor.fetchone()   
+        if size['size'] == 0:
+            self.deleteMessagesAndGroup(groupId)
         self.desconecta()
         return
+    
+    def deleteMessagesAndGroup(self, groupId):
+        self.conecta()
+        sql="DELETE FROM message WHERE group_id = %s"
+        self.cursor.execute(sql, (groupId))
+        sql2="DELETE FROM groups WHERE id = %s AND size = 0;"
+        self.cursor.execute(sql2, (groupId))       
+        
+        
+    def getUsername(self, userId):
+        self.conecta()
+        sql="SELECT username FROM usuarisclase WHERE id = %s"
+        self.cursor.execute(sql, (userId))
+        ResQuery=self.cursor.fetchone()
+        self.desconecta()
+        return ResQuery['username']
     
     def setMessageStatus(self, messageId, newStatus):
         self.conecta()
