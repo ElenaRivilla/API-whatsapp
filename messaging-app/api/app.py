@@ -7,10 +7,10 @@ db = database()
 app = FastAPI()
 
 #End-point to get group messages
-@app.post('/getMessages/{loadSize}')
-def getGroupMessages(loadSize: int, group_id: int):
+@app.get('/getMessages/{loadSize}/{idGroup}')
+def getGroupMessages(loadSize: int, idGroup: int):
     try:
-        messages = db.getMessagesGroups(loadSize, group_id)
+        messages = db.getMessagesGroups(loadSize, idGroup)
         for message in messages:
             date_time = message['date']
             format = date_time.strftime('%Y-%m-%d %H:%M:%S') # convertir el objeto datetime a una cadena en formato ISO 8601 antes de devolverlo como parte de la respuesta JSON.
