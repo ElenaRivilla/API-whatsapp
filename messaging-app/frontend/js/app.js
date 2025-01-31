@@ -23,9 +23,9 @@ function login(){
     function validateLogin(){
         errControl.loginValid(username, pwd).then(() => {
             // If validation passes, proceed to check if the user exists.
-            return apiManager.userExists(username, pwd).then(() => {
+            return apiManager.userExists(username, pwd).then((user) => {
                 // Store the username in localStorage upon successful login.
-                localStorage.setItem('username', username);
+                localStorage.setItem('user', user.toString());
                 return true;  // Login successful
             }).catch((error) => {
                 manageErrors(error);  // Display error if login fails
