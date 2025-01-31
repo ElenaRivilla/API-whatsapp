@@ -1,20 +1,20 @@
 // Import necessary modules for error handling and API interaction.
-import * as errControl from "/./errControl.js";
-import * as apiManager from "/./apiManager.js";
+import * as errControl from "./errControl.js";
+import * as apiManager from "./apiManager.js";
 
 const loginUrl = "";
-const chatListUrl = "";
+const friendListUrl = "";
 
 // Function to handle the login process, including validation and authentication.
 function login(){
     // Select the form and the input fields for username and password.
     const form = document.querySelector("#loginForm");
-    const username = document.querySelector(".username").value;
-    const pwd = document.querySelector(".password").value;
+    const username = document.querySelector("#username").value;
+    const pwd = document.querySelector("#password").value;
       
     // Function to display error messages when validation or login fails.
     function manageErrors(error){
-        const errorContainer = document.querySelector("#error");
+        const errorContainer = document.querySelector(".error");
         errorContainer.innerText = error.message;  // Display the error message in the UI.
         return;
     }
@@ -23,9 +23,9 @@ function login(){
     function validateLogin(){
         errControl.loginValid(username, pwd).then(() => {
             // If validation passes, proceed to check if the user exists.
-            return apiManager.userExists(username, pwd).then(() => {
+            return apiManager.userExists(username, pwd).then((user) => {
                 // Store the username in localStorage upon successful login.
-                localStorage.setItem('username', username);
+                localStorage.setItem('user', user.toString());
                 return true;  // Login successful
             }).catch((error) => {
                 manageErrors(error);  // Display error if login fails
@@ -39,7 +39,7 @@ function login(){
 
     // Function to redirect the user to another page after a successful login.
     function redirect(){
-        window.location.href = chatListUrl;
+        window.location.href = friendListUrl;
     }
 
     // Event listener to handle form submission.
@@ -51,6 +51,10 @@ function login(){
     });
 }
 
+function getFriends() {
+
+}
+
 // Function to initialize the page based on the current URL.
 // TODO: Change the login URL to the correct one and add any additional cases.
 function init(){
@@ -58,8 +62,8 @@ function init(){
         case loginUrl:
             login();  // Initialize the login process if on the login page.
             break;
-        case chatListUrl:
-
+        case friendListUrl:
+            getFriends();
             break;
         default:
             // No action needed for other URLs, just break out of the switch.

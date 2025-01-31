@@ -4,30 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- <script src="../js/app.js"></script> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../js/app.js"></script>
+    <link rel="stylesheet" href="../css/login.css">
 </head>
-<body>
-    <div>
-        <img src="../assets/img/lofnet.jpg" class="logo">
-        <p class="slogan">Lorem ipsum dolor sit amet.</p>
-    </div>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <section class="bg-white p-20 rounded-2xl shadow-lg w-full max-w-xl h-screen sm:h-auto">
+        <div class="text-center mb-16">
+            <img src="../assets/img/lofnet.jpg" class="mx-auto mb-4 w-24 h-24">
+            <p id="slogan" class="text-xl font-semibold text-gray-700">Conversa sin límites, conecta con el mundo.</p>
+        </div>
 
-    <form class="loginForm">
-        <p class="error"></p>
-        <div>
-            <input type="text" id="username" name="username" required placeholder="Introduce tu nombre de usuario">
-            <input type="password" id="password" name="password" required placeholder="Introduce tu contraseña">
-        </div>
-        <button type="submit">Iniciar sesión</button>
-        <div>
-            <div>
-                <label for="rememberMe">
-                    <input type="checkbox" id="rememberMe" name="rememberMe">
-                    Recuérdame
-                </label>
+        <form id="loginForm" class="space-y-6">
+            <p class="error text-red-500 text-center"></p>
+            <div class="space-y-4">
+                <input type="text" id="username" name="username" required placeholder="Introduce tu nombre de usuario"
+                    class="w-full p-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                <input type="password" id="password" name="password" required placeholder="Introduce tu contraseña"
+                    class="w-full p-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
             </div>
-            <a class="accent">Has olvidado tu contraseña?</a>
-        </div>
-    </form>
+            <button type="submit" class="w-full p-3 bg-indigo-600 text-white rounded-2xl hover:bg-indigo-700 transition duration-200">Iniciar sesión</button>
+
+            <div class="flex justify-between items-center mt-4 sm:flex-row sm:space-x-16 sm:mx-8 sm:items-center sm:justify-start sm:space-y-0 flex-col space-y-2">
+                <div class="flex items-center">
+                    <input type="checkbox" id="rememberMe" name="rememberMe" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <label for="rememberMe" class="ml-2 text-gray-600">Recuérdame</label>
+                </div>
+                <a href="#" class="text-sm text-indigo-600 hover:text-indigo-700 sm:mt-0 mt-2">Has olvidado tu contraseña?</a>
+            </div>
+        </form>
+    </section>
 </body>
 </html>
