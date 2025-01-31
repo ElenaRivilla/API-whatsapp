@@ -220,9 +220,16 @@ class database(object):
         user = self.isUserAdmin(userId, groupId)
         newStatus = 0 if user['admin'] == 1 else 1         
         self.conecta()
-        sql="UPDATE user_group SET admin = %s WHERE id_user = %s;"
-        self.cursor.execute(sql, (newStatus, userId))
+        sql="UPDATE user_group SET admin = %s WHERE id_user = %s AND id_group = %s;"
+        self.cursor.execute(sql, (newStatus, userId, groupId))
         self.cursor.fetchone()
         self.desconecta()
 
-    
+    def infOfGroup(self, groupId):
+        self.conecta()
+        sql="SELECT * FROM user_group WHERE id_group = %s;"
+        self.cursor.execute(sql, (groupId))
+        ResQuery=self.cursor.fetchall()
+        self.desconecta()
+        return ResQuery
+        

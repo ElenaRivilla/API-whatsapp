@@ -78,13 +78,31 @@ def changeUserAdminStatus(userId: int, groupId: int):
         raise e
     
     
-# ME QUEDA CAMBIAR A ADMIN EL USUARIO MAS RECIENTE SI EL USERADMIN DEL GRUPO SE VA.
 @app.post('/deleteUserFromGroup')
 def deleteUserFromGroup(userId: int, groupId: int):
     try:
         if db.userExistsInGroup(userId, groupId):
             db.deleteUserFromGroup(userId, groupId)
-            return {"message": "User successfully deleted"} 
+            group = db.infOfGroup(groupId)
+            oldest_date = datetime.now()
+            oldest_user = None
+
+            for item in group:
+                join_date = item['join_date']
+                admin = item['admin']
+                
+                if admin == 1:
+                    return {"message": "User successfully deleted. There is a admin in the group"}
+                else:
+                    if join_date < oldest_date:
+                        oldest_date = join_date
+                        oldest_user = item
+
+            if oldest_user:
+                userId = oldest_user['id_user']
+                db.updateUserAdminStatus(userId, groupId)
+                return {"message": f"User: {userId} is admin now."}
+                            
         else:    
             return {"message": "User deleted or does not exist"}      
     except Exception as e:
