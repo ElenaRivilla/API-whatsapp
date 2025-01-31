@@ -45,7 +45,7 @@ class database(object):
         self.desconecta()
         return ResQuery
     
-    def getMessagesGroups(self, loadSize, group_id: int):
+    def getMessagesGroups(self, loadSize, group_id):
         self.conecta()
         sql = """
                 SELECT m.* FROM message m
