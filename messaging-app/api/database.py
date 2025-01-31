@@ -199,7 +199,7 @@ class database(object):
         self.cursor.execute(sql, (groupId))
         sql2="DELETE FROM groups WHERE id = %s AND size = 0;"
         self.cursor.execute(sql2, (groupId))       
-        
+        self.desconecta()
         
     def getUsername(self, userId):
         self.conecta()
