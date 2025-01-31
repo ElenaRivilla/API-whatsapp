@@ -85,6 +85,14 @@ class database(object):
             raise Exception("Non-existant user")
         return ResQuery['id']
     
+    def getUsername(self, userId):
+        self.conecta()
+        sql="SELECT username FROM usuarisclase WHERE id = %s"
+        self.cursor.execute(sql, (userId))
+        ResQuery=self.cursor.fetchone()
+        self.desconecta()
+        return ResQuery['username']
+        
     def getGroupId(self, group_name):
         self.conecta()
         sql='SELECT id from groups where name = %s;'

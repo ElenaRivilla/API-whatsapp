@@ -82,28 +82,29 @@ def deleteUserFromGroup(userId: int, groupId: int):
     try:
         if db.userExistsInGroup(userId, groupId):
             db.deleteUserFromGroup(userId, groupId)
-            group = db.infOfGroup(groupId)
-            oldest_date = datetime.now()
-            oldest_user = None
+            deletedUsername = db.getUsername(userId)
+            groupMembers = db.infOfGroup(groupId)
+            oldestDate = datetime.now()
+            oldestUser = None
 
-            for item in group:
-                join_date = item['join_date']
-                admin = item['admin']
-                
-                if admin == 1:
-                    return {"message": "User successfully deleted. There is a admin in the group"}
+            for member in groupMembers:
+                joinDate = member['join_date']
+                isAdmin = member['admin']
+ 
+                if isAdmin == 1:       
+                    return {"message": f"Usuario {deletedUsername} borrado correctamente. Hay un administrador en el grupo."}
                 else:
-                    if join_date < oldest_date:
-                        oldest_date = join_date
-                        oldest_user = item
+                    if joinDate < oldestDate:
+                        oldestDate = joinDate
+                        oldestUser = member
 
-            if oldest_user:
-                userId = oldest_user['id_user']
+            if oldestUser:
+                userId = oldestUser['id_user']
                 db.updateUserAdminStatus(userId, groupId)
-                return {"message": f"User: {userId} is admin now."}
-                            
+                adminUsername = db.getUsername(userId)
+                return {"message": f"Usuario {deletedUsername} borrado correctamente. Ahora el usuario {adminUsername} es administrador."}         
         else:    
-            return {"message": "User deleted or does not exist"}      
+            return {"message": "Usuario borrado o inexistente"}
     except Exception as e:
         raise e
 
