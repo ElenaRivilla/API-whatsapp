@@ -3,23 +3,10 @@
     font-size: .8rem;
 }
 
-button:hover{
-    background-color: #2A6F97;
-    
+button {
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-button{
-    background-color: #2C7DA0;
-    transition: background-color 0.3s ease, color 0.3s ease
-}
-
-input[type="checkbox"]:checked {
-    appearance: none;
-    background-color: #2C7DA0;
-    border-color: #2C7DA0;
-}
-
-/* Cambiar el color del checkmark (cuando se marca) */
-input[type="checkbox"]:checked::before {
-    background-color: white;
+a {
+    transition: color 0.3s ease;
 }
