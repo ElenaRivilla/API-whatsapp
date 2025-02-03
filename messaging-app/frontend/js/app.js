@@ -51,8 +51,8 @@ function login(){
     });
 }
 
-function getFriends() {
-
+function friendsSite() {
+    
 }
 
 // Function to initialize the page based on the current URL.
@@ -63,7 +63,7 @@ function init(){
             login();  // Initialize the login process if on the login page.
             break;
         case friendListUrl:
-            getFriends();
+            friendsSite();
             break;
         default:
             // No action needed for other URLs, just break out of the switch.

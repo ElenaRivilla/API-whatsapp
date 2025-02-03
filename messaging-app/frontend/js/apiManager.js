@@ -1,4 +1,4 @@
-import * as errControl from "/./errControl.js"; // Import error control module
+import {responseValid} from "./errControl.js"; // Import all functions from error control module
 
 // Function to check if a user exists by sending a POST request with username and password
 export function userExists(username, password) {
@@ -23,7 +23,7 @@ export function userExists(username, password) {
             }) 
         }).then((response) => {
             // Validate the response using the error control module
-            errControl.responseValid(response).then(() => {
+            responseValid(response).then(() => {
                resolve(response.json()); // Resolve the promise with the JSON response
             }).catch((error) => {
                  reject(error); // Reject the promise if there's an error
