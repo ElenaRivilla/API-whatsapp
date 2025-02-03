@@ -1,0 +1,16 @@
+:root {
+    --background-color: rgb(63, 129, 158);
+}
+
+body{
+    background-color: var(--background-color)
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.custom-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
