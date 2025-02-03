@@ -21,7 +21,7 @@ function testLoginValid() {
         { username: "Zoe123", password: "98765432" }, // invalid: username contains numbers
         { username: "Olivia", password: "A7654321" }, // valid
         { username: "Amelia", password: "A1234567" }, // valid
-    ];          
+    ];
 
     for (const { username, password } of testData) {
         errControl.loginValid(username, password).then(() => {
@@ -65,12 +65,12 @@ function testResponnseValid() {
     for (let x = 0; x < responses.length; x++) {
         responseValid(responses[x])
             .then(() => console.log(`Respuesta válida: ${responses[x].status} ${responses[x].statusText}`))
-            .catch(error => console.error(`${error.message}`))       
+            .catch(error => console.error(`${error.message}`))
     }
 }
 
 
-function testErrControl(){
+function testErrControl() {
     testLoginValid();
     testResponnseValid();
 
@@ -80,36 +80,55 @@ function testErrControl(){
 export const openChats = [
     {
         username: "Alice Johnson",
-        message: "Mensaje de Alice que debería truncarse con puntos suspensivos si es demasiado largo para el contenedor.",
+        message: "Hola, ¿cómo estás?",
         time: "10:00h",
         imageUrl: "https://picsum.photos/300/300?random=7"
     },
     {
         username: "Bob Smith",
-        message: "Este es un mensaje de Bob que también debería truncarse si es demasiado largo para el contenedor.",
+        message: "¿Qué planes tienes para hoy?",
         time: "10:30h",
         imageUrl: "https://picsum.photos/300/300?random=8"
     },
     {
         username: "Charlie Brown",
-        message: "Mensaje de Charlie que debería truncarse con puntos suspensivos si es demasiado largo para el contenedor.",
+        message: "Voy a trabajar en un proyecto.",
         time: "11:00h",
         imageUrl: "https://picsum.photos/300/300?random=9"
     },
     {
         username: "Diana Prince",
-        message: "Este es un mensaje de Diana que también debería truncarse si es demasiado largo para el contenedor.",
+        message: "Tengo una reunión en la tarde.",
         time: "11:30h",
         imageUrl: "https://picsum.photos/300/300?random=10"
     },
     {
         username: "Eve Adams",
-        message: "Mensaje de Eve que debería truncarse con puntos suspensivos si es demasiado largo para el contenedor.",
+        message: "Podemos vernos y discutir sobre el proyecto.",
         time: "12:00h",
         imageUrl: "https://picsum.photos/300/300?random=11"
+    },
+    {
+        username: "Frank Miller",
+        message: "Me parece una gran oportunidad para avanzar.",
+        time: "12:30h",
+        imageUrl: "https://picsum.photos/300/300?random=12"
+    },
+    {
+        username: "Grace Lee",
+        message: "Podríamos revisar los documentos que nos enviaron.",
+        time: "13:00h",
+        imageUrl: "https://picsum.photos/300/300?random=13"
+    },
+    {
+        username: "Henry Ford",
+        message: "Nos vemos más tarde.",
+        time: "13:30h",
+        imageUrl: "https://picsum.photos/300/300?random=14"
     }
 ];
 
+//mensajes de pruebas
 export const messages = [
     {
         type: "sender",
@@ -157,6 +176,54 @@ export const messages = [
         type: "receiver",
         message: "¡Hasta luego!",
         time: "10:40",
+        checkImageUrl: "../assets/svg/double-check-blue.svg"
+    },
+    {
+        type: "sender",
+        imageUrl: "https://picsum.photos/300/300?random=1",
+        message: "¿Has visto la última película?",
+        time: "10:41"
+    },
+    {
+        type: "receiver",
+        message: "No, aún no. ¿Es buena?",
+        time: "10:42",
+        checkImageUrl: "../assets/svg/double-check-blue.svg"
+    },
+    {
+        type: "sender",
+        imageUrl: "https://picsum.photos/300/300?random=1",
+        message: "Sí, me encantó. Te la recomiendo.",
+        time: "10:43"
+    },
+    {
+        type: "receiver",
+        message: "¡Gracias! La veré este fin de semana.",
+        time: "10:44",
+        checkImageUrl: "../assets/svg/double-check-blue.svg"
+    },
+    {
+        type: "sender",
+        imageUrl: "https://picsum.photos/300/300?random=1",
+        message: "¿Tienes algún plan para hoy?",
+        time: "10:45"
+    },
+    {
+        type: "receiver",
+        message: "No mucho, solo descansar. ¿Y tú?",
+        time: "10:46",
+        checkImageUrl: "../assets/svg/double-check-blue.svg"
+    },
+    {
+        type: "sender",
+        imageUrl: "https://picsum.photos/300/300?random=1",
+        message: "Voy a salir a caminar un rato.",
+        time: "10:47"
+    },
+    {
+        type: "receiver",
+        message: "¡Disfruta tu caminata!",
+        time: "10:48",
         checkImageUrl: "../assets/svg/double-check-blue.svg"
     }
 ];
