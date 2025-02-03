@@ -6,6 +6,31 @@ from models import UserGroup
 db = database()
 app = FastAPI()
 
+#End-point to login
+# TODO falta revisar y terminar
+@app.post('/login')
+def login(username: str, password: str):
+    try:
+        id = db.getUserId(username)
+        hshPwd = db.getHash(id)
+        stored_hash = hshPwd_, mem_cost, block_size, rounds, salt, stored_key = stored_hash.split('$')
+        scrypt = Scrypt( 
+            salt = 'WEPJFaJjJwPpKXJc',
+            length = 8,
+            n = 32768,
+            r = 8,
+            p = 1
+        )
+        #pwd = password
+        if db.loginCorrect(id, pwd):
+            user = db.getClientUser(username)
+            # meterle el token al json user
+            return user
+        else:
+            raise HTTPException(status_code=404, detail='Usuario o contraseña incorrectos')
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
 #End-point to get group messages
 @app.post('/getMessages/{loadSize}')
 def getGroupMessages(loadSize: int, group_id: int):

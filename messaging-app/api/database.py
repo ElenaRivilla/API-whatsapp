@@ -78,11 +78,11 @@ class database(object):
     def getUserId(self, username):
         self.conecta()
         sql='SELECT id from usuarisclase where username = %s;'
-        self.cursor.execute(sql, (username,))
+        self.cursor.execute(sql, (username))
         ResQuery=self.cursor.fetchone()
         self.desconecta()
         if not ResQuery:
-            raise Exception("Non-existant user")
+            raise Exception("Usuario no encontrado")
         return ResQuery['id']
     
     def getUsername(self, userId):
@@ -96,11 +96,11 @@ class database(object):
     def getGroupId(self, group_name):
         self.conecta()
         sql='SELECT id from groups where name = %s;'
-        self.cursor.execute(sql, (group_name,))
+        self.cursor.execute(sql, (group_name))
         ResQuery=self.cursor.fetchone()
         self.desconecta()
         if not ResQuery:
-            raise Exception("Non-existant group")
+            raise Exception("Grupo no encontrado")
         return ResQuery['id']
 
     def userExists(self, userId):
@@ -115,7 +115,7 @@ class database(object):
     
     def deleteUser(self, userId):
         if not self.userExists(userId):
-            raise Exception("Non-existant group")
+            raise Exception("Usuario no encontrado")
         self.conecta()
         sql=f'DELETE from usuarisclase where id = "{userId}";'
         self.cursor.execute(sql)
@@ -133,8 +133,8 @@ class database(object):
         return False
     
     def deleteGroup(self, groupId):
-        if not self.userExists(groupId):
-            raise Exception("Non-existant group")
+        if not self.groupExists(groupId):
+            raise Exception("Grupo no encontrado")
         self.conecta()
         sql=f'DELETE from groups where id = {groupId};'
         self.cursor.execute(sql)
@@ -153,7 +153,7 @@ class database(object):
     
     def deleteMessage(self, messageId):
         if not self.messageExists(messageId):
-            raise Exception("Non-existant message")
+            raise Exception("Mensaje no encontrado")
         self.conecta()
         sql=f'DELETE from message where id = {messageId};'
         self.cursor.execute(sql)
@@ -170,7 +170,7 @@ class database(object):
             return True
         return False
     
-    def addUserToGroup(self, user_group: UserGroup, join_date,):
+    def addUserToGroup(self, user_group: UserGroup, join_date):
        self.conecta()
        sql="INSERT INTO user_group VALUES (%s, %s, %s, 0);"
        self.cursor.execute(sql,(user_group.ID_GROUP, user_group.ID_USER, join_date))
@@ -196,7 +196,7 @@ class database(object):
 
     def checkMessage(self, messageId):
         if not self.messageExists(messageId):
-            raise Exception("Non-existant message")
+            raise Exception("Mensaje no encontrado")
         self.conecta()
         sql=f'SELECT status from message where id = {messageId};'
         self.cursor.execute(sql)
@@ -248,4 +248,19 @@ class database(object):
         ResQuery=self.cursor.fetchall()
         self.desconecta()
         return ResQuery
-        
+
+    def getClientUser(self, username):
+        self.conecta()
+        sql='select id, username, bio from usuarisclase where username = "%s";'
+        self.cursor.execute(sql, (username))
+        ResQuery=self.cursor.fetchone()
+        self.desconecta()
+        return ResQuery
+    
+    def loginCorrect(self, userId, password):
+        self.conecta()
+        sql='select password from usuarisclase where id = %s;'
+        self.cursor.execute(sql, (userId))
+        ResQuery=self.cursor.fetchone()
+        self.desconecta()
+        return ResQuery['password'] == password
