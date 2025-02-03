@@ -32,10 +32,10 @@ def login(username: str, password: str):
         raise HTTPException(status_code=404, detail=str(e))
 
 #End-point to get group messages
-@app.post('/getMessages/{loadSize}')
-def getGroupMessages(loadSize: int, group_id: int):
+@app.get('/getMessages/{loadSize}/{idGroup}')
+def getGroupMessages(loadSize: int, idGroup: int):
     try:
-        messages = db.getMessagesGroups(loadSize, group_id)
+        messages = db.getMessagesGroups(loadSize, idGroup)
         for message in messages:
             date_time = message['date']
             format = date_time.strftime('%Y-%m-%d %H:%M:%S') # convertir el objeto datetime a una cadena en formato ISO 8601 antes de devolverlo como parte de la respuesta JSON.
@@ -132,7 +132,7 @@ def deleteUserFromGroup(userId: int, groupId: int):
             return {"message": "Usuario borrado o inexistente"}
     except Exception as e:
         raise e
-
+    
 @app.post('/addUserToGroup')
 def addUserToGroup( user_group: UserGroup):
     try: 
