@@ -30,7 +30,7 @@
 </style>
 
 <body>
-    <main class="h-dvh flex flex-col p-10">
+    <main class="h-dvh flex flex-col p-5">
         <header class="flex flex-col md:flex-row lg:h-1/8 xl:h-1/8 sm:flex mb-5 lg:mb-5">
             <div class="w-full md:w-[60%]">
                 <div class="">
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="sm:flex w-full sm:w-1/6 md: 1/6">
-                    <div class="filters flex w-full sm:w-full md:w-1/2 mt-20 space-between sm:mt-20 md:mt-3 items-center">
+                    <div class="filters flex w-full sm:w-full md:w-1/2 mt-20 space-between sm:mt-20 md:mt-0 items-center">
                         <img src="../assets/svg/filter.svg" class="mx-1.5 w-8 md:h-8 lg:w-12">
                         <button 
                             class="button bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl">todo</button>
@@ -71,17 +71,17 @@
             </section>
 
             <section
-                class="chats bg-gray-100  w-full md:w-[70%] hidden sm:hidden md:block h-full rounded-3xl shadow-2xl flex flex-col justify-between">
+                class="chats bg-gray-100 w-full md:w-[70%] h-full rounded-3xl shadow-2xl flex flex-col justify-between">
                 <div class="info-friend w-full h-24">
-                    <div class="info-friend h-24 flex items-center ">
+                    <div class="info-friend h-24 flex items-center">
                         <h3 class="text-2xl font-bold ml-10">Alice Johnson</h3>
                     </div>
-                    <hr class="border-t-2 border-blue-200 mx-8"><hr>
+                    <hr class="border-t-2 border-blue-200 mx-8">
                 </div>
                 <div class="messages-container overflow-y-auto custom-scrollbar w-full h-[73%] p-6">
                     <!-- aquí se añaden los mensajes con jQuery -->
                 </div>
-                <div class="send-message-container h-[4%] p-5">
+                <div class="send-message-container p-5">
                     <div class="message-bar">
                         <form method="post" class="flex items-center">
                             <input type="text"
