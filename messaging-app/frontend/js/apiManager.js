@@ -1,20 +1,33 @@
-export async function userExists(username, password) {
-    const endpoint = ""; //URL del endpoint de la API 
+import {responseValid} from "./errControl.js"; // Import all functions from error control module
 
-    //Construir la url con los parámetros de consulta
-    let url = `${endpoint}?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+// Function to check if a user exists by sending a POST request with username and password
+export function userExists(username, password) {
+    const domain = "http://localhost:";
+    const port = 8000;
+    const endpoint = "/login"; // API endpoint URL
+    
+    // Construct the URL with query parameters (if needed)
+    const url = `${domain}${port}${endpoint}`;
 
-    try {
-        // Realizar la solicitud GET usando fetch
-        let response = await fetch(url, {
-            method: "GET",
+    // Perform the GET request using fetch
+    return new Promise((resolve, reject) => {
+        fetch(url, { 
+            method: "POST", // Use POST method for sending data
             headers: {
-                // "Content-Type": "application/json", Configura el tipo de contenido, en el objeto headers se pueden pasar auth ej: 'Authorization': 'Bearer tu-token'
+                "Content-Type": "application/json", // Set content type to JSON
+                "Accept": "application/json" // Accept JSON response
             },
+            body: JSON.stringify({
+                'username': username, // Include username in the request body
+                'password': password // Include password in the request body
+            }) 
+        }).then((response) => {
+            // Validate the response using the error control module
+            responseValid(response).then(() => {
+               resolve(response.json()); // Resolve the promise with the JSON response
+            }).catch((error) => {
+                 reject(error); // Reject the promise if there's an error
+            });
         });
-        return response.json["exists"];
-
-    } catch (error) {
-        throw error;
-    }
+    });
 }
