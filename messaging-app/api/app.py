@@ -12,7 +12,7 @@ app = FastAPI()
 def login(username: str, password: str):
     try:
         id = db.getUserId(username)
-        hshPwd = db.getHash(id)
+        """ hshPwd = db.getHash(id)
         stored_hash = hshPwd_, mem_cost, block_size, rounds, salt, stored_key = stored_hash.split('$')
         scrypt = Scrypt( 
             salt = 'WEPJFaJjJwPpKXJc',
@@ -20,9 +20,9 @@ def login(username: str, password: str):
             n = 32768,
             r = 8,
             p = 1
-        )
+        ) """
         #pwd = password
-        if db.loginCorrect(id, pwd):
+        if db.loginCorrect(id, password):
             user = db.getClientUser(username)
             # meterle el token al json user
             return user

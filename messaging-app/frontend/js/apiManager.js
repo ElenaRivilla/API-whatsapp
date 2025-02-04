@@ -2,7 +2,7 @@ import {responseValid} from "./errControl.js"; // Import all functions from erro
 
 // Function to check if a user exists by sending a POST request with username and password
 export function userExists(username, password) {
-    const domain = "https://fakestoreapi.com/auth/login";
+    const domain = "http://127.0.0.1:8000/login";
     /* const domain = "http://localhost:";
     const port = 8000;
     const endpoint = "/login";  */// API endpoint URL
