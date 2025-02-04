@@ -1,19 +1,19 @@
 // Import necessary modules for error handling and API interaction.
-import {loginValid} from "./errControl.js";
+import { loginValid } from "./errControl.js";
 import * as apiManager from "./apiManager.js";
 
-const loginUrl = "";
-const friendListUrl = "";
+const loginUrl = "http://127.0.0.1:5500/messaging-app/frontend/templates/login.html";
+const friendListUrl = "http://127.0.0.1:5500/messaging-app/frontend/templates/listaChats.html";
 
 // Function to handle the login process, including validation and authentication.
-function login(){
+function login() {
     // Select the form and the input fields for username and password.
     const form = document.querySelector("#loginForm");
     const username = document.querySelector("#username").value;
     const pwd = document.querySelector("#password").value;
-      
+
     // Function to display error messages when validation or login fails.
-    function manageErrors(error){
+    function manageErrors(error) {
         const errorContainer = document.querySelector(".error");
         errorContainer.innerText = error.message;  // Display the error message in the UI.
         return;
