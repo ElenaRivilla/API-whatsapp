@@ -1,5 +1,5 @@
 // Import necessary modules for error handling and API interaction.
-import * as errControl from "./errControl.js";
+import {loginValid} from "./errControl.js";
 import * as apiManager from "./apiManager.js";
 
 const loginUrl = "";
@@ -21,7 +21,7 @@ function login(){
 
     // Function to handle the full login process, including both validation and user existence check.
     function validateLogin(){
-        errControl.loginValid(username, pwd).then(() => {
+        loginValid(username, pwd).then(() => {
             // If validation passes, proceed to check if the user exists.
             return apiManager.userExists(username, pwd).then((user) => {
                 // Store the username in localStorage upon successful login.
