@@ -45,25 +45,24 @@ class database(object):
         self.desconecta()
         return ResQuery
     
-    """def getLastMessagesUsers(self, user1, user2, user11):
+    def getLastMessagesUsers(self, userId):
         self.conecta()
-        sql=SELECT 
-                u.id AS friend_id,
-                u.username AS friend_username,
-                m.body,
-                u.bio AS friend_bio,
-                MAX(m.date) AS last_message_date
-            FROM message m
-            JOIN usuarisclase u 
-                ON (m.sender_id = u.id OR m.receiver_id = u.id)
-            WHERE (m.sender_id = %s OR m.receiver_id = %s)
-                AND u.id != %s
-            GROUP BY u.id, u.username, u.bio
-            ORDER BY last_message_date DESC;
-            
-        self.cursor.execute(sql,(user1, user2, user11))
+        sql= """SELECT 
+                m.receiver_id AS receptor_id,
+                u.username AS nombre,
+                m.body AS ultimo_mensaje,
+                m.date AS fecha
+                FROM message m
+                JOIN usuarisclase u ON u.id = m.receiver_id
+                WHERE m.sender_id = %s 
+                AND m.date = (SELECT MAX(m2.date) 
+                             FROM message m2 
+                             WHERE m2.sender_id = m.sender_id 
+                             AND m2.receiver_id = m.receiver_id)
+                ORDER BY m.date DESC;"""
+        self.cursor.execute(sql,(userId))
         ResQuery = self.cursor.fetchall()
-        return ResQuery"""
+        return ResQuery
     
     def getMessagesGroups(self, loadSize, group_id):
         self.conecta()

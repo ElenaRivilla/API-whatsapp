@@ -57,20 +57,14 @@ def getUsersMessages(loadSize: int, user1: str , user2: str):
     except Exception as e:
         raise e
 
-""" @app.get("/home")
-def getHome(users: LastMessageUsers, user):
+@app.get("/home")
+def getHome(users: LastMessageUsers):
     try:
-        getFriends = db.getFriends(user)
-        lastMessage = db.getLastMessagesUsers(users.ID_USER1, users.ID_USER2, users.ID_USER11)
-        format = {
-            "friend": lastMessage["friend_username"],
-            "body": lastMessage["body"],
-            "date": lastMessage["last_message_date"]
-        }
-        return format
+        lastMessage = db.getLastMessagesUsers(users.ID_USER)
+        return lastMessage
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
- """
+
 # End-point to get user friends
 @app.get('/getFriends/{username}')
 def getFriends(username: str):

@@ -30,6 +30,4 @@ class Message(BaseModel):
     GROUP_ID: int 
     
 class LastMessageUsers(BaseModel):
-    ID_USER1: int
-    ID_USER2: int
-    ID_USER11: int
+    ID_USER: int
