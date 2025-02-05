@@ -59,7 +59,7 @@ class database(object):
                              FROM message m2 
                              WHERE m2.sender_id = m.sender_id 
                              AND m2.receiver_id = m.receiver_id)
-                ORDER BY m.date DESC;"""
+                ORDER BY fecha DESC;"""
         self.cursor.execute(sql,(userId))
         ResQuery = self.cursor.fetchall()
         return ResQuery

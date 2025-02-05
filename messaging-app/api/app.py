@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status
-from datetime import datetime
+from datetime import datetime, date
 from database import database
 from models import UserGroup, LastMessageUsers
 
@@ -61,6 +61,8 @@ def getUsersMessages(loadSize: int, user1: str , user2: str):
 def getHome(users: LastMessageUsers):
     try:
         lastMessage = db.getLastMessagesUsers(users.ID_USER)
+        for hora in lastMessage:
+            hora['fecha']=date.strftime(hora['fecha'], "%H:%M")
         return lastMessage
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
