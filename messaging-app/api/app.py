@@ -12,51 +12,75 @@ db = database()
 app = FastAPI()
 
 #End-point to login
-@app.post('/login')
 def login(request: LoginRequest):
     try:
+        # Obtener el ID del usuario desde la base de datos
         user_id = db.getUserId(request.USERNAME)
         if not user_id:
             raise HTTPException(status_code=404, detail='Usuario no encontrado')
+        
+        # Obtener el hash de la contraseña desde la base de datos
         stored_hash = db.loginCorrect(user_id)
         if not stored_hash:
             raise HTTPException(status_code=404, detail='Contraseña no encontrada')
-        print("CONTRASEÑA", stored_hash, request.PASSWORD)
-        if verify_password(stored_hash, request.PASSWORD):
-            return {"message": "Inicio de sesión exitosa", "usuario": user_id}
+
+        # Debugging: Imprimir valores de las contraseñas para depurar
+        print("CONTRASEÑA", stored_hash['contraseña_encriptada'], request.PASSWORD)
+
+        # Verificar la contraseña comparando el hash almacenado con la contraseña proporcionada
+        if verify_password(stored_hash['contraseña_encriptada'], request.PASSWORD):
+            return {"message": "Inicio de sesión exitoso", "usuario": user_id}
         else:
             raise HTTPException(status_code=401, detail='Contraseña incorrecta')
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 # TODO falta revisar y terminar
-def verify_password(stored_hash, password):
+def encrypt_password(password, mem_cost, block_size, parallelization, salt):
+    # Codificar la contraseña en bytes
+    password_encoded = password.encode('utf-8')
+    
+    # Crear el objeto Scrypt con los parámetros proporcionados
+    kdf = Scrypt(
+        salt=salt,
+        length=64,  # La longitud de la clave derivada (generalmente 64)
+        n=mem_cost,
+        r=block_size,
+        p=parallelization,
+        backend=default_backend()
+    )
+    
+    # Derivar la clave
+    derived_key = kdf.derive(password_encoded)
+    
+    return derived_key
+
+@app.post('/login')
+def verify_password():
     try:
+        # Ejemplo de uso
+        stored_hash = "scrypt:32768:8:1$WEPJFaJjJwPpKXJc$b718e9d6dddccbd220b218196f33cef51cb21825e4bebab777b8b7a0c7cbc10e4a2f6557579f723bf08e7c6de9b5076de8501f8c4ab4a212e746a68235ed83d2"
+        password = "45192834"
+        
         # Extraer los parámetros del hash almacenado
         algorithm, mem_cost, block_size, parallelization, salt, stored_key = re.split('[:$]', stored_hash)
+        
+        # Decodificar el salt (Base64) y el stored_key (Hexadecimal)
         salt = urlsafe_b64decode(salt)
-        stored_key = bytes.fromhex(stored_key)  # Decodificar stored_key desde hexadecimal
-
+        stored_key = bytes.fromhex(stored_key)
+        
+        # Debugging: Verifica el valor del salt y la clave almacenada
         print(f"Salt (Bytes): {salt}")
         print(f"Stored Key (Hex): {stored_key.hex()}")
         print(f"Expected Derived Key Length: {len(stored_key)}")
-
-        # Crear el objeto Scrypt con los parámetros extraídos
-        kdf = Scrypt(
-            salt=salt,
-            length=len(stored_key),  # Asegurarse de que la longitud sea la misma que la clave almacenada
-            n=int(mem_cost),
-            r=int(block_size),
-            p=int(parallelization),
-            backend=default_backend()
-        )
-
-        # Derivar la clave con la contraseña proporcionada
-        derived_key = kdf.derive(password.encode())
-
+        
+        # Usar la función encrypt_password para derivar la clave con la contraseña proporcionada
+        derived_key = encrypt_password(password, int(mem_cost), int(block_size), int(parallelization), salt)
+        
+        # Debugging: Verificar la clave derivada generada
         print(f"Derived Key (Hex): {derived_key.hex()}")
         print(f"Actual Derived Key Length: {len(derived_key)}")
-
+        
         # Comparar la clave derivada con la clave almacenada de manera segura
         if derived_key == stored_key:
             print("Password verification successful.")
