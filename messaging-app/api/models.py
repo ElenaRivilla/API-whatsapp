@@ -31,3 +31,7 @@ class Message(BaseModel):
     
 class LastMessageUsers(BaseModel):
     ID_USER: int
+    
+class LoginRequest(BaseModel):
+    USERNAME: str
+    PASSWORD: str

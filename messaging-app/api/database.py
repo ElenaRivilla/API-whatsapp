@@ -298,10 +298,10 @@ class database(object):
         self.desconecta()
         return ResQuery
     
-    def loginCorrect(self, userId, password):
+    def loginCorrect(self, userId):
         self.conecta()
-        sql='select password from usuarisclase where id = %s;'
+        sql='select password AS contraseña_encriptada from usuarisclase where id = %s;'
         self.cursor.execute(sql, (userId))
         ResQuery=self.cursor.fetchone()
         self.desconecta()
-        return ResQuery['password'] == password
+        return ResQuery

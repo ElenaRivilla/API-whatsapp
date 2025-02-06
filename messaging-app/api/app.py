@@ -1,7 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from datetime import datetime, date
 from database import database
-from models import UserGroup, LastMessageUsers
+from models import UserGroup, LastMessageUsers, LoginRequest
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
+from base64 import urlsafe_b64decode
+import os
+import re
+
 
 db = database()
 app = FastAPI()
@@ -9,28 +15,65 @@ app = FastAPI()
 #End-point to login
 # TODO falta revisar y terminar
 @app.post('/login')
-def login(username: str, password: str):
+def login(request: LoginRequest):
     try:
-        id = db.getUserId(username)
-        """ hshPwd = db.getHash(id)
-        stored_hash = hshPwd_, mem_cost, block_size, rounds, salt, stored_key = stored_hash.split('$')
-        scrypt = Scrypt( 
-            salt = 'WEPJFaJjJwPpKXJc',
-            length = 8,
-            n = 32768,
-            r = 8,
-            p = 1
-        ) """
-        #pwd = password
-        if db.loginCorrect(id, password):
-            user = db.getClientUser(username)
-            # meterle el token al json user
-            return user
+        user_id = db.getUserId(request.USERNAME)
+        if not user_id:
+            raise HTTPException(status_code=404, detail='Usuario no encontrado')
+        stored_hash= db.loginCorrect(user_id)
+        """ if not stored_hash:
+            raise HTTPException(status_code=404, detail='Contraseña no encontrada')
+        print("CONTRASEÑA", stored_hash['contraseña_encriptada'], request.PASSWORD)
+        if verify_password(stored_hash['contraseña_encriptada'], request.PASSWORD):
+            return {"message": "Inicio de sesión exitosa", "usuario": user_id}
         else:
-            raise HTTPException(status_code=404, detail='Usuario o contraseña incorrectos')
+            raise HTTPException(status_code=401, detail='Contraseña incorrecta') """
     except Exception as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
+@app.post('/loginPrueba')
+def verify_password():
+    try:
+        # Ejemplo de hash almacenado
+        stored_hash = "scrypt:32768:8:1$WEPJFaJjJwPpKXJc$85f45fef7d073181d4993f80178e373349a0c55e791679c7ce00ce2da2612f7cd57ebf437d6cd97f01fc35c6fdaad9197e9bd0d638092c7a59b528074619b69e"
+        password = "123456"  # Contraseña ingresada
+
+        # Extraer los parámetros del hash almacenado
+        algorithm, mem_cost, block_size, parallelization, salt, stored_key = re.split('[:$]', stored_hash)
+
+        # Decodificar el salt (Base64) y stored_key (Hex)
+        salt = urlsafe_b64decode(salt)
+        stored_key = bytes.fromhex(stored_key)
+
+        # Codificar la contraseña proporcionada
+        password_encoded = password.encode('utf-8')
+
+        # Imprimir la contraseña, salt y stored_key para depuración
+        print(f"Contraseña (Codificada): {password_encoded}")
+        print(f"Salt (Base64): {salt}")
+        print(f"Stored Key (Hex): {stored_key.hex()}")
+
+        # Crear el objeto Scrypt con los parámetros extraídos
+        kdf = Scrypt(
+            salt=salt,
+            length=64,  # Longitud de la clave derivada
+            n=int(mem_cost),
+            r=int(block_size),
+            p=int(parallelization),
+            backend=default_backend()
+        )
+
+        # Derivar la clave con la contraseña proporcionada
+        derived_key = kdf.derive(password_encoded)
+        # Imprimir la clave derivada y su longitud para verificar
+        print(f"Clave derivada (Hex): {derived_key.hex()}")
+        print(f"Longitud de la clave derivada: {len(derived_key)}")
+
+    except Exception as e:
+        print(f"Error verifying password: {e}")
+        return {"message": f"Error verifying password: {e}"}
+
+    
 #End-point to get group messages
 @app.get('/getMessages/{loadSize}/{idGroup}')
 def getGroupMessages(loadSize: int, idGroup: int):
