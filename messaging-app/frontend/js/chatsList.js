@@ -27,7 +27,7 @@ function generateChats() {
         chatDiv.append(containerImage).append(containerInfo).append(dateContainer);
         chatContainer.append(chatDiv);
 
-        const hr = $("<hr>").addClass("border-t-2 border-blue-200 m-2 sm:mx-8 md:mx-4 lg:mt-5 lg:mx-4")
+        const hr = $("<hr>").addClass("border-t-2 border-[#468FAF] m-2 sm:mx-8 md:mx-4 lg:mt-5 lg:mx-4")
         chatContainer.append(hr);
     });
 }
