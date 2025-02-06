@@ -28,3 +28,10 @@ class Message(BaseModel):
     SENDER_ID: int
     RECEIVER_ID: int
     GROUP_ID: int 
+    
+class LastMessageUsers(BaseModel):
+    ID_USER: int
+    
+class LoginRequest(BaseModel):
+    USERNAME: str
+    PASSWORD: str

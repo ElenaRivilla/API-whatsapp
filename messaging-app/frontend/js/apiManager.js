@@ -1,14 +1,19 @@
-import { responseValid } from "./errControl.js"; // Import all functions from error control module
-
+import {responseValid} from "./errControl.js"; // Import all functions from error control module
 
 // Function to check if a user exists by sending a POST request with username and password
 export function userExists(username, password) {
-    const domain = "http://localhost:8000/login";
+    const domain = "http://127.0.0.1:8000/login";
+    /* const domain = "http://localhost:";
+    const port = 8000;
+    const endpoint = "/login";  */// API endpoint URL
+    
+    // Construct the URL with query parameters (if needed)
+    /* const url = `${domain}${port}${endpoint}`; */
     const url = `${domain}`;
 
-    // Perform the POST request using fetch
+    // Perform the GET request using fetch
     return new Promise((resolve, reject) => {
-        fetch(url, {
+        fetch(url, { 
             method: "POST", // Use POST method for sending data
             headers: {
                 "Content-Type": "application/json", // Set content type to JSON
