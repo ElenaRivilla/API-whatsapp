@@ -8,55 +8,43 @@ from base64 import urlsafe_b64decode
 import os
 import re
 
-
 db = database()
 app = FastAPI()
 
 #End-point to login
-# TODO falta revisar y terminar
 @app.post('/login')
 def login(request: LoginRequest):
     try:
         user_id = db.getUserId(request.USERNAME)
         if not user_id:
             raise HTTPException(status_code=404, detail='Usuario no encontrado')
-        stored_hash= db.loginCorrect(user_id)
-        """ if not stored_hash:
+        stored_hash = db.loginCorrect(user_id)
+        if not stored_hash:
             raise HTTPException(status_code=404, detail='Contraseña no encontrada')
-        print("CONTRASEÑA", stored_hash['contraseña_encriptada'], request.PASSWORD)
-        if verify_password(stored_hash['contraseña_encriptada'], request.PASSWORD):
+        print("CONTRASEÑA", stored_hash, request.PASSWORD)
+        if verify_password(stored_hash, request.PASSWORD):
             return {"message": "Inicio de sesión exitosa", "usuario": user_id}
         else:
-            raise HTTPException(status_code=401, detail='Contraseña incorrecta') """
+            raise HTTPException(status_code=401, detail='Contraseña incorrecta')
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post('/loginPrueba')
-def verify_password():
+# TODO falta revisar y terminar
+def verify_password(stored_hash, password):
     try:
-        # Ejemplo de hash almacenado
-        stored_hash = "scrypt:32768:8:1$WEPJFaJjJwPpKXJc$85f45fef7d073181d4993f80178e373349a0c55e791679c7ce00ce2da2612f7cd57ebf437d6cd97f01fc35c6fdaad9197e9bd0d638092c7a59b528074619b69e"
-        password = "123456"  # Contraseña ingresada
-
         # Extraer los parámetros del hash almacenado
         algorithm, mem_cost, block_size, parallelization, salt, stored_key = re.split('[:$]', stored_hash)
-
-        # Decodificar el salt (Base64) y stored_key (Hex)
         salt = urlsafe_b64decode(salt)
-        stored_key = bytes.fromhex(stored_key)
+        stored_key = bytes.fromhex(stored_key)  # Decodificar stored_key desde hexadecimal
 
-        # Codificar la contraseña proporcionada
-        password_encoded = password.encode('utf-8')
-
-        # Imprimir la contraseña, salt y stored_key para depuración
-        print(f"Contraseña (Codificada): {password_encoded}")
-        print(f"Salt (Base64): {salt}")
+        print(f"Salt (Bytes): {salt}")
         print(f"Stored Key (Hex): {stored_key.hex()}")
+        print(f"Expected Derived Key Length: {len(stored_key)}")
 
         # Crear el objeto Scrypt con los parámetros extraídos
         kdf = Scrypt(
             salt=salt,
-            length=64,  # Longitud de la clave derivada
+            length=len(stored_key),  # Asegurarse de que la longitud sea la misma que la clave almacenada
             n=int(mem_cost),
             r=int(block_size),
             p=int(parallelization),
@@ -64,14 +52,22 @@ def verify_password():
         )
 
         # Derivar la clave con la contraseña proporcionada
-        derived_key = kdf.derive(password_encoded)
-        # Imprimir la clave derivada y su longitud para verificar
-        print(f"Clave derivada (Hex): {derived_key.hex()}")
-        print(f"Longitud de la clave derivada: {len(derived_key)}")
+        derived_key = kdf.derive(password.encode())
 
+        print(f"Derived Key (Hex): {derived_key.hex()}")
+        print(f"Actual Derived Key Length: {len(derived_key)}")
+
+        # Comparar la clave derivada con la clave almacenada de manera segura
+        if derived_key == stored_key:
+            print("Password verification successful.")
+            return True
+        else:
+            print("Password verification failed. Keys do not match.")
+            return False
     except Exception as e:
         print(f"Error verifying password: {e}")
-        return {"message": f"Error verifying password: {e}"}
+        return False
+
 
     
 #End-point to get group messages
