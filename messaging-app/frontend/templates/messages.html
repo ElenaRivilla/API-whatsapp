@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensajes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+        src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="../js/messages.js"></script>
+    <script type="module" src="../tests/tests.js"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <main class="h-dvh flex flex-col p-5">
+        <header class="flex flex-col md:flex-row lg:h-1/8 xl:h-1/8 sm:flex mb-5 lg:mb-5 md:h-[20%]">
+            <div class="w-full md:w-[60%] hidden sm:hidden md:block">
+                <div class=" ">
+                    <div class="icons flex w-full md:mb-6 xl:mb-6 2xl:mb-6 md:w-1/2 hidden sm:hidden md:block lg:block xl:block">
+                        <button class="mx-[1%] w-8 md:w-8 lg:w-10">
+                            <a href="./settings.html"><img src="../assets/svg/settings.svg" alt="button-settings"></a>
+                        </button>
+                        <button class="mx-[1%] w-8 md:w-8 lg:w-10">
+                            <a href="./messages.html"><img src="../assets/svg/add.svg" alt="button-add"></a>
+                        </button>
+                        <button class="mx-[1%] w-8 md:w-8 lg:w-10">
+                            <a href="./chatsList.html"><img src="../assets/svg/chat.svg" alt="button-chat"></a>
+                        </button>
+                    </div>
+                </div>
+                <div class="sm:flex w-full sm:w-1/6 md: 1/6">
+                    <div
+                        class="filters flex w-full sm:w-full md:w-1/2 mt-20 space-between sm:mt-20 md:mt-0 items-center">
+                        <img src="../assets/svg/filter.svg" class="mx-1.5 w-8 md:h-8 lg:w-12">
+                        <button
+                            class="button bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl">todo</button>
+                        <button
+                            class="button bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl">leído</button>
+                        <button
+                            class="button bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl">chats</button>
+                        <button
+                            class="button bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl">grupos</button>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-[40%] md:flex md:justify-end xl:justify-end mt-4 md:mt-0 hidden sm:hidden md:block">
+                <a href="./chatsList.html"><img src="../assets/svg/dove.svg" alt="logo" class="w-16 h-16 md:w-20 md:h-20"></a>
+            </div>
+        </header>
+        <div class="flex flex-col md:flex-row h-full sm:full md:h-[80%] pb-6">
+            <section class=" contacts bg-gray-100 p-4 w-full md:w-[30%] h-full mb-4 md:mb-0 md:mr-10 rounded-3xl overflow-y-auto custom-scrollbar shadow-2xl hidden sm:hidden md:block">
+                <div class="scrollbar-custom">
+                    <!-- aquí se generan la lista de chats con jQuery -->
+                </div>
+            </section>
+
+            <section class="chats bg-gray-100 w-full md:w-[70%] h-full rounded-3xl shadow-2xl flex flex-col justify-between ">
+                <div class="messages-container overflow-y-auto custom-scrollbar w-full h-[100%] pb-6 px-6">
+                    <!-- aquí se añaden los mensajes con jQuery -->
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>

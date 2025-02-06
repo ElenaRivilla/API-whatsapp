@@ -30,6 +30,8 @@ export function userExists(username, password) {
             }).catch((error) => {
                  reject(error); // Reject the promise if there's an error
             });
+        }).catch((error) => {
+            reject(error); // Reject the promise if there's an error with the fetch request
         });
     });
 }

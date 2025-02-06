@@ -1,14 +1,15 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid } from "./errControl.js";
-import * as apiManager from "./apiManager.js";
+import { userExists } from "./apiManager.js";
 
 const loginUrl = "http://127.0.0.1:5500/messaging-app/frontend/templates/login.html";
 const friendListUrl = "http://127.0.0.1:5500/messaging-app/frontend/templates/listaChats.html";
 
 // Function to handle the login process, including validation and authentication.
-function login() {
-    // Select the form and the input fields for username and password.
-    const form = document.querySelector("#loginForm");
+function login(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Select the input fields for username and password.
     const username = document.querySelector("#username").value;
     const pwd = document.querySelector("#password").value;
 
@@ -21,11 +22,12 @@ function login() {
 
     // Function to handle the full login process, including both validation and user existence check.
     function validateLogin(){
-        loginValid(username, pwd).then(() => {
+        return loginValid(username, pwd).then(() => {
             // If validation passes, proceed to check if the user exists.
-            return apiManager.userExists(username, pwd).then((user) => {
+            return userExists(username, pwd).then((user) => {
                 // Store the username in localStorage upon successful login.
                 localStorage.setItem('user', user.toString());
+                window.location.href = friendListUrl; // Redirect to friend list page
                 return true;  // Login successful
             }).catch((error) => {
                 manageErrors(error);  // Display error if login fails
@@ -36,23 +38,14 @@ function login() {
             return false;  // Validation failed
         });
     }
-
-    // Function to redirect the user to another page after a successful login.
-    function redirect(){
-        window.location.href = friendListUrl;
-    }
-
-    // Event listener to handle form submission.
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();  // Prevent the default form submission (page reload).
-        if (validateLogin()) {
-            redirect();  // Redirect to the new page if login is successful.
-        }
-    });
+    validateLogin();
 }
 
+// Add event listener to the form
+document.querySelector("#loginForm").addEventListener("submit", login);
+
 function friendsSite() {
-    
+    // Functionality for the friends site
 }
 
 // Function to initialize the page based on the current URL.
@@ -60,7 +53,7 @@ function friendsSite() {
 function init(){
     switch(window.location.href){
         case loginUrl:
-            login();  // Initialize the login process if on the login page.
+            // No need to call login() here, as it will be called by the form submit event
             break;
         case friendListUrl:
             friendsSite();

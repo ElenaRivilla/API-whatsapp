@@ -8,40 +8,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="module" src="../js/listaChats.js"></script>
+    <script type="module" src="../js/chatsList.js"></script>
     <script type="module" src="../tests/tests.js"></script>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
-
-<style>
-    body{
-        background-color:rgb(63, 129, 158)
-    }
-    
-    .custom-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-
-    .custom-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-   
-</style>
 
 <body>
     <main class="h-dvh flex flex-col p-5">
         <header class="flex flex-col md:flex-row lg:h-1/8 xl:h-1/8 sm:flex mb-5 lg:mb-5 md:h-[20%]">
             <div class="w-full md:w-[60%]">
                 <div class="">
-                    <div
-                        class="icons flex w-full md:mb-6 xl:mb-6 2xl:mb-6 md:w-1/2 hidden sm:hidden md:block lg:block xl:block">
-                        <button class="mx-[1%] w-8 md:w-8 lg:w-10"><img src="../assets/svg/settings.svg"
-                                alt="button-settings"></button>
-                        <button class="mx-[1%] w-8 md:w-8 lg:w-10"><img src="../assets/svg/add.svg"
-                                alt="button-add"></button>
-                        <button class="mx-[1%] w-8 md:w-8 lg:w-10"><img src="../assets/svg/chat.svg"
-                                alt="button-chat"></button>
+                    <div class="icons flex w-full md:mb-6 xl:mb-6 2xl:mb-6 md:w-1/2 hidden sm:hidden md:block lg:block xl:block">
+                        <button class="mx-[1%] w-8 md:w-8 lg:w-10">
+                            <a href="./settings.html"><img src="../assets/svg/settings.svg" alt="button-settings"></a>
+                        </button>
+                        <button class="mx-[1%] w-8 md:w-8 lg:w-10">
+                            <a href="./messages.html"><img src="../assets/svg/add.svg" alt="button-add"></a>
+                        </button>
+                        <button class="mx-[1%] w-8 md:w-8 lg:w-10">
+                            <a href="./chatsList.html"><img src="../assets/svg/chat.svg" alt="button-chat"></a>
+                        </button>
                     </div>
                 </div>
                 <div class="sm:flex w-full sm:w-1/6 md: 1/6">
@@ -59,39 +45,19 @@
                 </div>
             </div>
             <div class="w-full md:w-[40%] md:flex md:justify-end xl:justify-end mt-4 md:mt-0 hidden sm:hidden md:block">
-                <img src="../assets/svg/dove.svg" alt="logo" class="w-16 h-16 md:w-20 md:h-20">
+                <a href="./chatsList.html"><img src="../assets/svg/dove.svg" alt="logo" class="w-16 h-16 md:w-20 md:h-20"></a>
             </div>
         </header>
         <div class="flex flex-col md:flex-row h-[80%]">
             <section
-                class=" contacts bg-gray-100 w-full md:w-[30%] h-full mb-4 md:mb-0 md:mr-10 rounded-3xl overflow-y-auto custom-scrollbar shadow-2xl">
+                class=" contacts bg-gray-100 w-full p-4 md:w-[30%] h-full mb-4 md:mb-0 md:mr-10 block rounded-3xl overflow-y-auto custom-scrollbar shadow-2xl">
                 <div class="scrollbar-custom">
                     <!-- aquí se generan la lista de chats con jQuery -->
                 </div>
             </section>
-
-            <section
-                class="chats bg-gray-100 w-full md:w-[70%] h-full rounded-3xl shadow-2xl flex flex-col justify-between">
-                <div class="info-friend w-full h-24">
-                    <div class="info-friend h-24 flex items-center">
-                        <h3 class="text-2xl font-bold ml-10">Alice Johnson</h3>
-                    </div>
-                    <hr class="border-t-2 border-blue-200 mx-8">
-                </div>
+            <section class="chats bg-gray-100 w-full md:w-[70%] hidden md:block sm:hidden h-full rounded-3xl shadow-2xl flex flex-col justify-between">
                 <div class="messages-container overflow-y-auto custom-scrollbar w-full h-[73%] p-6">
                     <!-- aquí se añaden los mensajes con jQuery -->
-                </div>
-                <div class="send-message-container p-5">
-                    <div class="message-bar">
-                        <form method="post" class="flex items-center">
-                            <input type="text"
-                                class="write-message h-16 flex-grow p-6 border border-gray-300 rounded-full"
-                                placeholder="Escribe un mensaje...">
-                            <button type="submit" style="background-color: #A9D6E5"
-                                class="send-button w-16 h-16 ml-4 p-2 text-white rounded-full"><img
-                                    class="w-10 ml-1.5" src="../assets/svg/send.svg"></button>
-                        </form>
-                    </div>
                 </div>
             </section>
         </div>
