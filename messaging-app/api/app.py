@@ -18,28 +18,36 @@ app = FastAPI()
 def login(request: LoginRequest):
     
     try:
-        # Obtener el ID del usuario desde la base de datos
-        user_id = db.getUserId(request.USERNAME)
+        # # Obtener el ID del usuario desde la base de datos
+        # user_id = db.getUserId(request.USERNAME)
         
-        if not user_id:
-            raise HTTPException(status_code=404, detail='Usuario no encontrado')
+        # if not user_id:
+        #     raise HTTPException(status_code=404, detail='Usuario no encontrado')
         
-        # Obtener el hash de la contraseña desde la base de datos
-        stored_hash = db.loginCorrect(user_id)
-        if not stored_hash:
-            raise HTTPException(status_code=404, detail='Contraseña no encontrada')
+        # # Obtener el hash de la contraseña desde la base de datos
+        # stored_hash = db.loginCorrect(user_id)
+        # if not stored_hash:
+        #     raise HTTPException(status_code=404, detail='Contraseña no encontrada')
 
-        # Debugging: Imprimir valores de las contraseñas para depurar
-        print("CONTRASEÑA", stored_hash, request.PASSWORD)
-        print("USUARIO:", request.USERNAME, request.PASSWORD)
+        # # Debugging: Imprimir valores de las contraseñas para depurar
+        # print("CONTRASEÑA", stored_hash, request.PASSWORD)
+        # print("USUARIO:", request.USERNAME, request.PASSWORD)
 
-        # Verificar la contraseña comparando el hash almacenado con la contraseña proporcionada
-        if verify_password(stored_hash, request.PASSWORD):
-                return {"message": "Inicio de sesión exitoso", "user": user_id}
-        else:
-            raise HTTPException(status_code=401, detail='Contraseña incorrecta') 
+        # # Verificar la contraseña comparando el hash almacenado con la contraseña proporcionada
+        # if verify_password(stored_hash, request.PASSWORD):
+        #         return {"message": "Inicio de sesión exitoso", "user": user_id}
+        # else:
+        #     raise HTTPException(status_code=401, detail='Contraseña incorrecta') 
+        prueba(request)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e))
+
+def prueba(request: LoginRequest):
+    res = db.getUser(request.USERNAME)
+    if res:
+        if res['password'] == request.PASSWORD:
+            return {'token': 'XD'}
+    raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
 
 @app.post('/pruebaEncriptación')
 def verify_password(password: str, stored_hash: str) -> str:

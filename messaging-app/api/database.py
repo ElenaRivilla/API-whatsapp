@@ -23,6 +23,14 @@ class database(object):
         self.desconecta()
         return ResQuery
     
+    def getUser(self, username):
+        self.conecta()
+        sql="SELECT password from usuarisclase where username = %s;"
+        self.cursor.execute(sql, (username))
+        ResQuery=self.cursor.fetchone()
+        self.desconecta()
+        return ResQuery
+
     def getGroups(self):
         self.conecta()
         sql="SELECT * from groups;"

@@ -3,7 +3,7 @@ import { loginValid } from "./errControl.js";
 import { userExists } from "./apiManager.js";
 
 const loginUrl = "http://127.0.0.1:5500/messaging-app/frontend/templates/login.html";
-const friendListUrl = "http://127.0.0.1:5500/messaging-app/frontend/templates/listaChats.html";
+const friendListUrl = "http://127.0.0.1:5500/messaging-app/frontend/templates/chatsList.html";
 
 // Function to handle the login process, including validation and authentication.
 function login(event) {
