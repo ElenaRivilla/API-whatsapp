@@ -5,6 +5,8 @@ from models import UserGroup, LastMessageUsers, LoginRequest
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 from base64 import urlsafe_b64decode
+import hashlib
+import base64
 import os
 import re
 
@@ -12,10 +14,13 @@ db = database()
 app = FastAPI()
 
 #End-point to login
+@app.post('/login')
 def login(request: LoginRequest):
+    
     try:
         # Obtener el ID del usuario desde la base de datos
         user_id = db.getUserId(request.USERNAME)
+        
         if not user_id:
             raise HTTPException(status_code=404, detail='Usuario no encontrado')
         
@@ -25,73 +30,46 @@ def login(request: LoginRequest):
             raise HTTPException(status_code=404, detail='Contraseña no encontrada')
 
         # Debugging: Imprimir valores de las contraseñas para depurar
-        print("CONTRASEÑA", stored_hash['contraseña_encriptada'], request.PASSWORD)
+        print("CONTRASEÑA", stored_hash, request.PASSWORD)
+        print("USUARIO:", request.USERNAME, request.PASSWORD)
 
         # Verificar la contraseña comparando el hash almacenado con la contraseña proporcionada
-        if verify_password(stored_hash['contraseña_encriptada'], request.PASSWORD):
-            return {"message": "Inicio de sesión exitoso", "usuario": user_id}
+        if verify_password(stored_hash, request.PASSWORD):
+                return {"message": "Inicio de sesión exitoso", "user": user_id}
         else:
-            raise HTTPException(status_code=401, detail='Contraseña incorrecta')
+            raise HTTPException(status_code=401, detail='Contraseña incorrecta') 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# TODO falta revisar y terminar
-def encrypt_password(password, mem_cost, block_size, parallelization, salt):
-    # Codificar la contraseña en bytes
-    password_encoded = password.encode('utf-8')
-    
-    # Crear el objeto Scrypt con los parámetros proporcionados
-    kdf = Scrypt(
-        salt=salt,
-        length=64,  # La longitud de la clave derivada (generalmente 64)
-        n=mem_cost,
-        r=block_size,
-        p=parallelization,
-        backend=default_backend()
-    )
-    
-    # Derivar la clave
-    derived_key = kdf.derive(password_encoded)
-    
-    return derived_key
-
-@app.post('/login')
-def verify_password():
+@app.post('/pruebaEncriptación')
+def verify_password(password: str, stored_hash: str) -> str:
     try:
-        # Ejemplo de uso
-        stored_hash = "scrypt:32768:8:1$WEPJFaJjJwPpKXJc$b718e9d6dddccbd220b218196f33cef51cb21825e4bebab777b8b7a0c7cbc10e4a2f6557579f723bf08e7c6de9b5076de8501f8c4ab4a212e746a68235ed83d2"
-        password = "45192834"
+        # Extraer valores desde la contraseña encriptada
+        parts = stored_hash.split("$")
+        algo_params, salt_b64, _ = parts
+        _, N, r, p = algo_params.split(":")
         
-        # Extraer los parámetros del hash almacenado
-        algorithm, mem_cost, block_size, parallelization, salt, stored_key = re.split('[:$]', stored_hash)
-        
-        # Decodificar el salt (Base64) y el stored_key (Hexadecimal)
-        salt = urlsafe_b64decode(salt)
-        stored_key = bytes.fromhex(stored_key)
-        
-        # Debugging: Verifica el valor del salt y la clave almacenada
-        print(f"Salt (Bytes): {salt}")
-        print(f"Stored Key (Hex): {stored_key.hex()}")
-        print(f"Expected Derived Key Length: {len(stored_key)}")
-        
-        # Usar la función encrypt_password para derivar la clave con la contraseña proporcionada
-        derived_key = encrypt_password(password, int(mem_cost), int(block_size), int(parallelization), salt)
-        
-        # Debugging: Verificar la clave derivada generada
-        print(f"Derived Key (Hex): {derived_key.hex()}")
-        print(f"Actual Derived Key Length: {len(derived_key)}")
-        
-        # Comparar la clave derivada con la clave almacenada de manera segura
-        if derived_key == stored_key:
-            print("Password verification successful.")
-            return True
-        else:
-            print("Password verification failed. Keys do not match.")
-            return False
-    except Exception as e:
-        print(f"Error verifying password: {e}")
-        return False
+        # Convertir parámetros a enteros
+        N, r, p = int(N), int(r), int(p)
 
+        # Limitar N si es demasiado alto
+        if N > 8192:  # ⚠️ Ajustar este valor si sigue fallando
+            print(f"⚠️ N={N} es demasiado alto, reduciendo a 8192.")
+            N = 8192
+
+        # Decodificar la salt de Base64
+        salt = base64.b64decode(salt_b64)
+
+        # Generar el hash con scrypt usando la misma salt
+        dklen = 64
+        key = hashlib.scrypt(password.encode(), salt=salt, n=N, r=r, p=p, dklen=dklen)
+        hashed_password_hex = key.hex()
+
+        return f"scrypt:{N}:{r}:{p}${salt_b64}${hashed_password_hex}"
+    
+    except ValueError as e:
+        print(f"🚨 Error: {e}")
+        return None  # Devuelve None si hay un error
 
     
 #End-point to get group messages
@@ -125,8 +103,20 @@ def getHome(users: LastMessageUsers):
     try:
         lastMessage = db.getLastMessagesUsers(users.ID_USER)
         for hora in lastMessage:
-            hora['fecha']=date.strftime(hora['fecha'], "%H:%M")
-        return lastMessage
+            hora['time'] = date.strftime(hora['time'], "%H:%M")
+        
+        data = {
+            "contacts": [
+            {
+                "username": message['username'],
+                "imageUrl": message['imageUrl'],
+                "message": message['message'],
+                "time": message['time']
+            } for message in lastMessage
+            ]
+        }
+
+        return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

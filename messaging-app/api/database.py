@@ -48,10 +48,10 @@ class database(object):
     def getLastMessagesUsers(self, userId):
         self.conecta()
         sql= """SELECT 
-                m.receiver_id AS receptor_id,
-                u.username AS nombre,
-                m.body AS ultimo_mensaje,
-                m.date AS fecha
+                u.username AS username,
+                m.body AS message,
+                m.date AS time,
+                u.image AS imageUrl
                 FROM message m
                 JOIN usuarisclase u ON u.id = m.receiver_id
                 WHERE m.sender_id = %s 
@@ -59,7 +59,7 @@ class database(object):
                              FROM message m2 
                              WHERE m2.sender_id = m.sender_id 
                              AND m2.receiver_id = m.receiver_id)
-                ORDER BY fecha DESC;"""
+                ORDER BY time DESC;"""
         self.cursor.execute(sql,(userId))
         ResQuery = self.cursor.fetchall()
         return ResQuery
@@ -304,4 +304,4 @@ class database(object):
         self.cursor.execute(sql, (userId))
         ResQuery=self.cursor.fetchone()
         self.desconecta()
-        return ResQuery
+        return ResQuery['contraseña_encriptada']
