@@ -9,9 +9,17 @@ import hashlib
 import base64
 import os
 import re
+from fastapi.middleware.cors import CORSMiddleware
 
 db = database()
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permitir todos los orígenes. Puedes poner un dominio específico si lo prefieres, por ejemplo: ["https://example.com"]
+    allow_credentials=True,
+    allow_methods=["*"],  # Permitir todos los métodos HTTP (GET, POST, etc.)
+    allow_headers=["*"],  # Permitir todos los encabezados
+)
 
 #End-point to login
 @app.post('/login')
