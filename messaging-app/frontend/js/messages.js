@@ -53,7 +53,6 @@ function generateMessages() {
 
     const infoFriend = $("<div>").addClass("info-friend h-24 flex-col items-center w-full block sticky top-0 bg-gray-100 z-10");
     const infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full block");
-
     const profileImage = $("<img>").attr("src", "https://picsum.photos/300/300?random=1").attr("alt", "Profile Image").addClass("w-16 mr-4 block sm:hidden md:hidden lg:hidden rounded-full");
     const friendName = $("<h3>").addClass("text-2xl font-bold ml-3 block").text("Alice Johnson");
     const hr = $("<hr>").addClass("border-t-2 border-[#468FAF] mx-8¡10 block");
