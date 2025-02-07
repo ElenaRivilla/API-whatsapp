@@ -3,8 +3,10 @@ import { loginValid } from "./errControl.js";
 import { userExists } from "./apiManager.js";
 import { User } from "./user.js" 
 
-const loginUrl = "http://127.0.0.1:5500/messaging-app/frontend/templates/login.html";
-const friendListUrl = "http://127.0.0.1:5500/messaging-app/frontend/templates/chatsList.html";
+// TODO Remove liveServerPrefix when deploying the app
+const liveServerPrefix = "http://127.0.0.1:5500";
+const loginUrl = liveServerPrefix + "/messaging-app/frontend/templates/login.html";
+const friendListUrl = liveServerPrefix + "/messaging-app/frontend/templates/chatsList.html";
 
 // Function to handle the login process, including validation and authentication.
 function login(){
