@@ -9,43 +9,76 @@ import hashlib
 import base64
 import os
 import re
+from fastapi.middleware.cors import CORSMiddleware
 
 db = database()
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permitir todos los orígenes. Puedes poner un dominio específico si lo prefieres, por ejemplo: ["https://example.com"]
+    allow_credentials=True,
+    allow_methods=["*"],  # Permitir todos los métodos HTTP (GET, POST, etc.)
+    allow_headers=["*"],  # Permitir todos los encabezados
+)
+
+def extractVars(hash):
+    # La cadena se divide en las tres partes del formato scrypt
+    parts = hash.split('$')
+    # Partes esperadas: ["", "scrypt:32768:8:1", "sal", "hash"]
+    if len(parts) == 3:
+        # Extraer los parámetros de la parte "scrypt:32768:8:1"
+        params = parts[0].split(':')
+        n, r, p = int(params[0]), int(params[1]), int(params[2])
+        # La sal es la segunda parte (después de "scrypt:...")
+        salt = parts[1]
+        # El hash es la última parte
+        hash_value = parts[2]
+        hash_value_byte_length = len(parts[2]) / 2
+        return salt, hash_value, n, r, p, hash_value_byte_length
+    else:
+        raise ValueError("Fallo interno del servidor")
+
+def encrypt(attempt, salt, n, r, p, hash_value_byte_length):
+    try:
+        # Convertir la contraseña a bytes
+        pwd_bytes = attempt.encode('utf-8')
+        # Aplicar scrypt con los parámetros extraídos
+        encrypted_bytes = hashlib.scrypt(pwd_bytes, salt=bytes.fromhex(salt), n=n, r=r, p=p, dklen=hash_value_byte_length)
+        return encrypted_bytes.hex()
+    except Exception as e:
+        raise e
+    
+def pwdMatches(attempt, stored):
+    try:
+        # Extraer la sal, hash y parámetros del hash almacenado
+        salt, stored_hash_value, n, r, p = extractVars(stored)
+        # Generar el hash con la contraseña propuesta y comparar
+        attempt = encrypt(attempt, salt, n, r, p)
+        return attempt == stored_hash_value
+    except Exception as e:
+        raise e
+
+def generateToken(user):
+    return {'token': 'XD'}
 
 #End-point to login
 @app.post('/login')
 def login(request: LoginRequest):
-    
     try:
-        # # Obtener el ID del usuario desde la base de datos
-        # user_id = db.getUserId(request.USERNAME)
-        
-        # if not user_id:
-        #     raise HTTPException(status_code=404, detail='Usuario no encontrado')
-        
-        # # Obtener el hash de la contraseña desde la base de datos
-        # stored_hash = db.loginCorrect(user_id)
-        # if not stored_hash:
-        #     raise HTTPException(status_code=404, detail='Contraseña no encontrada')
-
-        # # Debugging: Imprimir valores de las contraseñas para depurar
-        # print("CONTRASEÑA", stored_hash, request.PASSWORD)
-        # print("USUARIO:", request.USERNAME, request.PASSWORD)
-
-        # # Verificar la contraseña comparando el hash almacenado con la contraseña proporcionada
-        # if verify_password(stored_hash, request.PASSWORD):
-        #         return {"message": "Inicio de sesión exitoso", "user": user_id}
-        # else:
-        #     raise HTTPException(status_code=401, detail='Contraseña incorrecta') 
-        prueba(request)
+        # requestDecrypted = funcion_de_desencriptar(request)
+        pwd = db.getUserPasswd(request.USERNAME)
+        if pwd:
+            if pwdMatches(request.PASSWORD, pwd['password']):
+                tkn = generateToken(db.getUser(request.USERNAME))
+                return tkn
+        raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
     except Exception as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise e
 
 def prueba(request: LoginRequest):
-    res = db.getUser(request.USERNAME)
-    if res:
-        if res['password'] == request.PASSWORD:
+    pwd = db.getUserPasswd(request.USERNAME)
+    if pwd:
+        if pwd['password'] == request.PASSWORD:
             return {'token': 'XD'}
     raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
 

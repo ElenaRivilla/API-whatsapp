@@ -19,6 +19,7 @@ export function userExists(username, password) {
                 "Content-Type": "application/json", // Set content type to JSON
                 "Accept": "application/json" // Accept JSON response
             },
+            mode: 'cors',
             body: JSON.stringify({
                 'username': username, // Include username in the request body
                 'password': password // Include password in the request body
