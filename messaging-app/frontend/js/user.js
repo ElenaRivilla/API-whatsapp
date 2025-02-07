@@ -1,12 +1,7 @@
-class User{
+export class User{
     constructor(newUser){
-        this._id = newUser['id'];
         this._username = newUser['username'];
         this._token = newUser['token'];
-    }
-
-    get id(){
-        return this._id;
     }
 
     get username(){
@@ -19,7 +14,6 @@ class User{
 
     toString(){
         return JSON.stringify({
-            'id': this._id, 
             'username': this._username,
             'token': this._token
         });

@@ -1,14 +1,10 @@
 class Group {
     constructor(newGroup){
-        this._id = newGroup['id'];
-        this._name = newGroup['name']
-        this._description = newGroup['description']
-        this._size = newGroup['size']
-        this._creation_date = newGroup['creation_date']
-    }
-
-    get id() {
-        return this._id;
+        this._name = newGroup['name'];
+        this._description = newGroup['description'];
+        this._size = newGroup['size'];
+        this._creation_date = newGroup['creation_date'];
+        this._token = newGroup['token'];
     }
 
     get name() {
@@ -27,13 +23,17 @@ class Group {
         return this._creation_date;
     }
 
+    get token(){
+        return this._token;
+    }
+
     toString() {
         return JSON.stringify({
-            'id': this._id,
             'name': this._name,
             'description': this._description,
             'size': this._size,
-            'creation_date': this._creation_date
+            'creation_date': this._creation_date,
+            'token': this._token
         });
     }
 }

@@ -21,8 +21,8 @@ export function userExists(username, password) {
             },
             mode: 'cors',
             body: JSON.stringify({
-                'username': username, // Include username in the request body
-                'password': password // Include password in the request body
+                'USERNAME': username, // Include username in the request body
+                'PASSWORD': password // Include password in the request body
             }) 
         }).then((response) => {
             // Validate the response using the error control module
