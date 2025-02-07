@@ -62,7 +62,7 @@ def generateToken(user):
     return {'token': 'XD'}
 
 #End-point to login
-@app.post('/login')
+""" @app.post('/login')
 def login(request: LoginRequest):
     try:
         # requestDecrypted = funcion_de_desencriptar(request)
@@ -73,7 +73,15 @@ def login(request: LoginRequest):
                 return tkn
         raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
     except Exception as e:
-        raise e
+        raise e """
+        
+@app.post('/login')
+def login(request: LoginRequest):
+    user = db.getUser(request.USERNAME)
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    # Aquí puedes agregar la lógica de autenticación
+    return {"message": "Login exitoso"}
 
 def prueba(request: LoginRequest):
     pwd = db.getUserPasswd(request.USERNAME)
