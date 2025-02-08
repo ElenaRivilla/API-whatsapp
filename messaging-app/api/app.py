@@ -11,6 +11,9 @@ import os
 import re
 import math
 from fastapi.middleware.cors import CORSMiddleware
+from typing import Optional
+from jose import JWTError, jwt
+from fastapi.security import OAuth2PasswordBearer
 
 db = database()
 app = FastAPI()
@@ -21,6 +24,10 @@ app.add_middleware(
     allow_methods=["*"],  # Permitir todos los métodos HTTP (GET, POST, etc.)
     allow_headers=["*"],  # Permitir todos los encabezados
 )
+
+SECRET_KEY = "ivillave"
+ALGORITHM = "HS256"
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def extractVars(hash):
     # La cadena se divide en las tres partes del formato scrypt
@@ -62,8 +69,35 @@ def pwdMatches(attempt, stored):
     except Exception as e:
         raise e
 
-def generateToken(user):
-    return {'token': 'XD'}
+# Función para crear un token JWT
+def create_access_token(data: dict, expires_delta: Optional[datetime.timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(datetime.timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=120)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+# Función para verificar el token
+def verify_token(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        userId: int = payload.get("sub")
+        if userId is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Token no válido",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        return userId
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token no válido",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 #End-point to login
 @app.post('/login')
@@ -73,8 +107,9 @@ def login(request: LoginRequest):
         pwd = db.getUserPasswd(request.USERNAME)
         if pwd:
             if pwdMatches(request.PASSWORD, pwd['password']):
-                tkn = generateToken(db.getUser(request.USERNAME))
-                return tkn
+                user = db.getUser(request.USERNAME)
+                tkn = create_access_token({'sub': user['id']})
+                return {'username': user['username'], 'bio': user['bio'], 'token': tkn}
         raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
     except Exception as e:
         raise e
@@ -114,7 +149,7 @@ def getUsersMessages(loadSize: int, user1: str , user2: str):
         raise e
 
 @app.get("/home")
-def getHome(users: LastMessageUsers):
+def getHome(users: LastMessageUsers): # userId: int = Depends(verify_token)
     try:
         lastMessage = db.getLastMessagesUsers(users.ID_USER)
         for hora in lastMessage:
