@@ -1,4 +1,3 @@
-// TODO Revisar como exportar toda la clase.
 export function loginValid(username, password) {
     return new Promise((resolve, reject) => {
         // El required ya está puesto en el html.

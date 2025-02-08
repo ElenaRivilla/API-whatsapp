@@ -9,6 +9,7 @@ import hashlib
 import base64
 import os
 import re
+import math
 from fastapi.middleware.cors import CORSMiddleware
 
 db = database()
@@ -28,12 +29,12 @@ def extractVars(hash):
     if len(parts) == 3:
         # Extraer los parámetros de la parte "scrypt:32768:8:1"
         params = parts[0].split(':')
-        n, r, p = int(params[0]), int(params[1]), int(params[2])
+        n, r, p = int(params[1]), int(params[2]), int(params[3])
         # La sal es la segunda parte (después de "scrypt:...")
         salt = parts[1]
         # El hash es la última parte
         hash_value = parts[2]
-        hash_value_byte_length = len(parts[2]) / 2
+        hash_value_byte_length = math.ceil(len(parts[2]) / 2)
         return salt, hash_value, n, r, p, hash_value_byte_length
     else:
         raise ValueError("Fallo interno del servidor")
@@ -42,8 +43,10 @@ def encrypt(attempt, salt, n, r, p, hash_value_byte_length):
     try:
         # Convertir la contraseña a bytes
         pwd_bytes = attempt.encode('utf-8')
+        # Convertir la sal a bytes
+        salt_bytes = salt.encode('utf-8')
         # Aplicar scrypt con los parámetros extraídos
-        encrypted_bytes = hashlib.scrypt(pwd_bytes, salt=bytes.fromhex(salt), n=n, r=r, p=p, dklen=hash_value_byte_length)
+        encrypted_bytes = hashlib.scrypt(pwd_bytes, salt=salt_bytes, n=n, r=r, p=p, dklen=hash_value_byte_length)
         return encrypted_bytes.hex()
     except Exception as e:
         raise e
@@ -51,9 +54,10 @@ def encrypt(attempt, salt, n, r, p, hash_value_byte_length):
 def pwdMatches(attempt, stored):
     try:
         # Extraer la sal, hash y parámetros del hash almacenado
-        salt, stored_hash_value, n, r, p = extractVars(stored)
+        salt, stored_hash_value, n, r, p, hash_value_byte_length = extractVars(stored)
         # Generar el hash con la contraseña propuesta y comparar
-        attempt = encrypt(attempt, salt, n, r, p)
+        attempt = encrypt(attempt, salt, n, r, p, hash_value_byte_length)
+        print(attempt, stored_hash_value)
         return attempt == stored_hash_value
     except Exception as e:
         raise e
@@ -62,7 +66,7 @@ def generateToken(user):
     return {'token': 'XD'}
 
 #End-point to login
-""" @app.post('/login')
+@app.post('/login')
 def login(request: LoginRequest):
     try:
         # requestDecrypted = funcion_de_desencriptar(request)
@@ -73,22 +77,22 @@ def login(request: LoginRequest):
                 return tkn
         raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
     except Exception as e:
-        raise e """
+        raise e
         
-@app.post('/login')
-def login(request: LoginRequest):
-    user = db.getUser(request.USERNAME)
-    if not user:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    # Aquí puedes agregar la lógica de autenticación
-    return {"message": "Login exitoso"}
+# @app.post('/login')
+# def login(request: LoginRequest):
+#     user = db.getUser(request.USERNAME)
+#     if not user:
+#         raise HTTPException(status_code=404, detail="Usuario no encontrado")
+#     # Aquí puedes agregar la lógica de autenticación
+#     return {"message": "Login exitoso"}
 
-def prueba(request: LoginRequest):
-    pwd = db.getUserPasswd(request.USERNAME)
-    if pwd:
-        if pwd['password'] == request.PASSWORD:
-            return {'token': 'XD'}
-    raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
+# def prueba(request: LoginRequest):
+#     pwd = db.getUserPasswd(request.USERNAME)
+#     if pwd:
+#         if pwd['password'] == request.PASSWORD:
+#             return {'token': 'XD'}
+#     raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
 
 @app.post('/pruebaEncriptación')
 def verify_password(password: str, stored_hash: str) -> str:

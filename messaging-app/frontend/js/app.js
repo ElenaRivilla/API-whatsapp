@@ -12,8 +12,8 @@ const friendListUrl = liveServerPrefix + "/messaging-app/frontend/templates/chat
 function login(){
     // Select the form and the input fields for username and password.
     const form = document.querySelector("#loginForm");
-    const username = document.querySelector("#username").value;
-    const pwd = document.querySelector("#password").value;
+    const username = document.querySelector("#username");
+    const pwd = document.querySelector("#password");
       
     // Function to display error messages when validation or login fails.
     function manageErrors(error){
@@ -23,21 +23,24 @@ function login(){
     }
 
     // Function to handle the full login process, including both validation and user existence check.
-    function validateLogin(){
-        return loginValid(username, pwd).then(() => {
-            // If validation passes, proceed to check if the user exists.
-            return userExists(username, pwd).then((user) => {
-                // Store the username in localStorage upon successful login.
-                localStorage.setItem('user', new User(user).toString());
-                return true;  // Login successful
-            }).catch((error) => {
-                manageErrors(error);  // Display error if login fails
-                return false;  // Login failed
-            });
-        }).catch((error) => {
-            manageErrors(error);  // Display error if validation fails
-            return false;  // Validation failed
-        });
+    async function validateLogin() {
+        try {
+            // Wait for the first promise (loginValid) to resolve
+            await loginValid(username.value, pwd.value);
+    
+            // If loginValid is successful, wait for the second promise (userExists)
+            const user = await userExists(username.value, pwd.value);
+    
+            // If both promises are successful, store the user in localStorage
+            localStorage.setItem('user', new User(user).toString());
+    
+            redirect();  // Redirect to the new page if login is successful.
+            return;
+        } catch (error) {
+            // If any promise is rejected, it will be caught here
+            manageErrors(error);  // Display the error if one occurs
+            return;  // Return false if there was an error
+        }
     }
 
     // Function to redirect the user to another page after a successful login.
@@ -48,9 +51,7 @@ function login(){
     // Event listener to handle form submission.
     form.addEventListener("submit", function(event) {
         event.preventDefault();  // Prevent the default form submission (page reload).
-        if (validateLogin()) {
-            redirect();  // Redirect to the new page if login is successful.
-        }
+        validateLogin();
     });
 }
 
