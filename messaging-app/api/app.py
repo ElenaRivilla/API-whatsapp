@@ -78,7 +78,7 @@ def login(request: LoginRequest):
         raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
     except Exception as e:
         raise e
-        
+    
 # @app.post('/login')
 # def login(request: LoginRequest):
 #     user = db.getUser(request.USERNAME)
@@ -151,13 +151,12 @@ def getUsersMessages(loadSize: int, user1: str , user2: str):
     except Exception as e:
         raise e
 
-@app.get("/home")
+@app.post("/home")
 def getHome(users: LastMessageUsers):
     try:
         lastMessage = db.getLastMessagesUsers(users.ID_USER)
         for hora in lastMessage:
             hora['time'] = date.strftime(hora['time'], "%H:%M")
-        
         data = {
             "contacts": [
             {
@@ -168,7 +167,6 @@ def getHome(users: LastMessageUsers):
             } for message in lastMessage
             ]
         }
-
         return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -216,7 +214,6 @@ def changeUserAdminStatus(userId: int, groupId: int):
         return {"message": "Admin status changed"}
     except Exception as e:
         raise e
-    
     
 @app.post('/deleteUserFromGroup')
 def deleteUserFromGroup(userId: int, groupId: int):
