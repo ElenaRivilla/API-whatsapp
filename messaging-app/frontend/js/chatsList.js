@@ -15,13 +15,13 @@ function generateChats() {
         const profileImage = $("<img>").addClass("profile-image sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", chat.imageUrl);
         containerImage.append(profileImage);
 
-        const containerInfo = $("<div>").addClass("container-info truncate w-full h-20 p-0 md:p-0 lg:p-4");
-        const username = $("<h3>").addClass("username text-base sm:text-2xl md:text-lg lg:text-lg font-bold block md:hidden lg:block").text(chat.username);
+        const containerInfo = $("<div>").addClass("container-info text-sm truncate w-full h-20 p-0 md:p-0 lg:p-4");
+        const username = $("<h3>").addClass("username text-base text-lg sm:text-2xl md:text-lg lg:text-lg font-bold block md:hidden lg:block").text(chat.username);
         const message = $("<p>").addClass("message truncate block sm:block md:hidden lg:block").text(chat.message);
         containerInfo.append(username).append(message);
 
         const dateContainer = $("<div>").addClass("flex flex-col justify-center items-center m-4 md:m-0");
-        const date = $("<h5>").addClass("date").text(chat.time);
+        const date = $("<h5>").addClass("date text-sm").text(chat.time);
         dateContainer.append(date);
 
         chatDiv.append(containerImage).append(containerInfo).append(dateContainer);
