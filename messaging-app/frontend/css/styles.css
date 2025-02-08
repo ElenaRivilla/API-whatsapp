@@ -14,3 +14,12 @@ body{
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+.container-group svg {
+    fill: #468FAF; /* Cambiar el color del relleno del SVG */
+}
+
+.container-group svg path {
+    stroke: #ffffff; /* Cambiar el color del relleno del círculo */
+}
+
