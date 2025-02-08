@@ -81,49 +81,11 @@ def login(request: LoginRequest):
         
 # @app.post('/login')
 # def login(request: LoginRequest):
-#     user = db.getUser(request.USERNAME)
-#     if not user:
-#         raise HTTPException(status_code=404, detail="Usuario no encontrado")
-#     # Aquí puedes agregar la lógica de autenticación
-#     return {"message": "Login exitoso"}
-
-# def prueba(request: LoginRequest):
 #     pwd = db.getUserPasswd(request.USERNAME)
 #     if pwd:
 #         if pwd['password'] == request.PASSWORD:
 #             return {'token': 'XD'}
 #     raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
-
-@app.post('/pruebaEncriptación')
-def verify_password(password: str, stored_hash: str) -> str:
-    try:
-        # Extraer valores desde la contraseña encriptada
-        parts = stored_hash.split("$")
-        algo_params, salt_b64, _ = parts
-        _, N, r, p = algo_params.split(":")
-        
-        # Convertir parámetros a enteros
-        N, r, p = int(N), int(r), int(p)
-
-        # Limitar N si es demasiado alto
-        if N > 8192:  # ⚠️ Ajustar este valor si sigue fallando
-            print(f"⚠️ N={N} es demasiado alto, reduciendo a 8192.")
-            N = 8192
-
-        # Decodificar la salt de Base64
-        salt = base64.b64decode(salt_b64)
-
-        # Generar el hash con scrypt usando la misma salt
-        dklen = 64
-        key = hashlib.scrypt(password.encode(), salt=salt, n=N, r=r, p=p, dklen=dklen)
-        hashed_password_hex = key.hex()
-
-        return f"scrypt:{N}:{r}:{p}${salt_b64}${hashed_password_hex}"
-    
-    except ValueError as e:
-        print(f"🚨 Error: {e}")
-        return None  # Devuelve None si hay un error
-
     
 #End-point to get group messages
 @app.get('/getMessages/{loadSize}/{idGroup}')
