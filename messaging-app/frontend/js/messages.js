@@ -26,7 +26,6 @@ function generateChats() {
 
     openChats.forEach(chat => {
         const chatDiv = $("<div>").addClass("container-user flex h-12 my-4 mx-3 sm:w-1/8 sm:h-24 md:my-0 md:mb-5 md:mx-3 lg:mb-3 max-h-24 lg:h-20 sm:m-6 sm:mb-1 md:flex md:items-center");
-
         const containerImage = $("<div>").addClass("container-image w-40 h-16");
         const profileImage = $("<img>").addClass("profile-image sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", chat.imageUrl);
         containerImage.append(profileImage);
@@ -53,22 +52,27 @@ function generateMessages() {
 
     const infoFriend = $("<div>").addClass("info-friend h-24 flex-col items-center w-full block sticky top-0 bg-gray-100 z-10");
     const infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full block");
-    const profileImage = $("<img>").attr("src", "https://picsum.photos/300/300?random=1").attr("alt", "Profile Image").addClass("w-16 mr-4 block sm:hidden md:hidden lg:hidden rounded-full");
-    const friendName = $("<h3>").addClass("text-2xl font-bold ml-3 block").text("Alice Johnson");
+    const backButton = $('<button>').addClass('p-2 bg-[#468FAF] rounded-full h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center block sm:block md:hidden mr-5');
+    const backLink = $('<a>').attr('href', './chatsList.html').addClass('flex items-center justify-center w-full h-full');
+    const backImg = $('<img>').addClass('h-5').attr('src', '../assets/svg/arrow.svg');
+    const profileImage = $("<img>").attr("src", "https://picsum.photos/300/300?random=1").attr("alt", "Profile Image").addClass("w-16  sm:mr-4 block sm:block md:hidden lg:hidden rounded-full");
+    const friendName = $("<h3>").addClass("text-xl sm:text-2xl font-bold ml-3 block").text("Alice Johnson");
     const hr = $("<hr>").addClass("border-t-2 border-[#468FAF] mx-8¡10 block");
 
-    infoFriendInner.append(profileImage).append(friendName);
+    backLink.append(backImg);
+    backButton.append(backLink);
+    infoFriendInner.append(backButton).append(profileImage).append(friendName);
     infoFriend.append(infoFriendInner).append(hr);
     messagesContainer.append(infoFriend);
 
-    const messagesWrapper = $("<div>").addClass("messages-wrapper mt-24"); // Add a wrapper with margin-top to avoid overlap
+    const messagesWrapper = $("<div>").addClass("messages-wrapper mt-0 sm:mt-24"); // Add a wrapper with margin-top to avoid overlap
 
     messages.forEach(msg => {
         const article = $("<article>").addClass(`${msg.type}-container flex items-start mb-4 ${msg.type === "receiver" ? "justify-end" : ""} min-h-16 h-auto`);
 
         if (msg.type === "sender") {
-            const figure = $("<figure>").addClass("image-sender hidden sm:block md:block lg:block mr-4 w-16 h-16");
-            const img = $("<img>").attr("src", msg.imageUrl).attr("alt", "Sender Image").addClass("min-w-16 min-h-16 hidden sm:block md:block lg:block rounded-full");
+            const figure = $("<figure>").addClass("image-sender hidden sm:hidden md:block lg:block mr-4 w-16 h-16");
+            const img = $("<img>").attr("src", msg.imageUrl).attr("alt", "Sender Image").addClass("min-w-16 min-h-16 hidden sm:hidden md:block lg:block rounded-full");
             figure.append(img);
 
             const messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto bg-gray-200 p-4 px-7 rounded-full");

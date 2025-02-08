@@ -36,3 +36,28 @@ export function userExists(username, password) {
         });
     });
 }
+
+export function getUsersHome(userId) {
+    const domain = "http://127.0.0.1:8000/home";
+    const url = `${domain}`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            body: JSON.stringify({ ID_USER: userId })
+        }).then((response) => {
+            responseValid(response).then(() => {
+                resolve(response.json());
+            }).catch((error) => {
+                reject(error);
+            });
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
