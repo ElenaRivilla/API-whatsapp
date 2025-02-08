@@ -8,6 +8,12 @@ const liveServerPrefix = "http://127.0.0.1:5500";
 const loginUrl = liveServerPrefix + "/messaging-app/frontend/templates/login.html";
 const friendListUrl = liveServerPrefix + "/messaging-app/frontend/templates/chatsList.html";
 
+function getCookie(name) {
+    const parts = document.cookie.split(`${name}=`);  // Buscamos el nombre de la cookie en el texto de las cookies.
+    if (parts.length === 2) return decodeURIComponent(parts[1].split(';')[0]);  // Si la cookie existe, la extraemos.
+    return null;  // Si no existe, devolvemos null.
+}
+
 // Function to handle the login process, including validation and authentication.
 function login(){
     // Select the form and the input fields for username and password.
@@ -30,10 +36,11 @@ function login(){
     
             // If loginValid is successful, wait for the second promise (userExists)
             const user = await userExists(username.value, pwd.value);
-    
+
             // If both promises are successful, store the user in localStorage
-            localStorage.setItem('user', new User(user).toString());
-    
+            // document.cookie = "token=" + encodeURIComponent(user['token']) + "; path=/messaging-app/frontend/; Secure; SameSite=Strict";
+            document.cookie = "token=" + encodeURIComponent(user['token']) + "; path=/; Secure; SameSite=Strict";
+            document.cookie = "user=" + encodeURIComponent(username) + "; path=/; Secure; SameSite=Strict";
             redirect();  // Redirect to the new page if login is successful.
             return;
         } catch (error) {
@@ -57,12 +64,9 @@ function login(){
 
 async function friendsSite() {
     try {
-        const user = JSON.parse(localStorage.getItem('user'));
-        const users = await getUsersHome(user.id);
+        const user = new User(getCookie('user'));
+        const users = await getUsersHome(getCookie('token'));
         console.log(users);  // Log the users to the console or handle them as needed
-
-        // Pass the users data to the client side
-        window.localStorage.setItem('friendsList', JSON.stringify(users));
         generateChats(users);
     } catch (error) {
         console.error("Error fetching users:", error);

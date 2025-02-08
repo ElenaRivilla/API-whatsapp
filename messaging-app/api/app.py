@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status
-from datetime import datetime, date
+from datetime import datetime, date, timedelta, timezone
 from database import database
 from models import UserGroup, LastMessageUsers, LoginRequest
 from cryptography.hazmat.backends import default_backend
@@ -70,12 +70,12 @@ def pwdMatches(attempt, stored):
         raise e
 
 # Función para crear un token JWT
-def create_access_token(data: dict, expires_delta: Optional[datetime.timedelta] = None):
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.now(datetime.timezone.utc) + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=120)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=120)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -124,7 +124,7 @@ def login(request: LoginRequest):
     
 #End-point to get group messages
 @app.get('/getMessages/{loadSize}/{idGroup}')
-def getGroupMessages(loadSize: int, idGroup: int):
+def getGroupMessages(loadSize: int, idGroup: int): # podriamos hacer una query para saber si el user que pide esto esta en el grupo, via token
     try:
         messages = db.getMessagesGroups(loadSize, idGroup)
         for message in messages:
