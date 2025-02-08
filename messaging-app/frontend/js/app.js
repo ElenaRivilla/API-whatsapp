@@ -1,6 +1,6 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid } from "./errControl.js";
-import { userExists } from "./apiManager.js";
+import { userExists, getUsersHome } from "./apiManager.js";
 import { User } from "./user.js" 
 
 // TODO Remove liveServerPrefix when deploying the app
@@ -55,8 +55,18 @@ function login(){
     });
 }
 
-function friendsSite() {
-    
+async function friendsSite() {
+    try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const users = await getUsersHome(user.id);
+        console.log(users);  // Log the users to the console or handle them as needed
+
+        // Pass the users data to the client side
+        window.localStorage.setItem('friendsList', JSON.stringify(users));
+        generateChats(users);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+    }
 }
 
 // Function to initialize the page based on the current URL.

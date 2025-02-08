@@ -1,14 +1,24 @@
-import { openChats } from "../tests/tests.js";
+import { getUsersHome } from "./apiManager.js";
 document.addEventListener('DOMContentLoaded', cargaDOM);
 
-function cargaDOM() {
-    generateChats();
+async function cargaDOM() {
+    const userId = 1; // metemos el id manualmente hasta arreglar lo de las cookies para almacenar la información del usuario que ha iniciado sesión y recibirlo por ahí
+    try {
+        const response = await getUsersHome(userId);
+        const users = response.contacts;
+        generateChats(users);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+    }
 }
 
-function generateChats() {
+function generateChats(chats) {
     const chatContainer = $(".scrollbar-custom");
+    chatContainer.empty(); // Limpiar el contenedor antes de agregar nuevos chats
 
-    openChats.forEach(chat => {
+    chats.forEach(chat => {
+        console.log("Generating chat for:", chat); // Log each chat being generated
+
         const chatDiv = $("<div>").addClass("container-user flex h-12 my-4 mx-3 sm:w-1/8 sm:h-24 md:my-0 md:mb-5 md:mx-3 lg:mb-3 max-h-24 lg:h-20 sm:m-6 sm:mb-1 md:flex md:items-center");
 
         const containerImage = $("<div>").addClass("container-image w-40 h-16");
