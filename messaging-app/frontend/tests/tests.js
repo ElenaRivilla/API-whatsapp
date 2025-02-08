@@ -227,3 +227,51 @@ export const messages = [
         checkImageUrl: "../assets/svg/double-check-blue.svg"
     }
 ];
+
+
+
+
+
+//chats de pruebas
+export const contacts = [
+    {
+        username: "Alice Johnson",
+        bio: "¡Estoy usando la aplicación de Tricoded!",
+        imageUrl: "https://picsum.photos/300/300?random=7"
+    },
+    {
+        username: "Bob Smith",
+        bio: "¡Estoy usando la aplicación de Tricoded!",
+        imageUrl: "https://picsum.photos/300/300?random=8"
+    },
+    {
+        username: "Charlie Brown",
+        bio: "¡Estoy usando la aplicación de Tricoded!",
+        imageUrl: "https://picsum.photos/300/300?random=9"
+    },
+    {
+        username: "Diana Prince",
+        bio: "¡Estoy usando la aplicación de Tricoded!",
+        imageUrl: "https://picsum.photos/300/300?random=10"
+    },
+    {
+        username: "Eve Adams",
+        bio: "¡Estoy usando la aplicación de Tricoded!",
+        imageUrl: "https://picsum.photos/300/300?random=11"
+    },
+    {
+        username: "Frank Miller",
+        bio: "¡Estoy usando la aplicación de Tricoded!",
+        imageUrl: "https://picsum.photos/300/300?random=12"
+    },
+    {
+        username: "Grace Lee",
+        bio: "¡Estoy usando la aplicación de Tricoded!",
+        imageUrl: "https://picsum.photos/300/300?random=13"
+    },
+    {
+        username: "Henry Ford",
+        bio: "¡Estoy usando la aplicación de Tricoded!",
+        imageUrl: "https://picsum.photos/300/300?random=14"
+    }
+];
