@@ -43,7 +43,7 @@ function generateContacts() {
     chatContainer.append(backBar, searchBar, groupContainer, contactsName, separator);
 
     function renderContacts(allContacts) {
-        chatContainer.find(".container-user, .contact-separator").remove(); // Eliminamos los contactos y los separadores anteriores.
+        chatContainer.find(".container-user, .contact-separator").remove(); // Eliminamos los contactos y los separadores.
 
         allContacts.forEach(contact => {
             const chatDiv = $("<div>").addClass("container-user flex h-12 my-4 mx-3 sm:w-1/8 sm:h-24 md:my-0 md:mb-5 md:mx-3 lg:mb-3 max-h-24 lg:h-20 sm:m-6 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center");
@@ -67,10 +67,10 @@ function generateContacts() {
    
     renderContacts(contacts);
 
-    searchInput.on("input", function() {
-        const searchUser = $(this).val().toLowerCase();
-        const filteredContacts = contacts.filter(contact => contact.username.toLowerCase().includes(searchUser));
-        renderContacts(filteredContacts);
+    searchInput.on("input", function() { // La barra del buscador 
+        const searchUser = $(this).val().toLowerCase(); // Recoge el string escrito en el input del buscador y lo convierte en minusculas.
+        const filteredContacts = contacts.filter(contact => contact.username.toLowerCase().includes(searchUser)); // Filtra la lista original de contactos con el texto puesto en 'searchUser'.
+        renderContacts(filteredContacts); // Actualizamos la lista de contactos con los contactos que coinciden con el texto introducido
     })
 }
 
