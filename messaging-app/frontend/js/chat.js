@@ -32,8 +32,14 @@ export function generateChats(chats){
 
 export function generateChat(messages, user){
     const html = $("<div>").addClass("flex flex-col h-full");
-    html.append(generateMessages(messages, user));
-    html.append(generateChatBar());
+    const chats = $(".chats");
+    const messagesContainer = generateMessages(messages, user);
+    const chatBar = generateChatBar();
+    
+    html.append(messagesContainer);
+    if (!chats.find(".message-bar").length) {
+        chats.append(chatBar);
+    }
     return html;
 }
 
@@ -57,9 +63,6 @@ function generateMessages(messages, user){
     let messagesWrapper = $("<div>").addClass("messages-wrapper mt-0 sm:mt-24");
     let article, figure, senderImg, messageContainer, messageText, time, timeContainer, checkImage;
 
-    console.log(user)
-    console.log(messages[0]['username'])
-    console.log(messages[0])
     for (let msg of messages) {
         article = $("<article>").addClass(`${msg['username'] === user ? "sender" : "receiver"}-container flex items-start mb-4 ${msg['username'] === user ? "" : "justify-end"} min-h-16 h-auto`);
 
@@ -69,14 +72,14 @@ function generateMessages(messages, user){
             figure.append(senderImg);
 
             messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto bg-gray-200 p-4 px-7 rounded-full");
-            messageText = $("<p>").addClass("message-sender text-sm").text(msg['body']);
+            messageText = $("<p>").addClass("message-sender text-xs text-sm").text(msg['body']);
             time = $("<time>").addClass("hour-message w-[100%] pr-2 text-xs text-gray-500 ml-2 flex justify-end").text(msg['date']);
 
             messageContainer.append(messageText).append(time);
             article.append(figure).append(messageContainer);
         } else {
             messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").css("background-color", "#A9D6E5");
-            messageText = $("<p>").addClass("message-receiver text-sm").text(msg['body']);
+            messageText = $("<p>").addClass("message-receiver text-xs sm:text-sm").text(msg['body']);
 
             timeContainer = $("<div>").addClass("flex items-end w-full justify-end");
             time = $("<time>").addClass("hour-message text-xs text-gray-500 ml-2").text(msg['date']);
@@ -98,7 +101,7 @@ function generateMessages(messages, user){
 }
 
 function generateChatBar(){
-    const sendMessageContainer = $("<div>").addClass("sm:p-5 w-full md:px-0 md:pb-4 bottom-0 bg-gray-100 p-0");
+    const sendMessageContainer = $("<div>").addClass("p-6 sm:p-5 w-full md:px-4 md:pb-4 bottom-0 bg-transparent p-0 rounded-full");
     const messageBar = $("<div>").addClass("message-bar");
     const form = $("<form>").attr("method", "post").addClass("flex items-center");
     const input = $("<input>").attr("type", "text").addClass("write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full").attr("placeholder", "Escribe un mensaje...");
