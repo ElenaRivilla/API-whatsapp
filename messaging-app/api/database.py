@@ -49,14 +49,15 @@ class database(object):
     
     def getMessagesUsers(self, loadSize, user1_id, user2_id):
         self.conecta()
-        sql = """
-                SELECT m.* FROM message m
-                JOIN usuarisclase u ON u.id = m.sender_id
-                WHERE m.sender_id = %s AND m.receiver_id = %s
-                ORDER BY m.date DESC
-                LIMIT %s;
-        """
-        self.cursor.execute(sql, (user1_id, user2_id, loadSize))
+        sql = """SELECT m.*, u.image AS imageUrl
+                 FROM message m
+                 JOIN usuarisclase u ON u.id = m.sender_id
+                 WHERE (m.sender_id = %s AND m.receiver_id = %s)
+                    OR (m.sender_id = %s AND m.receiver_id = %s)
+                 ORDER BY m.date ASC
+                 LIMIT %s;
+            """
+        self.cursor.execute(sql, (user1_id, user2_id, user2_id, user1_id, loadSize))
         ResQuery = self.cursor.fetchall()
         self.desconecta()
         return ResQuery

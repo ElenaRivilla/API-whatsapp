@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from database import database
 from models import UserGroup, LastMessageUsers, LoginRequest
 from cryptography.hazmat.backends import default_backend
@@ -70,12 +70,12 @@ def pwdMatches(attempt, stored):
         raise e
 
 # Función para crear un token JWT
-def create_access_token(data: dict, expires_delta: Optional[datetime.timedelta] = None):
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(datetime.timezone.utc) + expires_delta
     else:
-        expire = datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=120)
+        expire = datetime.now(datetime.timezone.utc) + timedelta(minutes=120)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -142,13 +142,13 @@ def getUsersMessages(loadSize: int, user1: str , user2: str):
         messages = db.getMessagesUsers(loadSize, db.getUserId(user1), db.getUserId(user2))
         for message in messages:
             date_time = message['date']
-            format = date_time.strftime('%Y-%m-%d %H:%M:%S') # convertir el objeto datetime a una cadena en formato ISO 8601 antes de devolverlo como parte de la respuesta JSON.
+            format = date_time.strftime('%H:%M') # convertir el objeto datetime a una cadena en formato ISO 8601 antes de devolverlo como parte de la respuesta JSON.
             message['date'] = format
         return messages
     except Exception as e:
         raise e
 
-@app.get("/home")
+@app.post("/home")
 def getHome(users: LastMessageUsers): # userId: int = Depends(verify_token)
     try:
         lastMessage = db.getLastMessagesUsers(users.ID_USER)

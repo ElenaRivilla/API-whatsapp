@@ -61,3 +61,30 @@ export function getUsersHome(userId) {
         });
     });
 }
+
+export function getMessagesUser() {
+    const loadSize = 10; 
+    const user1 = "user1"; 
+    const user2 = "user2"; 
+    const domain = `http://127.0.0.1:8000/getMessages/${loadSize}/${user1}/${user2}`;
+    const url = `${domain}`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors'
+        }).then((response) => {
+            responseValid(response).then(() => {
+                resolve(response.json());
+            }).catch((error) => {
+                reject(error);
+            });
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
