@@ -98,7 +98,7 @@ function generateMessages(messages, user){
 }
 
 function generateChatBar(){
-    const sendMessageContainer = $("<div>").addClass("sm:p-5 w-full md:px-0 md:pb-4  bottom-0 bg-gray-100 p-0");
+    const sendMessageContainer = $("<div>").addClass("sm:p-5 w-full md:px-0 md:pb-4 bottom-0 bg-gray-100 p-0");
     const messageBar = $("<div>").addClass("message-bar");
     const form = $("<form>").attr("method", "post").addClass("flex items-center");
     const input = $("<input>").attr("type", "text").addClass("write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full").attr("placeholder", "Escribe un mensaje...");
