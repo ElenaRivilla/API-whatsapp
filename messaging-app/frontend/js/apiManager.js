@@ -48,8 +48,8 @@ export function getUsersHome() {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            mode: 'cors'
-            // credentials: "include"
+            mode: 'cors',
+            credentials: "include"
         }).then((response) => {
             responseValid(response).then(() => {
                 resolve(response.json());
@@ -73,7 +73,8 @@ export function getMessagesUser(user1, user2, loadSize) {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            mode: 'cors'
+            mode: 'cors',
+            credentials: 'include'
         }).then((response) => {
             responseValid(response).then(() => {
                 resolve(response.json());

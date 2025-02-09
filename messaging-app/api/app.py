@@ -16,7 +16,7 @@ from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer
 
 db = database()
-app = FastAPI()
+app = FastAPI(debug=True)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Permitir todos los orígenes. Puedes poner un dominio específico si lo prefieres, por ejemplo: ["https://example.com"]
@@ -45,27 +45,17 @@ def extractVars(hash):
         return salt, hash_value, n, r, p, hash_value_byte_length
     else:
         raise ValueError("Fallo interno del servidor")
-
-def encrypt(attempt, salt, n, r, p, hash_value_byte_length):
-    try:
-        # Convertir la contraseña a bytes
-        pwd_bytes = attempt.encode('utf-8')
-        # Convertir la sal a bytes
-        salt_bytes = salt.encode('utf-8')
-        # Aplicar scrypt con los parámetros extraídos
-        encrypted_bytes = hashlib.scrypt(pwd_bytes, salt=salt_bytes, n=n, r=r, p=p, dklen=hash_value_byte_length)
-        return encrypted_bytes.hex()
-    except Exception as e:
-        raise e
     
-def pwdMatches(attempt, stored):
+def pwdMatches(attempt:str, stored:str):
     try:
         # Extraer la sal, hash y parámetros del hash almacenado
-        salt, stored_hash_value, n, r, p, hash_value_byte_length = extractVars(stored)
+        salt, stored_hash_value, n, r, p, length = extractVars(stored)
+        attempt_bytes = attempt.encode('utf-8')
+        salt_bytes = salt.encode('utf-8')
         # Generar el hash con la contraseña propuesta y comparar
-        attempt = encrypt(attempt, salt, n, r, p, hash_value_byte_length)
-        print(attempt, stored_hash_value)
-        return attempt == stored_hash_value
+        deriver = Scrypt(salt=salt_bytes, n=n, r=r, p=p, length=length)
+        derived_attempt = deriver.derive(attempt_bytes).hex()
+        return derived_attempt == stored_hash_value
     except Exception as e:
         raise e
 
@@ -84,7 +74,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 def verify_token(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        userId: int = payload.get("sub")
+        userId = int(payload.get("sub"))
         if userId is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -92,7 +82,7 @@ def verify_token(token: str = Depends(oauth2_scheme)):
                 headers={"WWW-Authenticate": "Bearer"},
             )
         return userId
-    except JWTError:
+    except JWTError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token no válido",
@@ -108,26 +98,9 @@ def login(request: LoginRequest):
         if pwd:
             if pwdMatches(request.PASSWORD, pwd['password']):
                 user = db.getUser(request.USERNAME)
-                tkn = create_access_token({'sub': user['id']})
-                return {'username': user['username'], 'bio': user['bio'], 'token': tkn}
+                tkn = create_access_token({'sub': str(user['id'])})
+                return {'username': user['username'], 'bio': user['bio'], 'image': user['image'], 'token': tkn}
         raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
-    except Exception as e:
-        raise e
-    
-# @app.post('/login')
-# def login(request: LoginRequest):
-#     pwd = db.getUserPasswd(request.USERNAME)
-#     if pwd:
-#         if pwd['password'] == request.PASSWORD:
-#             return {'token': 'XD'}
-#     raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
-
-@app.get('/pillarToken')
-def login(request: LoginRequest):
-    try:
-        user = db.getUser(request.USERNAME)
-        tkn = create_access_token({'sub': user['id']})
-        return {'username': user['username'], 'bio': user['bio'], 'token': tkn}
     except Exception as e:
         raise e
     
@@ -158,11 +131,9 @@ def getUsersMessages(loadSize: int, user1: str , user2: str):
         raise e
 
 @app.get("/home")
-#def getHome(request: Request):
-def getHome():
+def getHome(request: Request):
     try:
-        # userId = verify_token(request.cookies.get("token"))
-        userId = 1
+        userId = verify_token(request.cookies.get("token"))
         lastMessage = db.getLastMessagesUsers(userId)
         for hora in lastMessage:
             hora['time'] = date.strftime(hora['time'], "%H:%M")
