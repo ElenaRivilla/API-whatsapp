@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from datetime import datetime, date, timedelta, timezone
 from database import database
 from models import UserGroup, LastMessageUsers, LoginRequest
@@ -121,6 +121,15 @@ def login(request: LoginRequest):
 #         if pwd['password'] == request.PASSWORD:
 #             return {'token': 'XD'}
 #     raise HTTPException(status_code=404, detail=str("Usuario o contraseña incorrectos"))
+
+@app.get('/pillarToken')
+def login(request: LoginRequest):
+    try:
+        user = db.getUser(request.USERNAME)
+        tkn = create_access_token({'sub': user['id']})
+        return {'username': user['username'], 'bio': user['bio'], 'token': tkn}
+    except Exception as e:
+        raise e
     
 #End-point to get group messages
 @app.get('/getMessages/{loadSize}/{idGroup}')
@@ -148,10 +157,13 @@ def getUsersMessages(loadSize: int, user1: str , user2: str):
     except Exception as e:
         raise e
 
-@app.post("/home")
-def getHome(users: LastMessageUsers): # userId: int = Depends(verify_token)
+@app.get("/home")
+#def getHome(request: Request):
+def getHome():
     try:
-        lastMessage = db.getLastMessagesUsers(users.ID_USER)
+        # userId = verify_token(request.cookies.get("token"))
+        userId = 1
+        lastMessage = db.getLastMessagesUsers(userId)
         for hora in lastMessage:
             hora['time'] = date.strftime(hora['time'], "%H:%M")
         data = {

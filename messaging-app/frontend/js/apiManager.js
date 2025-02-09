@@ -37,19 +37,19 @@ export function userExists(username, password) {
     });
 }
 
-export function getUsersHome(userId) {
+export function getUsersHome() {
     const domain = "http://127.0.0.1:8000/home";
     const url = `${domain}`;
 
     return new Promise((resolve, reject) => {
         fetch(url, {
-            method: "POST",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            mode: 'cors',
-            body: JSON.stringify({ ID_USER: userId })
+            mode: 'cors'
+            // credentials: "include"
         }).then((response) => {
             responseValid(response).then(() => {
                 resolve(response.json());
