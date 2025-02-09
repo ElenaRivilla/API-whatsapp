@@ -38,7 +38,7 @@ export function generateChat(messages, user){
 }
 
 function generateMessages(messages, user){
-    const html = $("<div>").addClass("h-[90%] lex-1");
+    const html = $("<div>").addClass("h-[90%] w-full lex-1");
     let infoFriend = $("<div>").addClass("info-friend h-24 flex-col items-center w-full sticky top-0 bg-gray-100 z-10");
     let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full");
     let backButton = $('<button>').addClass('p-2 bg-[#468FAF] rounded-full h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden');
@@ -57,10 +57,13 @@ function generateMessages(messages, user){
     let messagesWrapper = $("<div>").addClass("messages-wrapper mt-0 sm:mt-24");
     let article, figure, senderImg, messageContainer, messageText, time, timeContainer, checkImage;
 
+    console.log(user)
+    console.log(messages[0]['username'])
+    console.log(messages[0])
     for (let msg of messages) {
-        article = $("<article>").addClass(`${msg['sender_id'] === 1 ? "sender" : "receiver"}-container flex items-start mb-4 ${msg['sender_id'] === 1 ? "" : "justify-end"} min-h-16 h-auto`);
+        article = $("<article>").addClass(`${msg['username'] === user ? "sender" : "receiver"}-container flex items-start mb-4 ${msg['username'] === user ? "" : "justify-end"} min-h-16 h-auto`);
 
-        if (msg['sender_id'] === 1) {
+        if (msg['username'] === user) {
             figure = $("<figure>").addClass("image-sender hidden sm:hidden md:block lg:block mr-4 w-16 h-16");
             senderImg = $("<img>").attr("src", msg['imageUrl']).attr("alt", "Sender Image").addClass("min-w-16 min-h-16 hidden sm:hidden md:block lg:block rounded-full");
             figure.append(senderImg);
@@ -95,7 +98,7 @@ function generateMessages(messages, user){
 }
 
 function generateChatBar(){
-    const sendMessageContainer = $("<div>").addClass("sm:p-5 md:px-0 md:pb-4 sticky bottom-0 bg-gray-100 p-0");
+    const sendMessageContainer = $("<div>").addClass("sm:p-5 w-full md:px-0 md:pb-4  bottom-0 bg-gray-100 p-0");
     const messageBar = $("<div>").addClass("message-bar");
     const form = $("<form>").attr("method", "post").addClass("flex items-center");
     const input = $("<input>").attr("type", "text").addClass("write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full").attr("placeholder", "Escribe un mensaje...");
