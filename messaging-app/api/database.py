@@ -49,7 +49,7 @@ class database(object):
     
     def getMessagesUsers(self, loadSize, user1_id, user2_id):
         self.conecta()
-        sql = """SELECT m.*, u.image AS imageUrl
+        sql = """SELECT m.*, u.username, u.image AS imageUrl
                  FROM message m
                  JOIN usuarisclase u ON u.id = m.sender_id
                  WHERE (m.sender_id = %s AND m.receiver_id = %s)

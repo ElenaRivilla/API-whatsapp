@@ -57,10 +57,13 @@ function generateMessages(messages, user){
     let messagesWrapper = $("<div>").addClass("messages-wrapper mt-0 sm:mt-24");
     let article, figure, senderImg, messageContainer, messageText, time, timeContainer, checkImage;
 
+    console.log(user)
+    console.log(messages[0]['username'])
+    console.log(messages[0])
     for (let msg of messages) {
-        article = $("<article>").addClass(`${msg['sender_id'] === 1 ? "sender" : "receiver"}-container flex items-start mb-4 ${msg['sender_id'] === 1 ? "" : "justify-end"} min-h-16 h-auto`);
+        article = $("<article>").addClass(`${msg['username'] === user ? "sender" : "receiver"}-container flex items-start mb-4 ${msg['username'] === user ? "" : "justify-end"} min-h-16 h-auto`);
 
-        if (msg['sender_id'] === 1) {
+        if (msg['username'] === user) {
             figure = $("<figure>").addClass("image-sender hidden sm:hidden md:block lg:block mr-4 w-16 h-16");
             senderImg = $("<img>").attr("src", msg['imageUrl']).attr("alt", "Sender Image").addClass("min-w-16 min-h-16 hidden sm:hidden md:block lg:block rounded-full");
             figure.append(senderImg);
