@@ -38,7 +38,7 @@ export function generateChat(messages, user){
 }
 
 function generateMessages(messages, user){
-    const html = $("<div>").addClass("h-[90%] lex-1");
+    const html = $("<div>").addClass("h-[90%] w-full lex-1");
     let infoFriend = $("<div>").addClass("info-friend h-24 flex-col items-center w-full sticky top-0 bg-gray-100 z-10");
     let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full");
     let backButton = $('<button>').addClass('p-2 bg-[#468FAF] rounded-full h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden');
@@ -95,7 +95,7 @@ function generateMessages(messages, user){
 }
 
 function generateChatBar(){
-    const sendMessageContainer = $("<div>").addClass("sm:p-5 md:px-0 md:pb-4 sticky bottom-0 bg-gray-100 p-0");
+    const sendMessageContainer = $("<div>").addClass("sm:p-5 w-full md:px-0 md:pb-4  bottom-0 bg-gray-100 p-0");
     const messageBar = $("<div>").addClass("message-bar");
     const form = $("<form>").attr("method", "post").addClass("flex items-center");
     const input = $("<input>").attr("type", "text").addClass("write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full").attr("placeholder", "Escribe un mensaje...");
