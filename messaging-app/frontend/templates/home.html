@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script type="module" src="../js/app.js"></script>
     <script type="module" src="../tests/tests.js"></script>
     <link rel="stylesheet" href="../css/styles.css">
@@ -17,7 +18,7 @@
     <main class="h-dvh flex flex-col p-5">
         <header class="flex flex-col md:flex-row lg:h-1/8 xl:h-1/8 sm:flex mb-5 lg:mb-5 md:h-[20%]">
             <div class="w-full md:w-[60%] hidden sm:hidden md:block">
-                <div class="">
+                <div class="flex flex-col justify-end h-full">
                     <div class="icons flex w-full md:mb-6 xl:mb-6 2xl:mb-6 md:w-1/2 hidden sm:hidden md:block lg:block xl:block">
                         <button class="mx-[1%] w-8 md:w-8 lg:w-10">
                             <a href="./settings.html"><img src="../assets/svg/settings.svg" alt="button-settings"></a>
@@ -29,18 +30,18 @@
                             <a href="./chatsList.html"><img src="../assets/svg/chat.svg" alt="button-chat"></a>
                         </button>
                     </div>
-                </div>
-                <div class="sm:flex w-full sm:w-1/6 md: 1/6">
-                    <div class="filters flex w-full sm:w-full md:w-1/2 mt-20 space-between sm:mt-20 md:mt-0 items-center">
-                        <img src="../assets/svg/filter.svg" class="mx-1.5 w-8 md:h-8 lg:w-12">
-                        <button 
-                            class="button bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl">todo</button>
-                        <button
-                            class="button bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl">leído</button>
-                        <button
-                            class="button bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl">chats</button>
-                        <button
-                            class="button bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl">grupos</button>
+                    <div class="sm:flex w-full sm:w-1/6 md:w-1/6 mt-auto">
+                        <div class="filters flex w-full sm:w-full md:w-1/2 mt-20 space-between sm:mt-20 md:mt-0 items-center">
+                            <img src="../assets/svg/filter.svg" class="mx-1.5 w-8 md:h-8 lg:w-12">
+                            <button 
+                                class="button h-10 bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center">todo</button>
+                            <button
+                                class="button h-10 bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center">leído</button>
+                            <button
+                                class="button h-10 bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center">chats</button>
+                            <button
+                                class="button h-10 bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center">grupos</button>
+                        </div>
                     </div>
                 </div>
             </div>
