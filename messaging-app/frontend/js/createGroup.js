@@ -8,10 +8,12 @@ function cargaDOM() {
 function generateContacts() {
 
     const chatContainer = $(".scrollbar-custom");
+    const buttonContainer = $(".nextButtonGroup-custom");
+    
 
     const backBar = $("<div>").addClass("back-bar h-14 flex items-center");
     const backButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
-    const backLink = $("<a>", { href: "./chatsList.html" });
+    const backLink = $("<a>", { href: "./contacts.html" });
     const backImg = $("<img>").addClass("h-5").attr("src", "../assets/svg/arrow.svg");
     backLink.append(backImg);
     backButton.append(backLink);
@@ -26,24 +28,11 @@ function generateContacts() {
     searchWrapper.append(searchInput, searchIcon);
     searchBar.append(searchWrapper);
 
-    const groupContainer = $("<div>").addClass("container-group flex items-center h-12 my-4 mx-3 sm:w-1/8 sm:h-5 md:my-0 md:my-3 md:mx-3 lg:mb-3 max-h-12 lg:h-20 sm:my-6 md:flex md:items-center");
-    const groupName = $('<h2>').addClass('text-base sm:text-2xl md:text-lg lg:text-lg font-bold block lg:block').text('Nuevo grupo');
-    const groupLink = $('<a>', { href: './createGroup.html' });
-    
-    // Icono SVG para crear grupo.
-    $.get('../assets/svg/add.svg', function(data) {
-        const svg = $(data).find('svg');
-        svg.removeAttr('width height');
-        svg.addClass('h-10 mr-3'); 
-        svg.find('circle').removeAttr('stroke');
-        groupLink.append(svg); 
-        groupContainer.append(groupLink).append(groupName);
-    }, 'xml');
     
     const contactsName = $('<h2>').addClass("text-xl font-bold ml-2 sm:ml-8 md:ml-4").text('Contactos');
     const separator = $("<hr>").addClass("separator border-t-2 border-[#468FAF] m-2 sm:mx-8 md:mx-4 lg:mt-4 lg:mx-4")
 
-    chatContainer.append(backBar, searchBar, groupContainer, contactsName, separator);
+    chatContainer.append(backBar, searchBar, contactsName, separator);
 
     function renderContacts(allContacts) {
         chatContainer.find(".container-user, .contact-separator").remove(); // Eliminamos los contactos y los separadores.
@@ -74,6 +63,16 @@ function generateContacts() {
         const searchUser = $(this).val().toLowerCase(); // Recoge el string escrito en el input del buscador y lo convierte en minusculas.
         const filteredContacts = contacts.filter(contact => contact.username.toLowerCase().includes(searchUser)); // Filtra la lista original de contactos con el texto puesto en 'searchUser'.
         renderContacts(filteredContacts); // Actualizamos la lista de contactos con los contactos que coinciden con el texto introducido
-    })
+    });
+
+    const groupContainer = $("<div>").addClass("container-group flex items-center justify-center h-12 sm:w-1/8 sm:h-5 md:my-0 md:my-3 md:mx-3 lg:mb-3 max-h-12 lg:h-20 sm:my-6 md:flex md:items-center md:justify-center");
+    const nextButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
+    const nextImg = $("<img>").addClass("h-5 transform rotate-180").attr("src", "../assets/svg/arrow.svg");
+    const groupLink = $('<a>', { href: './createGroup.html' });
+    groupLink.append(nextImg);
+    nextButton.append(groupLink)
+    groupContainer.append(nextButton);
+
+    buttonContainer.append(groupContainer);
 }
 
