@@ -69,10 +69,10 @@ function home(){
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".messages-container");
 
-    function addEvents(node, event){
+    function addEvents(node, event) {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
         // elemento es el nodo
-        for (let childNode of node[0].children){
+        for (let childNode of node[0].children) {
             childNode.addEventListener("click", () => event(childNode));
         }
         if (window.innerWidth < 768) {
@@ -84,16 +84,16 @@ function home(){
         }
     }
 
-    function getUsernameFromNode(node){
+    function getUsernameFromNode(node) {
         return node.children[1].children[0].innerText;
     }
 
-    function openChat(node){
+    function openChat(node) {
         loadMessages(user.username, getUsernameFromNode(node), 10);
         return;
     }
 
-    async function loadFriends(){
+    async function loadFriends() {
         try {
             const response = await getUsersHome();
             const chats = generateChats(response.contacts);
@@ -109,8 +109,8 @@ function home(){
         section.html(html);
         return;
     }
-    
-    async function loadMessages(user1, user2, loadSize){
+
+    async function loadMessages(user1, user2, loadSize) {
         try {
             const response = await getMessagesUser(user1, user2, loadSize);
             const chat = generateChat(response, user2);
