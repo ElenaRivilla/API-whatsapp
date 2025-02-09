@@ -25,7 +25,7 @@ class database(object):
     
     def getUser(self, username):
         self.conecta()
-        sql="SELECT id, username, bio from usuarisclase where username = %s;"
+        sql="SELECT id, username, bio, image from usuarisclase where username = %s;"
         self.cursor.execute(sql, (username))
         ResQuery=self.cursor.fetchone()
         self.desconecta()
