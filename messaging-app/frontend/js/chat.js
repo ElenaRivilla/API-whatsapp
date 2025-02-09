@@ -32,7 +32,7 @@ export function generateChats(chats){
 
 export function generateChat(messages, user){
     const html = $("<div>").addClass("flex flex-col h-full");
-    html.append(generateMessages(messages));
+    html.append(generateMessages(messages, user));
     html.append(generateChatBar());
     return html;
 }
@@ -45,7 +45,7 @@ function generateMessages(messages, user){
     let backLink = $('<a>').attr('href', './chatsList.html').addClass('flex items-center justify-center w-full h-full');
     let backImg = $('<img>').addClass('h-5').attr('src', '../assets/svg/arrow.svg');
     let profileImage = $("<img>").attr("src", "https://picsum.photos/300/300?random=1").attr("alt", "Profile Image").addClass("w-16 sm:mr-4 rounded-full");
-    let friendName = $("<h3>").addClass("text-xl sm:text-2xl font-bold ml-3").text("Alice Johnson");
+    let friendName = $("<h3>").addClass("text-xl sm:text-2xl font-bold ml-3").text(user);
     let hr = $("<hr>").addClass("border-t-2 border-[#468FAF] mx-8 block");
 
     backLink.append(backImg);

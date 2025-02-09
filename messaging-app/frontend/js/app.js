@@ -122,18 +122,19 @@ function home(){
         }
     }
 
+    // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
+    // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
+    loadFriends();
+
     window.addEventListener('resize', () => {
         if (window.innerWidth > 768) {
-            console.log("evento disparado")
             $(".contacts").removeClass("hidden").addClass("block");
             $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
             loadFriends();
             loadMessages(user.username, getUsernameFromNode(node), 10);
         }
     });
-    // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
-    // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
-    loadFriends();
+    
     return;
 }
 
