@@ -64,6 +64,12 @@ function login() {
 
 function home(){    
     // const user = new User(getCookie('user'));
+    const user = new User({
+        'username': 'user1',
+        'bio': '¡Estoy usando la aplicación de Tricoded!',
+        'img':  'https://picsum.photos/300/300?random=13'
+    });
+
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".messages-container");
 
@@ -75,8 +81,12 @@ function home(){
         }
     }
 
+    function getUsernameFromNode(node){
+        return node.children[1].children[0].innerText;
+    }
+
     function openChat(node){
-        loadMessages();
+        loadMessages(user.username, getUsernameFromNode(node), 10);
         return;
     }
 
@@ -125,9 +135,9 @@ function home(){
         return;
     }
     
-    async function loadMessages(){
+    async function loadMessages(user1, user2, loadSize){
         try {
-            const response = await getMessagesUser();
+            const response = await getMessagesUser(user1, user2, loadSize);
             console.log(response);
             const chat = generateChat(response);
             console.log(chat);

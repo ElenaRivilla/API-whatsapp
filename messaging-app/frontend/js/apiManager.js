@@ -62,10 +62,7 @@ export function getUsersHome() {
     });
 }
 
-export function getMessagesUser() {
-    const loadSize = 10; 
-    const user1 = "user1"; 
-    const user2 = "user2"; 
+export function getMessagesUser(user1, user2, loadSize) {
     const domain = `http://127.0.0.1:8000/getMessages/${loadSize}/${user1}/${user2}`;
     const url = `${domain}`;
 
