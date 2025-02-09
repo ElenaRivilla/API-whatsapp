@@ -1,13 +1,19 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome } from "./apiManager.js";
-import { User } from "./user.js"
+import { User } from "./user.js" 
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
 const loginUrl = liveServerPrefix + "/messaging-app/frontend/templates/login.html";
 const friendListUrl = liveServerPrefix + "/messaging-app/frontend/templates/chatsList.html";
 const messagesUrl = liveServerPrefix + "/messaging-app/frontend/templates/chatsList.html";
+
+function getCookie(name) {
+    const parts = document.cookie.split(`${name}=`);  // Buscamos el nombre de la cookie en el texto de las cookies.
+    if (parts.length === 2) return decodeURIComponent(parts[1].split(';')[0]);  // Si la cookie existe, la extraemos.
+    return null;  // Si no existe, devolvemos null.
+}
 
 // Function to handle the login process, including validation and authentication.
 function login() {
@@ -33,8 +39,9 @@ function login() {
             const user = await userExists(username.value, pwd.value);
 
             // If both promises are successful, store the user in localStorage
-            localStorage.setItem('user', new User(user).toString());
-
+            // document.cookie = "token=" + encodeURIComponent(user['token']) + "; path=/messaging-app/frontend/; Secure; SameSite=Strict";
+            document.cookie = "token=" + encodeURIComponent(user['token']) + "; path=/; Secure; SameSite=Strict";
+            document.cookie = "user=" + encodeURIComponent(username) + "; path=/; Secure; SameSite=Strict";
             redirect();  // Redirect to the new page if login is successful.
             return;
         } catch (error) {
@@ -55,6 +62,17 @@ function login() {
         validateLogin();
     });
 }
+
+/* async function friendsSite() {
+    try {
+        const user = new User(getCookie('user'));
+        const users = await getUsersHome(getCookie('token'));
+        console.log(users);  // Log the users to the console or handle them as needed
+        generateChats(users);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+    }
+} */
 
 export async function friendsSite() {
     const userId = 1; // metemos el id manualmente hasta arreglar lo de las cookies para almacenar la información del usuario que ha iniciado sesión y recibirlo por ahí
