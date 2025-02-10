@@ -3,6 +3,7 @@ import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser } from "./apiManager.js";
 import { User } from "./user.js" 
 import { generateChats, generateChat } from "./chat.js";
+import { generateHeaderMobile } from "./static.js";
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -65,10 +66,15 @@ function login() {
 
 function home(){    
     const user = new User(JSON.parse(getCookie('user')));
-
+    const empty = document.createElement("div");
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".chats");
-
+    const searchBar = $(".search-bar");
+    
+    if(window.innerWidth < 768){
+        updateDOM(generateHeaderMobile().html(), searchBar);
+    }
+    
     function addEvents(node, event) {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
         // elemento es el nodo
@@ -78,9 +84,12 @@ function home(){
         }
         if (window.innerWidth < 768) {
             const container = $(".container-user");
+            
             container.on("click", () => {
                 $(".contacts").removeClass("block").addClass("hidden");
                 $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
+                updateDOM("", searchBar);
+                $("header").empty();
             });
         }
     }
@@ -118,12 +127,17 @@ function home(){
         try {
             const response = await getMessagesUser(user1, user2, loadSize);
             const chat = generateChat(response, user2);
-            console.log(rightContainer)
-            console.log(chat.html())
-            console.log("-----------------------")
-            console.log(document.querySelector("body").innerHTML)
             updateDOM(chat.html(), rightContainer);
+            
             // add event listeners?
+            const backContainer = $(".back-button");
+            backContainer.on("click", () => {
+                //location.reload() //solución guarra de momento
+                $(".contacts").removeClass("hidden").addClass("block");
+                $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
+                $("header").empty();
+                updateDOM(generateHeaderMobile().html(), searchBar);
+            });
         }
         catch (error) {
             console.error("Error:", error);
@@ -132,16 +146,19 @@ function home(){
 
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
+    
     loadFriends();
 
     window.addEventListener('resize', () => {
         if (window.innerWidth > 768) {
+            updateDOM(empty, searchBar);
             $(".contacts").removeClass("hidden").addClass("block");
             $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
             loadFriends();
+        } else {
+            updateDOM(generateHeaderMobile().html(), searchBar);
         }
     });
-
     return;
 }
 
