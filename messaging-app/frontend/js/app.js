@@ -67,7 +67,7 @@ function home(){
     const user = new User(JSON.parse(getCookie('user')));
 
     const leftContainer = $(".scrollbar-custom");
-    const rightContainer = $(".messages-container");
+    const rightContainer = $(".chats");
 
     function addEvents(node, event) {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
@@ -118,6 +118,10 @@ function home(){
         try {
             const response = await getMessagesUser(user1, user2, loadSize);
             const chat = generateChat(response, user2);
+            console.log(rightContainer)
+            console.log(chat.html())
+            console.log("-----------------------")
+            console.log(document.querySelector("body").innerHTML)
             updateDOM(chat.html(), rightContainer);
             // add event listeners?
         }
@@ -135,10 +139,9 @@ function home(){
             $(".contacts").removeClass("hidden").addClass("block");
             $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
             loadFriends();
-            loadMessages(user.username, getUsernameFromNode(node), 10);
         }
     });
-    
+
     return;
 }
 

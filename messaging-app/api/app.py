@@ -123,12 +123,14 @@ def getUsersMessages(loadSize: int, user1: str , user2: str, request: Request):
     try:
         userId = verify_token(request.cookies.get("token"))
         if userId == db.getUserId(user1):
-            messages = db.getMessagesUsers(loadSize, db.getUserId(user1), db.getUserId(user2))
-            for message in messages:
+            response = {}
+            response.update({"messages": db.getMessagesUsers(loadSize, db.getUserId(user1), db.getUserId(user2))})
+            for message in response['messages']:
                 date_time = message['date']
                 format = date_time.strftime('%H:%M') # convertir el objeto datetime a una cadena en formato ISO 8601 antes de devolverlo como parte de la respuesta JSON.
                 message['date'] = format
-            return messages
+            response.update(db.getImage(user2))
+            return response
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acceso denegado")
     except Exception as e:
         raise e

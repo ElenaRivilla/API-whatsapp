@@ -26,31 +26,21 @@ export function generateChats(chats){
     return html;
 }
 
-export function generateChat(messages, user){
-    // const html = $("<div>").addClass("flex flex-col h-full");
-    // html.append(generateMessages(messages, user));
-    // html.append(generateChatBar());
-    // return html;
-    const html = $("<div>").addClass("flex flex-col h-full");
-    const chats = $(".chats");
-    const messagesContainer = generateMessages(messages, user);
-    const chatBar = generateChatBar();
-    
-    html.append(messagesContainer);
-    if (!chats.find(".message-bar").length) {
-        chats.append(chatBar);
-    }
+export function generateChat(response, user){
+    const html = $("<div>") // .addClass("flex flex-col h-full");
+    html.append(generateMessages(response, user));
+    html.append(generateChatBar());
     return html;
 }
 
-function generateMessages(messages, user){
-    const html = $("<div>").addClass("h-[90%] w-full lex-1");
-    let infoFriend = $("<div>").addClass("info-friend h-24 flex-col items-center w-full sticky top-0 bg-gray-100 z-10");
+function generateMessages(response, user){
+    const html = $("<div>").addClass("messages-container overflow-y-auto custom-scrollbar w-full  h-[85%] px-6 justify-center");
+    let infoFriend = $("<div>").addClass("info-friend h-[10%] flex-col items-center w-full sticky top-0 bg-gray-100 z-10");
     let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full");
-    let backButton = $('<button>').addClass('p-2 bg-[#468FAF] rounded-full h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden');
+    let backButton = $('<button>').addClass('p-2 bg-[#468FAF] rounded-full h-7 w-7 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden');
     let backLink = $('<a>').attr('href', './chatsList.html').addClass('flex items-center justify-center w-full h-full');
-    let backImg = $('<img>').addClass('h-5').attr('src', '../assets/svg/arrow.svg');
-    let profileImage = $("<img>").attr("src", "https://picsum.photos/300/300?random=1").attr("alt", "Profile Image").addClass("w-16 sm:mr-4 rounded-full");
+    let backImg = $('<img>').addClass('w-3').attr('src', '../assets/svg/arrow.svg');
+    let profileImage = $("<img>").attr("src", response['imageUrl']).attr("alt", "Profile Image").addClass("w-11 sm:w-16 md:w-[4'5rem] sm:mr-4 rounded-full");
     let friendName = $("<h3>").addClass("text-xl sm:text-2xl font-bold ml-3").text(user);
     let hr = $("<hr>").addClass("border-t-2 border-[#468FAF] mx-8 block");
 
@@ -60,17 +50,13 @@ function generateMessages(messages, user){
     infoFriend.append(infoFriendInner).append(hr);
     html.append(infoFriend);
 
-    let messagesWrapper = $("<div>").addClass("messages-wrapper mt-0 sm:mt-24");
+    let messagesWrapper = $("<div>").addClass("messages-wrapper mt-14 sm:mt-16");
     let article, figure, senderImg, messageContainer, messageText, time, timeContainer, checkImage;
 
-    for (let msg of messages) {
+    for (let msg of response['messages']) {
         article = $("<article>").addClass(`${msg['username'] === user ? "sender" : "receiver"}-container flex items-start mb-4 ${msg['username'] === user ? "" : "justify-end"} min-h-16 h-auto`);
 
         if (msg['username'] === user) {
-            figure = $("<figure>").addClass("image-sender hidden sm:hidden md:block lg:block mr-4 w-16 h-16");
-            senderImg = $("<img>").attr("src", msg['imageUrl']).attr("alt", "Sender Image").addClass("min-w-16 min-h-16 hidden sm:hidden md:block lg:block rounded-full");
-            figure.append(senderImg);
-
             messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto bg-gray-200 p-4 px-7 rounded-full");
             messageText = $("<p>").addClass("message-sender text-xs sm:text-sm").text(msg['body']);
             time = $("<time>").addClass("hour-message w-[100%] pr-2 text-xs text-gray-500 ml-2 flex justify-end").text(msg['date']);
@@ -101,7 +87,7 @@ function generateMessages(messages, user){
 }
 
 function generateChatBar(){
-    const sendMessageContainer = $("<div>").addClass("p-6 sm:p-5 w-full md:px-4 md:pb-4 bottom-0 bg-transparent p-0 rounded-full");
+    const sendMessageContainer = $("<div>").addClass("p-6 absolute bottom-0 sm:p-0 w-full md:px-4 md:pb-4 bg-transparent p-0 rounded-full");
     const messageBar = $("<div>").addClass("message-bar");
     const form = $("<form>").attr("method", "post").addClass("flex items-center");
     const input = $("<input>").attr("type", "text").addClass("write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full").attr("placeholder", "Escribe un mensaje...");

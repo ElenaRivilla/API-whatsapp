@@ -49,7 +49,7 @@ class database(object):
     
     def getMessagesUsers(self, loadSize, user1_id, user2_id):
         self.conecta()
-        sql = """SELECT m.*, u.username, u.image AS imageUrl
+        sql = """SELECT m.*, u.username
                  FROM message m
                  JOIN usuarisclase u ON u.id = m.sender_id
                  WHERE (m.sender_id = %s AND m.receiver_id = %s)
@@ -59,6 +59,14 @@ class database(object):
             """
         self.cursor.execute(sql, (user1_id, user2_id, user2_id, user1_id, loadSize))
         ResQuery = self.cursor.fetchall()
+        self.desconecta()
+        return ResQuery
+    
+    def getImage(self, username):
+        self.conecta()
+        sql="select image as imageUrl from usuarisclase where username = %s;"
+        self.cursor.execute(sql,(username))
+        ResQuery = self.cursor.fetchone()
         self.desconecta()
         return ResQuery
     
