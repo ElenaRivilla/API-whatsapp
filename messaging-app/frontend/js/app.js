@@ -86,20 +86,23 @@ function home(){
     }
 
     function getUsernameFromNode(node) {
+        // Recibe el nombre del usuario (ej: el usuario al que vas a hablar en el chat)
         return node.children[1].children[0].innerText;
     }
 
     function openChat(node) {
+        // Carga los 10 mensajes entre el usuario anfitrion y el usuario amigo (reciever_id).
         loadMessages(user.username, getUsernameFromNode(node), 10);
         return;
     }
 
     async function loadFriends() {
-        try {
+        // Carga todos la lista de amigos del usuario
+        try { 
             const response = await getUsersHome();
-            const chats = generateChats(response.contacts);
-            updateDOM(chats.html(), leftContainer);
-            addEvents(leftContainer, openChat);
+            const chats = generateChats(response.contacts); // Genera los chats.
+            updateDOM(chats.html(), leftContainer);  // Actualiza el DOM con los chats generados.
+            addEvents(leftContainer, openChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
         } catch (error) {
             console.error("Error fetching users:", error);
         }
