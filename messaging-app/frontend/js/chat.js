@@ -1,7 +1,3 @@
-class Chat{
-
-}
-
 export function generateChats(chats){
     const html = $("<div>");
     let chatDiv, containerImage, profileImage, containerInfo, username, message, dateContainer, date, hr;
@@ -31,6 +27,10 @@ export function generateChats(chats){
 }
 
 export function generateChat(messages, user){
+    // const html = $("<div>").addClass("flex flex-col h-full");
+    // html.append(generateMessages(messages, user));
+    // html.append(generateChatBar());
+    // return html;
     const html = $("<div>").addClass("flex flex-col h-full");
     const chats = $(".chats");
     const messagesContainer = generateMessages(messages, user);

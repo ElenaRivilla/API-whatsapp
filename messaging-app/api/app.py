@@ -119,14 +119,17 @@ def getGroupMessages(loadSize: int, idGroup: int): # podriamos hacer una query p
     
 #End-point to get chat messages between two users
 @app.get('/getMessages/{loadSize}/{user1}/{user2}')
-def getUsersMessages(loadSize: int, user1: str , user2: str):
+def getUsersMessages(loadSize: int, user1: str , user2: str, request: Request):
     try:
-        messages = db.getMessagesUsers(loadSize, db.getUserId(user1), db.getUserId(user2))
-        for message in messages:
-            date_time = message['date']
-            format = date_time.strftime('%H:%M') # convertir el objeto datetime a una cadena en formato ISO 8601 antes de devolverlo como parte de la respuesta JSON.
-            message['date'] = format
-        return messages
+        userId = verify_token(request.cookies.get("token"))
+        if userId == db.getUserId(user1):
+            messages = db.getMessagesUsers(loadSize, db.getUserId(user1), db.getUserId(user2))
+            for message in messages:
+                date_time = message['date']
+                format = date_time.strftime('%H:%M') # convertir el objeto datetime a una cadena en formato ISO 8601 antes de devolverlo como parte de la respuesta JSON.
+                message['date'] = format
+            return messages
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acceso denegado")
     except Exception as e:
         raise e
 
@@ -153,10 +156,13 @@ def getHome(request: Request):
 
 # End-point to get user friends
 @app.get('/getFriends/{username}')
-def getFriends(username: str):
+def getFriends(username: str, request: Request):
     try:
-        friendsList = db.getFriends(db.getUserId(username))
+        userId = verify_token(request.cookies.get("token"))
+        if userId == db.getUserId(username):
+            friendsList = db.getFriends(db.getUserId(username))
         return friendsList
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acceso denegado")
     except Exception as e:
         raise e
 
