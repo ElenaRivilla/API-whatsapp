@@ -3,6 +3,7 @@ import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser } from "./apiManager.js";
 import { User } from "./user.js" 
 import { generateChats, generateChat } from "./chat.js";
+import {generateSettings} from "./settings.js";
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -68,6 +69,7 @@ function home(){
 
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".chats");
+    const settingsButton = $('.settings-bar')[0];
 
     function addEvents(node, event) {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
@@ -129,6 +131,15 @@ function home(){
             console.error("Error:", error);
         }
     }
+
+    // La parte de Settings:
+    settingsButton.addEventListener("click", () => {
+        updateDOM("./settings.html", leftContainer);
+        generateSettings(user);
+    });
+
+    // La parte de Contacts:
+    
 
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
