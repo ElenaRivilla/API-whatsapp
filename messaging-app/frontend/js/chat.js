@@ -72,7 +72,7 @@ function generateMessages(messages, user){
             figure.append(senderImg);
 
             messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto bg-gray-200 p-4 px-7 rounded-full");
-            messageText = $("<p>").addClass("message-sender text-xs text-sm").text(msg['body']);
+            messageText = $("<p>").addClass("message-sender text-xs sm:text-sm").text(msg['body']);
             time = $("<time>").addClass("hour-message w-[100%] pr-2 text-xs text-gray-500 ml-2 flex justify-end").text(msg['date']);
 
             messageContainer.append(messageText).append(time);
@@ -82,7 +82,7 @@ function generateMessages(messages, user){
             messageText = $("<p>").addClass("message-receiver text-xs sm:text-sm").text(msg['body']);
 
             timeContainer = $("<div>").addClass("flex items-end w-full justify-end");
-            time = $("<time>").addClass("hour-message text-xs text-gray-500 ml-2").text(msg['date']);
+            time = $("<time>").addClass("hour-message text-xs sm:text-sm text-gray-500 ml-2").text(msg['date']);
             checkImage = $("<img>").attr("src", "../assets/svg/double-check-blue.svg").attr("alt", "Check Message").addClass("w-4 h-4 ml-1");
 
             timeContainer.append(time).append(checkImage);

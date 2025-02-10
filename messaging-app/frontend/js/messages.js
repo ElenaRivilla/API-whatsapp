@@ -17,6 +17,7 @@ async function cargaDOM() {
     changeRadius()
 }
 
+//poner en el módulo chat.js y borrar este módulo
 function changeRadius() {
     $(".message-container").each(function () {
         let content = $(this).find(".message-sender");
