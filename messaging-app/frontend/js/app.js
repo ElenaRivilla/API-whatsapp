@@ -74,6 +74,7 @@ function home(){
         // elemento es el nodo
         for (let childNode of node[0].children) {
             childNode.addEventListener("click", () => event(childNode));
+
         }
         if (window.innerWidth < 768) {
             const container = $(".container-user");
