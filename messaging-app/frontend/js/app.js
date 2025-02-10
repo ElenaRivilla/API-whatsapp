@@ -3,6 +3,7 @@ import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser } from "./apiManager.js";
 import { User } from "./user.js" 
 import { generateChats, generateChat } from "./chat.js";
+import {generateSettings} from "./settings.js";
 import { generateHeaderMobile } from "./static.js";
 
 // TODO Remove liveServerPrefix when deploying the app
@@ -69,6 +70,8 @@ function home(){
     const empty = document.createElement("div");
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".chats");
+    const settingsButton = $('.settings-bar')[0];
+
     const searchBar = $(".search-bar");
     
     if(window.innerWidth < 768){
@@ -143,6 +146,15 @@ function home(){
             console.error("Error:", error);
         }
     }
+
+    // La parte de Settings:
+    settingsButton.addEventListener("click", () => {
+        updateDOM("./settings.html", leftContainer);
+        generateSettings(user);
+    });
+
+    // La parte de Contacts:
+    
 
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes

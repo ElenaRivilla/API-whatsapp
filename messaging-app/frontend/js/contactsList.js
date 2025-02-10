@@ -20,7 +20,7 @@ function generateContacts() {
 
     const searchBar = $('<div>').addClass("container-search flex items-center p-2 rounded-md my-4 mx-3 sm:my-3 md:my-3 lg:my-3");
     const searchWrapper = $('<div>').addClass("relative w-full flex items-center");
-    const searchInput = $('<input>').addClass("input-search flex-grow h-10 w-full rounded-full pl-10 border focus:border-[#468FAF] focus:ring-0").attr("type", "search").attr("placeholder", "Buscar contactos...");
+    const searchInput = $('<input>').addClass("input-search flex-grow h-10 w-full rounded-full pl-10 border focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("type", "search").attr("placeholder", "Buscar contactos...");
     const searchIcon = $("<img>").addClass("h-5 absolute left-3").attr("src", "../assets/svg/search.svg");
 
     searchWrapper.append(searchInput, searchIcon);

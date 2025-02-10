@@ -27,14 +27,14 @@ export function generateChats(chats){
 }
 
 export function generateChat(response, user){
-    const html = $("<div>") // .addClass("flex flex-col h-full");
+    const html = $("<div>")
     html.append(generateMessages(response, user));
     html.append(generateChatBar());
     return html;
 }
 
 function generateMessages(response, user){
-    const html = $("<div>").addClass("messages-container overflow-y-auto custom-scrollbar w-full  h-[85%] px-6 justify-center");
+    const html = $("<div>").addClass("messages-container overflow-y-auto custom-scrollbar w-full px-6 justify-center h-[85%]");
     let infoFriend = $("<div>").addClass("info-friend h-[10%] flex-col items-center w-full sticky top-0 bg-gray-100 z-10");
     let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full");
     let backButton = $('<button>').addClass('back-button p-2 bg-[#468FAF] rounded-full h-7 w-7 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden');
@@ -87,10 +87,10 @@ function generateMessages(response, user){
 }
 
 function generateChatBar(){
-    const sendMessageContainer = $("<div>").addClass("p-6 absolute bottom-0 sm:p-0 w-full md:px-4 md:pb-4 bg-transparent p-0 rounded-full");
+    const sendMessageContainer = $("<div>").addClass("send-container p-6 absolute bottom-0 sm:p-0 w-full md:px-4 md:pb-4 bg-transparent p-0 rounded-full h-[15%] flex justify-end flex-col");
     const messageBar = $("<div>").addClass("message-bar");
     const form = $("<form>").attr("method", "post").addClass("flex items-center");
-    const input = $("<input>").attr("type", "text").addClass("write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full").attr("placeholder", "Escribe un mensaje...");
+    const input = $("<input>").attr("type", "text").addClass("write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Escribe un mensaje...");
     const button = $("<button>").attr("type", "submit").css("background-color", "#A9D6E5").addClass("send-button h-10 w-10 sm:w-16 sm:h-16 ml-2 sm:ml-4 p-2 text-white flex items-center justify-center rounded-full");
     const img = $("<img>").addClass("w-10 ml-1 sm:ml-1.5").attr("src", "../assets/svg/send.svg");
 
