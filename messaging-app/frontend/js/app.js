@@ -3,6 +3,7 @@ import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser } from "./apiManager.js";
 import { User } from "./user.js" 
 import { generateChats, generateChat } from "./chat.js";
+import {generateSettings} from "./settings.js";
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -68,6 +69,7 @@ function home(){
 
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".chats");
+    const settingsButton = $('.settings-bar')[0];
 
     function addEvents(node, event) {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
@@ -86,20 +88,23 @@ function home(){
     }
 
     function getUsernameFromNode(node) {
+        // Recibe el nombre del usuario (ej: el usuario al que vas a hablar en el chat)
         return node.children[1].children[0].innerText;
     }
 
     function openChat(node) {
+        // Carga los 10 mensajes entre el usuario anfitrion y el usuario amigo (reciever_id).
         loadMessages(user.username, getUsernameFromNode(node), 10);
         return;
     }
 
     async function loadFriends() {
-        try {
+        // Carga todos la lista de amigos del usuario
+        try { 
             const response = await getUsersHome();
-            const chats = generateChats(response.contacts);
-            updateDOM(chats.html(), leftContainer);
-            addEvents(leftContainer, openChat);
+            const chats = generateChats(response.contacts); // Genera los chats.
+            updateDOM(chats.html(), leftContainer);  // Actualiza el DOM con los chats generados.
+            addEvents(leftContainer, openChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
         } catch (error) {
             console.error("Error fetching users:", error);
         }
@@ -126,6 +131,15 @@ function home(){
             console.error("Error:", error);
         }
     }
+
+    // La parte de Settings:
+    settingsButton.addEventListener("click", () => {
+        updateDOM("./settings.html", leftContainer);
+        generateSettings(user);
+    });
+
+    // La parte de Contacts:
+    
 
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes

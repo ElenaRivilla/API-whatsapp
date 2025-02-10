@@ -1,10 +1,4 @@
-document.addEventListener('DOMContentLoaded', cargaDOM);
-
-function cargaDOM() {
-    generateSettings();
-}
-
-function generateSettings() {
+export function generateSettings(user) {
     const settingsContainer = $(".scrollbar-custom");
 
     const settingsBar = $('<div>').addClass('settings-bar h-14 flex items-center');
@@ -15,14 +9,15 @@ function generateSettings() {
     backButton.append(backLink);
     const settingsTitle = $('<h3>').addClass('text-xl ml-4').text('Ajustes');
     settingsBar.append(backButton, settingsTitle);
-
     const profileContainer = $('<div>').addClass('profile-container h-24 flex items-center my-6');
-    const profileImg = $('<img>').addClass('h-24 rounded-full').attr('src', 'https://picsum.photos/300/300?random=7');
-    const profileName = $('<h2>').addClass('text-2xl font-bold ml-6').text('Alice Johnson');
-    profileContainer.append(profileImg, profileName);
+    const contenedorUser = $('<div>').addClass('flex flex-col ml-6');
+    const profileImg = $('<img>').addClass('h-24 rounded-full').attr('src', user.image);
+    const profileName = $('<h2>').addClass('text-2xl font-bold').text(user.username);
+    const profileBio = $("<p>").addClass("text-sm w-60 truncate").text(user.bio);
+    contenedorUser.append(profileName, profileBio);
+    profileContainer.append(profileImg, contenedorUser);
 
     const separator = $('<hr>').addClass('border-t-2 border-[#468FAF] mx-9 mb-6');
-
     const listSettings = $('<div>').addClass('list-settings flex h-auto');
     const settingsList = $('<ul>').addClass('flex flex-col h-full space-y-6');
 

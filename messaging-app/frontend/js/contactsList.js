@@ -49,13 +49,13 @@ function generateContacts() {
         chatContainer.find(".container-user, .contact-separator").remove(); // Eliminamos los contactos y los separadores.
 
         allContacts.forEach(contact => {
-            const chatDiv = $("<div>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-16 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center");
+            const chatDiv = $("<div>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-18 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center");
     
             const containerImage = $("<div>").addClass("container-image w-20 h-20 sm:w-28 sm:h-28 md:w-20 md:h-14 flex justify-center items-center");
-            const profileImage = $("<img>").addClass("profile-image sm:min-h-18 sm:min-w-18 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", contact.imageUrl);
+            const profileImage = $("<img>").addClass("profile-image h-20 w-20 sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-20 min-w-20 max-h-16 max-w-16 rounded-full").attr("src", contact.imageUrl);
             containerImage.append(profileImage);
     
-            const containerInfo = $("<div>").addClass("container-info truncate w-full h-20 p-0 md:p-0 lg:p-4 flex flex-col justify-center items-start");
+            const containerInfo = $("<div>").addClass("container-info truncate w-full p-2 h-20 md:p-1 lg:p-4 flex flex-col justify-center items-start");
             const username = $("<h3>").addClass("username text-base sm:text-2xl md:text-lg lg:text-lg font-bold block md:hidden lg:block").text(contact.username);
             const bio = $("<p>").addClass("message truncate block sm:block md:hidden lg:block").text(contact.bio);
             containerInfo.append(username).append(bio);
