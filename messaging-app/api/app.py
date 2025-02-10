@@ -156,10 +156,13 @@ def getHome(request: Request):
 
 # End-point to get user friends
 @app.get('/getFriends/{username}')
-def getFriends(username: str):
+def getFriends(username: str, request: Request):
     try:
-        friendsList = db.getFriends(db.getUserId(username))
+        userId = verify_token(request.cookies.get("token"))
+        if userId == db.getUserId(username):
+            friendsList = db.getFriends(db.getUserId(username))
         return friendsList
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acceso denegado")
     except Exception as e:
         raise e
 

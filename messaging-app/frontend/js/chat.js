@@ -1,7 +1,3 @@
-class Chat{
-
-}
-
 export function generateChats(chats){
     const html = $("<div>");
     let chatDiv, containerImage, profileImage, containerInfo, username, message, dateContainer, date, hr;
