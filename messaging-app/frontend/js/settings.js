@@ -1,8 +1,5 @@
-
-
 export function generateSettings(user) {
     const settingsContainer = $(".scrollbar-custom");
-
     const settingsBar = $('<div>').addClass('settings-bar h-14 flex items-center');
     const backButton = $('<button>').addClass('back-button p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center');
     const backLink = $('<a>');
@@ -72,11 +69,9 @@ export function accountSettings() {
     return rightContainer;
 }
 
-
 export function privacitySettings(){
 
 }
-
 
 export function chatSettings(){
     const rightContainer = $(".chats");
@@ -94,7 +89,6 @@ export function chatSettings(){
     return rightContainer;
 
 }
-
 
 export function notificationSettings(){
 
