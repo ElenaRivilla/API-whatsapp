@@ -159,7 +159,9 @@ function home() {
                 }
                 loadFriends();
             });
-            addSettingEvent($("#account")[0], accountSettings, rightContainer);
+            $("#account")[0].addEventListener("click", () => {
+                accountSettings(user);
+            });
             //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
             $("#chats")[0].addEventListener('click', () => {
                 updateDOM(chatSettings().html(), rightContainer);
@@ -174,9 +176,11 @@ function home() {
                     }
                 });
             });
-            //addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
-            //addSettingEvent($("#help")[0], helpSettings, rightContainer);
-            //addSettingEvent($("#logout")[0], closeSession, rightContainer);
+            addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
+            addSettingEvent($("#help")[0], helpSettings, rightContainer);
+            $("#logout")[0].addEventListener("click", () => {
+                closeSession(loginUrl);
+            });
         });
     }
 

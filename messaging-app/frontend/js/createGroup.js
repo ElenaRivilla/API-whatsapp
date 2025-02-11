@@ -13,7 +13,7 @@ function generateContacts() {
 
     const backBar = $("<div>").addClass("back-bar h-14 flex items-center");
     const backButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
-    const backLink = $("<a>", { href: "./contacts.html" });
+    const backLink = $("<a>", { href: "./home.html" });
     const backImg = $("<img>").addClass("h-5").attr("src", "../assets/svg/arrow.svg");
     backLink.append(backImg);
     backButton.append(backLink);
