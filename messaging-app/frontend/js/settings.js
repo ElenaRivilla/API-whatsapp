@@ -2,21 +2,21 @@
 
 export function generateSettings(user) {
     const settingsContainer = $(".scrollbar-custom");
-    const settingsBar = $("<div>").addClass("settings-bar h-14 flex items-center");
-    const backButton = $("<button>").addClass("back-button p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
-    const backLink = $("<a>", { href: "./home.html" });
-    const backImg = $("<img>").addClass("h-5").attr("src", "../assets/svg/arrow.svg");
+
+    const settingsBar = $('<div>').addClass('settings-bar h-14 flex items-center');
+    const backButton = $('<button>').addClass('p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center');
+    const backLink = $('<a>');
+    const backImg = $('<img>').addClass('h-5').attr('src', '../assets/svg/arrow.svg');
     backLink.append(backImg);
     backButton.append(backLink);
 
     const settingsTitle = $("<h3>").addClass("text-xl ml-4").text("Ajustes");
     settingsBar.append(backButton, settingsTitle);
-
-    const profileContainer = $("<div>").addClass("profile-container h-24 flex items-center my-6");
-    const contenedorUser = $("<div>").addClass("flex flex-col ml-6");
-    const profileImg = $("<img>").addClass("h-24 rounded-full").attr("src", user.image);
-    const profileName = $("<h2>").addClass("text-2xl font-bold").text(user.username);
-    const profileBio = $("<p>").addClass("text-sm w-60 truncate").text(user.bio);
+    const profileContainer = $('<div>').addClass('profile-container h-24 flex items-center my-5');
+    const contenedorUser = $('<div>').addClass('flex flex-col ml-6');
+    const profileImg = $('<img>').addClass('h-16 rounded-full').attr('src', user.image);
+    const profileName = $('<h2>').addClass('text-xl font-bold ').text(user.username);
+    const profileBio = $("<p>").addClass("text-sm w-56 sm:w-62 md:w-62 truncate").text(user.bio);
     contenedorUser.append(profileName, profileBio);
     profileContainer.append(profileImg, contenedorUser);
 

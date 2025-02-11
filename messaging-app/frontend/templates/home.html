@@ -16,38 +16,41 @@
 </head>
 
 <body>
-    <main class="h-dvh flex flex-col p-5 m-0">
-        <header class="flex flex-col md:flex-row lg:h-1/8 xl:h-1/8 sm:flex sm:mb-5 mb-0 lg:mb-5 md:h-[20%] max-h-[140px]">
-            <div class="w-full md:w-[60%] hidden sm:hidden md:block">
+    <main class="h-dvh flex flex-col p-5">
+        <header class="flex flex-col md:flex-row lg:h-1/8 xl:h-1/8 sm:flex sm:mb-5 mb-0 lg:mb-5 md:h-[20%]">
+            <div class="w-full md:w-[60%] mb-3 sm:mb-0 block sm:block md:block">
                 <div class="flex flex-col justify-end h-full">
-                    <div class="icons flex w-full md:mb-6 xl:mb-6 2xl:mb-6 md:w-1/2 hidden sm:hidden md:block lg:block xl:block">
+                    <div class="icons flex w-full md:mb-6 xl:mb-6 2xl:mb-6 md:w-1/2 block sm:block md:block lg:block xl:block">
                         <button class="settings-bar mx-[1%] w-8 md:w-8 lg:w-10">
                            <img src="../assets/svg/settings.svg" alt="button-settings">
                         </button>
                         <button class="mx-[1%] w-8 md:w-8 lg:w-10">
                             <a href="./contacts.html"><img src="../assets/svg/add.svg" alt="button-add"></a>
                         </button>
-                        <button class="mx-[1%] w-8 md:w-8 lg:w-10">
+                        <button class="mx-[1%] w-8 md:w-8 lg:w-10 hidden sm:hidden md:inline">
                             <a href="./home.html"><img src="../assets/svg/chat.svg" alt="button-chat"></a>
                         </button>
                     </div>
-                    <div class="sm:flex w-full sm:w-1/6 md:w-1/6 mt-auto">
-                        <div class="filters flex w-full sm:w-full md:w-1/2 mt-20 space-between sm:mt-20 md:mt-0 items-center">
+                    <div class="search-bar">
+                        <!-- aqui va el buscador de contactos -->
+                    </div>
+                    <div class="filter-container sm:flex w-full sm:w-1/6 md:w-1/6 mt-auto h-auto sm:h-auto">
+                        <div class="filters flex w-full sm:w-full md:w-1/2 items-center justify-between">
                             <img src="../assets/svg/filter.svg" class="mx-1.5 w-8 md:h-8 lg:w-12">
                             <button 
-                                class="button h-10 bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center">todo</button>
+                                class="button h-10 w-20 bg-white text-xs hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">todo</button>
                             <button
-                                class="button h-10 bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center">no leído</button>
+                                class="button h-10 w-20 bg-white text-xs hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">no leído</button>
                             <button
-                                class="button h-10 bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center">chats</button>
+                                class="button h-10 w-20 bg-white text-xs hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">chats</button>
                             <button
-                                class="button h-10 bg-white text-sm sm:text-base md:text-base lg:text-lg hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center">grupos</button>
+                                class="button h-10 w-20 bg-white text-xs hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">grupos</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="w-full md:w-[40%] md:flex md:justify-end xl:justify-end mt-4 md:mt-0 hidden sm:hidden md:block">
-                <a href="./chatsList.html"><img src="../assets/svg/dove.svg" alt="logo" class="w-16 h-16 md:w-20 md:h-20"></a>
+                <a><img src="../assets/svg/dove.svg" alt="logo" class="w-16 h-16 md:w-20 md:h-20"></a>
             </div>
         </header>
         <div class="flex flex-col md:flex-row h-full sm:h-[100%] md:h-[80%]"> <!-- md:h-[100%]  -->

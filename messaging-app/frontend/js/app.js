@@ -1,10 +1,10 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser } from "./apiManager.js";
-import { User } from "./user.js" 
+import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import {generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession} from "./settings.js";
-import {generateRightPanelFund} from "./static.js";
+import {generateRightPanelFund, generateSearchBar} from "./static.js";
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -65,12 +65,19 @@ function login() {
     });
 }
 
-function home(){    
+function home() {
     const user = new User(JSON.parse(getCookie('user')));
-
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".chats");
     const settingsButton = $('.settings-bar')[0];
+    const searchBar = $(".search-bar");
+    const header = $("header");
+    generateRightPanelFund();
+
+    if (window.innerWidth < 768) {
+        updateDOM(generateSearchBar().html(), searchBar);
+        searchBar.addClass("block");
+    }
 
     generateRightPanelFund();
     function addEvents(node, event) {
@@ -79,13 +86,6 @@ function home(){
         for (let childNode of node[0].children) {
             childNode.addEventListener("click", () => event(childNode));
 
-        }
-        if (window.innerWidth < 768) {
-            const container = $(".container-user");
-            container.on("click", () => {
-                $(".contacts").removeClass("block").addClass("hidden");
-                $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
-            });
         }
     }
 
@@ -97,12 +97,20 @@ function home(){
     function openChat(node) {
         // Carga los 10 mensajes entre el usuario anfitrion y el usuario amigo (reciever_id).
         loadMessages(user.username, getUsernameFromNode(node), 10);
+        if (window.innerWidth < 768) {
+            const container = $(".container-user");
+            container.on("click", () => {
+            });
+            $(".contacts").removeClass("block").addClass("hidden");
+            $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
+            header.removeClass("block").addClass("hidden");
+        }
         return;
     }
 
     async function loadFriends() {
         // Carga todos la lista de amigos del usuario
-        try { 
+        try {
             const response = await getUsersHome();
             const chats = generateChats(response.contacts); // Genera los chats.
             updateDOM(chats.html(), leftContainer);  // Actualiza el DOM con los chats generados.
@@ -113,7 +121,6 @@ function home(){
     }
 
     function updateDOM(html, section){
-       
         section.empty(); // Limpiar el contenedor antes de agregar nuevos chats
         section.html(html);
         return;
@@ -123,12 +130,16 @@ function home(){
         try {
             const response = await getMessagesUser(user1, user2, loadSize);
             const chat = generateChat(response, user2);
-            console.log(rightContainer)
-            console.log(chat.html())
-            console.log("-----------------------")
-            console.log(document.querySelector("body").innerHTML)
             updateDOM(chat.html(), rightContainer);
             // add event listeners?
+            if (window.innerWidth < 768) {
+                const backContainer = $(".back-button");
+                backContainer.on("click", () => {
+                    $(".contacts").removeClass("hidden").addClass("block");
+                    $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
+                    header.removeClass("hidden ").addClass("block sm:block");
+                });
+            }
         }
         catch (error) {
             console.error("Error:", error);
@@ -194,14 +205,17 @@ function home(){
     settingsFunctions();
 
     // La parte de Contacts:
-
     
+
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
+
     loadFriends();
 
     window.addEventListener('resize', () => {
+        updateDOM(generateHeaderMobile().html(), searchBar);
         if (window.innerWidth > 768) {
+            searchBar.empty()
             $(".contacts").removeClass("hidden").addClass("block");
             $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
             loadFriends();
