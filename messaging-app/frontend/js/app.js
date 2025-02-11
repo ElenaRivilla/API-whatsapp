@@ -213,7 +213,7 @@ function home() {
     loadFriends();
 
     window.addEventListener('resize', () => {
-        updateDOM(generateHeaderMobile().html(), searchBar);
+        updateDOM(generateSearchBar().html(), searchBar);
         if (window.innerWidth > 768) {
             searchBar.empty()
             $(".contacts").removeClass("hidden").addClass("block");

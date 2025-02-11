@@ -1,11 +1,4 @@
-document.addEventListener("DOMContentLoaded", cargaDOM);
-
-function cargaDOM() {
-    generateRightPanelFund();
-    generateSearchBar();
-}
-
-function generateRightPanelFund() {
+export function generateRightPanelFund() {
 
     const messagesContainer = $(".chats");
 
