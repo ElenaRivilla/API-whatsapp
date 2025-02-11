@@ -4,7 +4,7 @@ export function generateSettings(user) {
     const settingsContainer = $(".scrollbar-custom");
 
     const settingsBar = $('<div>').addClass('settings-bar h-14 flex items-center');
-    const backButton = $('<button>').addClass('p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center');
+    const backButton = $('<button>').addClass('back-button p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center');
     const backLink = $('<a>');
     const backImg = $('<img>').addClass('h-5').attr('src', '../assets/svg/arrow.svg');
     backLink.append(backImg);
