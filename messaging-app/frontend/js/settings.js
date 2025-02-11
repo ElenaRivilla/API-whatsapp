@@ -12,10 +12,10 @@ export function generateSettings(user) {
     const settingsTitle = $("<h3>").addClass("text-xl ml-4").text("Ajustes");
     settingsBar.append(backButton, settingsTitle);
     const profileContainer = $('<div>').addClass('profile-container h-24 flex items-center my-5');
-    const contenedorUser = $('<div>').addClass('flex flex-col ml-6');
+    const contenedorUser = $('<div>').addClass('flex flex-col ml-6 w-42');
     const profileImg = $('<img>').addClass('h-16 rounded-full').attr('src', user.image);
-    const profileName = $('<h2>').addClass('text-xl font-bold ').text(user.username);
-    const profileBio = $("<p>").addClass("text-sm w-56 sm:w-62 md:w-62 truncate").text(user.bio);
+    const profileName = $('<h2>').addClass('text-xl font-bold w-42').text(user.username);
+    const profileBio = $("<p>").addClass("text-sm w-56 sm:w-62 md:min-w-30 truncate").text(user.bio);
     contenedorUser.append(profileName, profileBio);
     profileContainer.append(profileImg, contenedorUser);
 
