@@ -48,12 +48,14 @@ export let backgroundColor = rootStyles.getPropertyValue('--background-color').t
 export let accentColor = rootStyles.getPropertyValue('--accent-color').trim();
 export let containerColor = rootStyles.getPropertyValue('--container-color').trim();
 export let textColor = rootStyles.getPropertyValue('--text-color').trim();
+export let textHolderColor = rootStyles.getPropertyValue('--text-holder-color').trim();
 
 export function setDarkMode(){
     document.documentElement.style.setProperty('--background-color', '#012A4A');
     document.documentElement.style.setProperty('--accent-color', '#89C2D9');
     document.documentElement.style.setProperty('--container-color', '#2A6F97');
     document.documentElement.style.setProperty('--text-color', '#ffffff');
+    document.documentElement.style.setProperty('--text-holder-color', '#012A4A');
 }
 
 export function setLightMode(){
@@ -61,4 +63,5 @@ export function setLightMode(){
     document.documentElement.style.setProperty('--accent-color', '#A9D6E5');
     document.documentElement.style.setProperty('--container-color', '#f3f4f6');
     document.documentElement.style.setProperty('--text-color', '#000000');
+    document.documentElement.style.setProperty('--text-holder-color', '#61A5C2');
 }
