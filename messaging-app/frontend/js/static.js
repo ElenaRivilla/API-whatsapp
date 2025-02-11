@@ -1,12 +1,6 @@
-document.addEventListener("DOMContentLoaded", cargaDOM);
+export function generateRightPanelFund() {
 
-function cargaDOM() {
-    generateRightPanelFund();
-}
-
-function generateRightPanelFund() {
-
-    const messagesContainer = $(".messages-container");
+    const messagesContainer = $(".chats");
 
     const groupTextContainer = $("<div>").addClass("group-text-container flex flex-col items-center justify-center h-[95%]");
     const imageSVG = $("<img>").addClass("h-28 mb-4").attr("src", "../assets/svg/dove.svg");
