@@ -22,7 +22,7 @@
                 <div class="flex flex-col justify-end h-full">
                     <div class="icons flex w-full md:mb-6 xl:mb-6 2xl:mb-6 md:w-1/2 block sm:block md:block lg:block xl:block">
                         <button class="settings-bar mx-[1%] w-8 md:w-8 lg:w-10">
-                           <img src="../assets/svg/settings.svg" alt="button-settings">
+                           <img src="../assets/svg/settings.svg" alt="button-settings" class="icon">
                         </button>
                         <button class="mx-[1%] w-8 md:w-8 lg:w-10">
                             <img src="../assets/svg/add.svg" alt="button-add">
@@ -36,15 +36,15 @@
                     </div>
                     <div class="filter-container sm:flex w-full sm:w-1/6 md:w-1/6 mt-auto h-auto sm:h-auto">
                         <div class="filters flex w-full sm:w-full md:w-1/2 items-center justify-between">
-                            <img src="../assets/svg/filter.svg" class="mx-1.5 w-8 md:h-8 lg:w-12">
+                            <img src="../assets/svg/filter.svg" class="icon mx-1.5 w-8 md:h-8 lg:w-12">
                             <button 
-                                class="button h-10 w-20 bg-white text-xs hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">todo</button>
+                                class="filterButton button h-10 w-20 text-xs hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">todo</button>
                             <button
-                                class="button h-10 w-20 bg-white text-xs hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">no leído</button>
+                                class="filterButton button h-10 w-20 text-xs hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">no leído</button>
                             <button
-                                class="button h-10 w-20 bg-white text-xs hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">chats</button>
+                                class="filterButton button h-10 w-20 text-xs hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">chats</button>
                             <button
-                                class="button h-10 w-20 bg-white text-xs hover:bg-gray-200 hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">grupos</button>
+                                class="filterButton button h-10 w-20 text-xs hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">grupos</button>
                         </div>
                     </div>
                 </div>
@@ -55,12 +55,12 @@
         </header>
         <div class="flex flex-col md:flex-row h-full sm:h-[100%] md:h-[80%]"> <!-- md:h-[100%]  -->
             <section
-                class=" contacts bg-gray-100 w-full p-4 md:w-[30%] h-full mb-4 md:mb-0 md:mr-10 block rounded-3xl overflow-y-auto custom-scrollbar shadow-2xl">
+                class=" contacts w-full p-4 md:w-[30%] h-full mb-4 md:mb-0 md:mr-10 block rounded-3xl overflow-y-auto custom-scrollbar shadow-2xl" style="background-color: var(--container-color);">
                 <div class="scrollbar-custom">
                     <!-- aquí se generan la lista de chats con jQuery -->
                 </div>
             </section>
-            <section class="chats relative bg-gray-100 w-full md:w-[70%] hidden md:block sm:hidden h-full rounded-3xl shadow-2xl flex flex-col justify-between">
+            <section class="chats relative w-full md:w-[70%] hidden md:block sm:hidden h-full rounded-3xl shadow-2xl flex flex-col justify-between" style="background-color: var(--container-color);">
                     <!-- aquí se añaden los mensajes con jQuery -->
             </section>
         </div>

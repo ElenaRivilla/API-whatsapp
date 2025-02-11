@@ -1,11 +1,10 @@
-
-
+import { backgroundColor } from "./static.js";
 export function generateSettings(user) {
     const html = $("<div>");
     const settingsBar = $('<div>').addClass('settings-bar h-14 flex items-center');
-    const backButton = $('<button>').addClass('back-button p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center');
+    const backButton = $('<button>').addClass(`back-button p-2 rounded-full h-12 w-12 flex items-center justify-center`).attr("style", "background-color: var(--background-color);");
     const backLink = $('<a>');
-    const backImg = $('<img>').addClass('h-5').attr('src', '../assets/svg/arrow.svg');
+    const backImg = $('<img>').addClass('contrastIcon h-5').attr('src', '../assets/svg/arrow.svg');
     backLink.append(backImg);
     backButton.append(backLink);
 
@@ -19,7 +18,7 @@ export function generateSettings(user) {
     contenedorUser.append(profileName, profileBio);
     profileContainer.append(profileImg, contenedorUser);
 
-    const separator = $("<hr>").addClass("border-t-2 border-[#468FAF] mx-9 mb-6");
+    const separator = $("<hr>").addClass("border-t-2 mx-9 mb-6").attr("style", "border-color: var(--background-color);");
     const listSettings = $("<div>").addClass("list-settings flex h-auto");
     const settingsList = $("<ul>").addClass("flex flex-col h-full space-y-6");
 
@@ -35,7 +34,7 @@ export function generateSettings(user) {
     settingsItems.forEach(item => {
         const button = $("<button>");
         const listItem = $("<li>").addClass("flex items-center").attr({"text": item.text, 'id': item.id});
-        const img = $("<img>").addClass(item.imgClass || "h-10").attr("src", item.imgSrc);
+        const img = $("<img>").addClass(item.imgClass || "h-10").attr({"src": item.imgSrc, 'style': "color: var(--background-color);"});
         const text = $("<h2>").addClass("ml-4 text-xl").text(item.text);
         listItem.append(img, text);
         button.append(listItem);
@@ -94,7 +93,7 @@ export function chatSettings(){
     const label = $("<label>").addClass("relative inline-block w-20 h-8");
     const span = $("<span>").addClass("relative inline-block font-medium w-40 h-8").text("Cambiar modo");
     const inputCheck = $("<input>").addClass("sr-only peer rounded").attr("type", "checkbox");
-    const modeDiv = $("<div>").addClass("w-20 h-full bg-gray-400 rounded-full cursor-pointer transition duration-300 peer-checked:bg-[#468FAF] peer-checked:before:translate-x-12 peer-checked:before:bg- before:content-[''] before:absolute before:top-1 before:left-1 before:bg-white before:w-6 before:h-6 before:rounded-full before:transition before:duration-300");
+    const modeDiv = $("<div>").addClass("modeChanger w-20 h-full bg-gray-400 rounded-full cursor-pointer transition duration-300 peer-checked:before:translate-x-12 peer-checked:before:bg- before:content-[''] before:absolute before:top-1 before:left-1 before:bg-white before:w-6 before:h-6 before:rounded-full before:transition before:duration-300");
     label.append(inputCheck, modeDiv);
     span.append(label);
     accountContainer.append(title, span);

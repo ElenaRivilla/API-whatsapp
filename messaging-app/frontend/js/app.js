@@ -4,7 +4,7 @@ import { userExists, getUsersHome, getMessagesUser } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import {generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession} from "./settings.js";
-import {generateRightPanelFund, generateSearchBar} from "./static.js";
+import {generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode} from "./static.js";
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -163,8 +163,20 @@ function home() {
             $("#account")[0].addEventListener("click", () => {
                 updateDOM(accountSettings(user).html(), rightContainer);
             });
-            addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
-            addSettingEvent($("#chats")[0], chatSettings, rightContainer);
+            //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
+            $("#chats")[0].addEventListener('click', () => {
+                updateDOM(chatSettings().html(), rightContainer);
+                $(".modeChanger")[0].addEventListener('click', () =>{
+                    if(user.lightMode){
+                        setDarkMode();
+                        user.setLightMode(false);
+                    }
+                    else{
+                        setLightMode();
+                        user.setLightMode(true); 
+                    }
+                });
+            });
             addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
             addSettingEvent($("#help")[0], helpSettings, rightContainer);
             $("#logout")[0].addEventListener("click", () => {
@@ -195,7 +207,6 @@ function home() {
 }
 
 // Function to initialize the page based on the current URL.
-// TODO: Change the login URL to the correct one and add any additional cases.
 function init() {
     switch (window.location.href) {
         case loginUrl:

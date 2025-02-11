@@ -1,3 +1,5 @@
+import { backgroundColor, accentColor, containerColor } from "./static.js";
+
 export function generateChats(chats){
     const html = $("<div>");
     let chatDiv, containerImage, profileImage, containerInfo, username, message, dateContainer, date, hr;
@@ -20,7 +22,7 @@ export function generateChats(chats){
         chatDiv.append(containerImage).append(containerInfo).append(dateContainer);
         html.append(chatDiv);
 
-        hr = $("<hr>").addClass("contact-separator border-t-2 border-[#468FAF] m-1 sm:mx-8 sm:my-0.5 md:mx-4 md:my-4 lg:mt-4 lg:mx-4");
+        hr = $("<hr>").addClass(`contact-separator border-t-2 border-[${backgroundColor}] m-1 sm:mx-8 sm:my-0.5 md:mx-4 md:my-4 lg:mt-4 lg:mx-4`);
         html.append(hr);
     }
     return html;
@@ -37,12 +39,12 @@ function generateMessages(response, user){
     const html = $("<div>").addClass("messages-container overflow-y-auto custom-scrollbar w-full px-6 justify-center h-[85%]");
     let infoFriend = $("<div>").addClass("info-friend h-[10%] flex-col items-center w-full sticky top-0 bg-gray-100 z-10");
     let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full");
-    let backButton = $('<button>').addClass('back-button p-2 bg-[#468FAF] rounded-full h-7 w-7 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden');
+    let backButton = $('<button>').addClass(`back-button p-2 bg-[${backgroundColor}] rounded-full h-7 w-7 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden`);
     let backLink = $('<a>').addClass('back-button flex items-center justify-center w-full h-full');
     let backImg = $('<img>').addClass('w-3').attr('src', '../assets/svg/arrow.svg');
     let profileImage = $("<img>").attr("src", response['imageUrl']).attr("alt", "Profile Image").addClass("w-11 sm:w-16 md:w-[4'5rem] sm:mr-4 rounded-full");
     let friendName = $("<h3>").addClass("text-xl sm:text-2xl font-bold ml-3").text(user);
-    let hr = $("<hr>").addClass("border-t-2 border-[#468FAF] mx-8 block");
+    let hr = $("<hr>").addClass(`border-t-2 border-[${backgroundColor}] mx-8 block`);
 
     backLink.append(backImg);
     backButton.append(backLink);
@@ -64,7 +66,7 @@ function generateMessages(response, user){
             messageContainer.append(messageText).append(time);
             article.append(figure).append(messageContainer);
         } else {
-            messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").css("background-color", "#A9D6E5");
+            messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").css("background-color", accentColor);
             messageText = $("<p>").addClass("message-receiver text-xs sm:text-sm").text(msg['body']);
 
             timeContainer = $("<div>").addClass("flex items-end w-full justify-end");
@@ -90,8 +92,8 @@ function generateChatBar(){
     const sendMessageContainer = $("<div>").addClass("send-container p-6 absolute bottom-0 sm:p-0 w-full md:px-4 md:pb-4 bg-transparent p-0 rounded-full h-[15%] flex justify-end flex-col");
     const messageBar = $("<div>").addClass("message-bar");
     const form = $("<form>").attr("method", "post").addClass("flex items-center");
-    const input = $("<input>").attr("type", "text").addClass("write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Escribe un mensaje...");
-    const button = $("<button>").attr("type", "submit").css("background-color", "#A9D6E5").addClass("send-button h-10 w-10 sm:w-16 sm:h-16 ml-2 sm:ml-4 p-2 text-white flex items-center justify-center rounded-full");
+    const input = $("<input>").attr("type", "text").addClass(`write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[${backgroundColor}] focus:border-[${backgroundColor}]`).attr("placeholder", "Escribe un mensaje...");
+    const button = $("<button>").attr("type", "submit").css("background-color", accentColor).addClass("send-button h-10 w-10 sm:w-16 sm:h-16 ml-2 sm:ml-4 p-2 text-white flex items-center justify-center rounded-full");
     const img = $("<img>").addClass("w-10 ml-1 sm:ml-1.5").attr("src", "../assets/svg/send.svg");
 
     button.append(img);
