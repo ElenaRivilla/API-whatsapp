@@ -52,10 +52,9 @@ export function accountSettings(user) {
     const accountContainer = $("<div>").addClass("account-settings p-10");
     const title = $("<h2>").addClass("text-2xl font-bold mb-4").text("Configuración de Cuenta");
     
-    const inputImage = $('<div>').addClass('input-image-container');
+    const imageContainer = $('<div>').addClass('input-image-container');
     const img = $('<img>').addClass('h-16 w-16 rounded-full').attr("src", user.image);
     const fileInput = $('<input>').attr("type", "file").attr("accept", "image/*").addClass('hidden');
-    inputImage.append(img, fileInput);
 
     img.on('click', function() {
         fileInput.click();
@@ -68,7 +67,7 @@ export function accountSettings(user) {
         };
         reader.readAsDataURL(event.target.files[0]);
     });
-    inputImage.append(img);
+    imageContainer.append(fileInput, img);
     const nameContainer = $('<div>');
     const nameLabel = $("<label>").addClass("block text-lg font-medium mb-2").text("Nombre");
     const nameInput = $("<input>").addClass("w-full p-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("type", "text").attr("placeholder", "Nuevo nombre");
