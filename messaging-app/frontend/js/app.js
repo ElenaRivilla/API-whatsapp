@@ -72,7 +72,6 @@ function home() {
     const settingsButton = $('.settings-bar')[0];
     const searchBar = $(".search-bar");
     const header = $("header");
-    generateRightPanelFund();
 
     if (window.innerWidth < 768) {
         updateDOM(generateSearchBar().html(), searchBar);
