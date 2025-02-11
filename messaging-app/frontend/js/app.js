@@ -4,7 +4,7 @@ import { userExists, getUsersHome, getMessagesUser } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import {generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession} from "./settings.js";
-import {generateRightPanelFund, generateSearchBar} from "./static.js";
+import {generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode} from "./static.js";
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -160,11 +160,23 @@ function home() {
                 loadFriends();
             });
             addSettingEvent($("#account")[0], accountSettings, rightContainer);
-            addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
-            addSettingEvent($("#chats")[0], chatSettings, rightContainer);
-            addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
-            addSettingEvent($("#help")[0], helpSettings, rightContainer);
-            addSettingEvent($("#logout")[0], closeSession, rightContainer);
+            //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
+            $("#chats")[0].addEventListener('click', () => {
+                updateDOM(chatSettings().html(), rightContainer);
+                $(".modeChanger")[0].addEventListener('click', () =>{
+                    if(user.lightMode){
+                        setDarkMode();
+                        user.setLightMode(false);
+                    }
+                    else{
+                        setLightMode();
+                        user.setLightMode(true); 
+                    }
+                });
+            });
+            //addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
+            //addSettingEvent($("#help")[0], helpSettings, rightContainer);
+            //addSettingEvent($("#logout")[0], closeSession, rightContainer);
         });
     }
 
