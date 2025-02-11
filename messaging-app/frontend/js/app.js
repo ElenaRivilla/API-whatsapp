@@ -190,7 +190,6 @@ function home() {
 }
 
 // Function to initialize the page based on the current URL.
-// TODO: Change the login URL to the correct one and add any additional cases.
 function init() {
     switch (window.location.href) {
         case loginUrl:
