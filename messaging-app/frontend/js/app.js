@@ -3,8 +3,8 @@ import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
-import {generateSettings} from "./settings.js";
-import { generateSearchBar } from "./static.js";
+import {generateSettings, accountSettings} from "./settings.js";
+import {generateRightPanelFund, generateSearchBar} from "./static.js";
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -72,12 +72,14 @@ function home() {
     const settingsButton = $('.settings-bar')[0];
     const searchBar = $(".search-bar");
     const header = $("header");
+    generateRightPanelFund();
 
     if (window.innerWidth < 768) {
         updateDOM(generateSearchBar().html(), searchBar);
         searchBar.addClass("block");
     }
 
+    generateRightPanelFund();
     function addEvents(node, event) {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
         // elemento es el nodo
@@ -118,7 +120,7 @@ function home() {
         }
     }
 
-    function updateDOM(html, section) {
+    function updateDOM(html, section){
         section.empty(); // Limpiar el contenedor antes de agregar nuevos chats
         section.html(html);
         return;
@@ -145,13 +147,32 @@ function home() {
     }
 
     // La parte de Settings:
-    settingsButton.addEventListener("click", () => {
-        updateDOM("", leftContainer);
-        generateSettings(user);
-    });
+
+    function settingsFunctions() {
+        settingsButton.addEventListener("click", () => {
+            updateDOM("", leftContainer);
+            const settings = generateSettings(user);
+            updateDOM(settings.html(), leftContainer);
+    
+            const backButton = $('.back-button');
+            backButton.on("click", () => {
+                loadFriends();
+            });
+
+            // Creo la constante del boton aquí por que si la pongo arriba, no la detecta.
+            const accountSettingButton = $("#Cuenta");
+            accountSettingButton.on("click", () => {
+                updateDOM("", rightContainer);
+
+                const cuenta = accountSettings();
+                updateDOM(cuenta.html(), rightContainer);
+            });
+        });
+    }
+    settingsFunctions();
 
     // La parte de Contacts:
-
+    
 
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
