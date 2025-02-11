@@ -3,7 +3,7 @@ import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser } from "./apiManager.js";
 import { User } from "./user.js" 
 import { generateChats, generateChat } from "./chat.js";
-import {generateSettings, accountSettings} from "./settings.js";
+import {generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession} from "./settings.js";
 import {generateRightPanelFund} from "./static.js";
 
 // TODO Remove liveServerPrefix when deploying the app
@@ -136,7 +136,6 @@ function home(){
     }
 
     // La parte de Settings:
-
     function settingsFunctions() {
         settingsButton.addEventListener("click", () => {
             updateDOM("", leftContainer);
@@ -152,9 +151,43 @@ function home(){
             const accountSettingButton = $("#Cuenta");
             accountSettingButton.on("click", () => {
                 updateDOM("", rightContainer);
-
                 const cuenta = accountSettings();
                 updateDOM(cuenta.html(), rightContainer);
+            });
+
+            const privacitySettingButton = $("#Privacidad");
+            privacitySettingButton.on("click", () => {
+                updateDOM("", rightContainer);
+                const privacity = privacitySettings();
+                updateDOM(privacity.html(), rightContainer);
+            });
+
+            const chatSettingButton = $("#Chats");
+            chatSettingButton.on("click", () => {
+                updateDOM("", rightContainer);
+                const chat = chatSettings();
+                updateDOM(chat.html(), rightContainer);
+            });
+
+            const notificationSettingButton = $("#Notifiaciones");
+            notificationSettingButton.on("click", () => {
+                updateDOM("", rightContainer);
+                const notify = notificationSettings();
+                updateDOM(notify.html(), rightContainer);
+            });
+
+            const helpSettingButton = $("#Ayuda");
+            helpSettingButton.on("click", () => {
+                updateDOM("", rightContainer);
+                const help = helpSettings();
+                updateDOM(help.html(), rightContainer);
+            });
+
+            const closeSessionSettingButton = $("#Cerrar Sessión");
+            closeSessionSettingButton.on("click", () => {
+                updateDOM("", rightContainer);
+                const closeSession = closeSession();
+                updateDOM(closeSession.html(), rightContainer);
             });
         });
     }

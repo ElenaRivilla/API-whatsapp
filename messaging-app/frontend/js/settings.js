@@ -27,6 +27,7 @@ export function generateSettings(user) {
     const settingsItems = [
         { imgSrc: "../assets/svg/profile.svg", text: "Cuenta" },
         { imgSrc: "../assets/svg/padlock.svg", text: "Privacidad" },
+        { imgSrc: "../assets/svg/chatBlue.svg", text: "Chats" },
         { imgSrc: "../assets/svg/notifications.svg", text: "Notificaciones" },
         { imgSrc: "../assets/svg/help.svg", text: "Ayuda" },
         { imgSrc: "../assets/svg/logout.svg", text: "Cerrar sesión", imgClass: "h-9 ml-1" }
@@ -46,8 +47,6 @@ export function generateSettings(user) {
     settingsContainer.append(settingsBar, profileContainer, separator, listSettings);
     return settingsContainer;
 }
-
-
 
 export function accountSettings() {
     const rightContainer = $(".chats");
@@ -71,4 +70,40 @@ export function accountSettings() {
     accountContainer.append(title, nameLabel, bioLabel, span);
     rightContainer.append(accountContainer);
     return rightContainer;
+}
+
+
+export function privacitySettings(){
+
+}
+
+
+export function chatSettings(){
+    const rightContainer = $(".chats");
+    const accountContainer = $("<div>").addClass("account-settings p-6");
+    const title = $("<h2>").addClass("text-2xl font-bold mb-4").text("Configuración de Chats");
+
+    const label = $("<label>").addClass("relative inline-block w-20 h-8");
+    const span = $("<span>").addClass("relative inline-block font-medium w-40 h-8").text("Cambiar modo");
+    const inputCheck = $("<input>").addClass("sr-only peer").attr("type", "checkbox");
+    const modeDiv = $("<div>").addClass("w-20 h-full bg-gray-400 rounded-full cursor-pointer transition duration-300 peer-checked:bg-blue-600 peer-checked:before:translate-x-12 peer-checked:before:bg- before:content-[''] before:absolute before:top-1 before:left-1 before:bg-white before:w-6 before:h-6 before:rounded-full before:transition before:duration-300");
+    label.append(inputCheck, modeDiv);
+    span.append(label);
+    accountContainer.append(title, span);
+    rightContainer.append(accountContainer);
+    return rightContainer;
+
+}
+
+
+export function notificationSettings(){
+
+}
+
+export function helpSettings(){
+
+}
+
+export function closeSession(){
+
 }
