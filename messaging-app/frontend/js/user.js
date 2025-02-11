@@ -4,6 +4,7 @@ export class User{
         this.bio = newUser['bio'];
         this.image = newUser['image'];
         this.hasOpenChat = false;
+        this.lightMode = true;
     }
 
     setOpenChat(bool){
@@ -12,6 +13,14 @@ export class User{
             return;
         }
         return new Error("El parametro de setOpenChat ha de ser un booleano");        
+    }
+
+    setLightMode(bool){
+        if (typeof(bool) == "boolean"){
+            this.lightMode = bool;
+            return;
+        }
+        return new Error("El parametro de setOpenChat ha de ser un booleano");   
     }
 
     toString(){

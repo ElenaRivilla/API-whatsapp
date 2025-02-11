@@ -4,7 +4,7 @@ import { userExists, getUsersHome, getMessagesUser, getContacts } from "./apiMan
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import {generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession} from "./settings.js";
-import {generateRightPanelFund, generateSearchBar} from "./static.js";
+import {generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode} from "./static.js";
 import {generateContacts} from "./contactsList.js";
 
 // TODO Remove liveServerPrefix when deploying the app
@@ -166,50 +166,35 @@ function home() {
                 generateRightPanelFund();
                 loadFriends();
             });
-
-            // Creo la constante del boton aquí por que si la pongo arriba, no la detecta.
-            const accountSettingButton = $("#Cuenta");
-            accountSettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const cuenta = accountSettings();
-                updateDOM(cuenta.html(), rightContainer);
+            
+            $("#account")[0].addEventListener("click", () => {
+                updateDOM(accountSettings(user).html(), rightContainer);
             });
-
-            const privacitySettingButton = $("#Privacidad");
-            privacitySettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const privacity = privacitySettings();
-                updateDOM(privacity.html(), rightContainer);
+            //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
+            $("#chats")[0].addEventListener('click', () => {
+                updateDOM(chatSettings().html(), rightContainer);
+                $(".modeChanger")[0].addEventListener('click', () =>{
+                    if(user.lightMode){
+                        setDarkMode();
+                        user.setLightMode(false);
+                    }
+                    else{
+                        setLightMode();
+                        user.setLightMode(true); 
+                    }
+                });
             });
-
-            const chatSettingButton = $("#Chats");
-            chatSettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const chat = chatSettings();
-                updateDOM(chat.html(), rightContainer);
-            });
-
-            const notificationSettingButton = $("#Notifiaciones");
-            notificationSettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const notify = notificationSettings();
-                updateDOM(notify.html(), rightContainer);
-            });
-
-            const helpSettingButton = $("#Ayuda");
-            helpSettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const help = helpSettings();
-                updateDOM(help.html(), rightContainer);
-            });
-
-            const closeSessionSettingButton = $("#Cerrar Sessión");
-            closeSessionSettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const closeSession = closeSession();
-                updateDOM(closeSession.html(), rightContainer);
+            addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
+            addSettingEvent($("#help")[0], helpSettings, rightContainer);
+            $("#logout")[0].addEventListener("click", () => {
+                closeSession(loginUrl);
             });
         });
+    }
+
+    if (window.innerWidth < 768) {
+        updateDOM(generateSearchBar().html(), searchBar);
+        searchBar.addClass("block");
     }
     settingsFunctions();
 
@@ -256,7 +241,6 @@ function home() {
 }
 
 // Function to initialize the page based on the current URL.
-// TODO: Change the login URL to the correct one and add any additional cases.
 function init() {
     switch (window.location.href) {
         case loginUrl:
