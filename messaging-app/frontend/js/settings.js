@@ -1,5 +1,4 @@
 
-
 export function generateSettings(user) {
     const settingsContainer = $(".scrollbar-custom");
 
@@ -98,6 +97,9 @@ export function helpSettings(){
 
 }
 
-export function closeSession(){
+export function closeSession(url){
+    document.cookie = "token= expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict";
+    document.cookie = "user= expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict";
 
+    window.location.href = url;
 }

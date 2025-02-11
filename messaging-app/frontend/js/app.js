@@ -198,7 +198,7 @@ function home() {
             const closeSessionSettingButton = $("#Cerrar Sessión");
             closeSessionSettingButton.on("click", () => {
                 updateDOM("", rightContainer);
-                const closeSession = closeSession();
+                const closeSession = closeSession(loginUrl);
                 updateDOM(closeSession.html(), rightContainer);
             });
         });
