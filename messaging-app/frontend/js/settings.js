@@ -1,8 +1,5 @@
-
-
 export function generateSettings(user) {
-    const settingsContainer = $(".scrollbar-custom");
-
+    const html = $("<div>");
     const settingsBar = $('<div>').addClass('settings-bar h-14 flex items-center');
     const backButton = $('<button>').addClass('back-button p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center');
     const backLink = $('<a>');
@@ -25,17 +22,17 @@ export function generateSettings(user) {
     const settingsList = $("<ul>").addClass("flex flex-col h-full space-y-6");
 
     const settingsItems = [
-        { imgSrc: "../assets/svg/profile.svg", text: "Cuenta" },
-        { imgSrc: "../assets/svg/padlock.svg", text: "Privacidad" },
-        { imgSrc: "../assets/svg/chatBlue.svg", text: "Chats" },
-        { imgSrc: "../assets/svg/notifications.svg", text: "Notificaciones" },
-        { imgSrc: "../assets/svg/help.svg", text: "Ayuda" },
-        { imgSrc: "../assets/svg/logout.svg", text: "Cerrar sesión", imgClass: "h-9 ml-1" }
+        { imgSrc: "../assets/svg/profile.svg", text: "Cuenta", id: "account"},
+        { imgSrc: "../assets/svg/padlock.svg", text: "Privacidad", id: "privacy"},
+        { imgSrc: "../assets/svg/chatBlue.svg", text: "Chats", id: "chats"},
+        { imgSrc: "../assets/svg/notifications.svg", text: "Notificaciones", id: 'notifications'},
+        { imgSrc: "../assets/svg/help.svg", text: "Ayuda", id: 'help'},
+        { imgSrc: "../assets/svg/logout.svg", text: "Cerrar sesión", imgClass: "h-9 ml-1", id: 'logout'}
     ];
 
     settingsItems.forEach(item => {
         const button = $("<button>");
-        const listItem = $("<li>").addClass("flex items-center").attr("id", item.text);
+        const listItem = $("<li>").addClass("flex items-center").attr({"text": item.text, 'id': item.id});
         const img = $("<img>").addClass(item.imgClass || "h-10").attr("src", item.imgSrc);
         const text = $("<h2>").addClass("ml-4 text-xl").text(item.text);
         listItem.append(img, text);
@@ -44,12 +41,12 @@ export function generateSettings(user) {
     });
 
     listSettings.append(settingsList);
-    settingsContainer.append(settingsBar, profileContainer, separator, listSettings);
-    return settingsContainer;
+    html.append(settingsBar, profileContainer, separator, listSettings);
+    return html;
 }
 
 export function accountSettings() {
-    const rightContainer = $(".chats");
+    const html = $("<div>");
     const accountContainer = $("<div>").addClass("account-settings p-10");
     const title = $("<h2>").addClass("text-2xl font-bold mb-4").text("Configuración de Cuenta");
 
@@ -68,18 +65,16 @@ export function accountSettings() {
     label.append(inputCheck, modeDiv);
     span.append(label);
     accountContainer.append(title, nameLabel, bioLabel, span);
-    rightContainer.append(accountContainer);
-    return rightContainer;
+    html.append(accountContainer);
+    return html;
 }
-
 
 export function privacitySettings(){
 
 }
 
-
 export function chatSettings(){
-    const rightContainer = $(".chats");
+    const html = $("<div>");
     const accountContainer = $("<div>").addClass("account-settings p-6");
     const title = $("<h2>").addClass("text-2xl font-bold mb-4").text("Configuración de Chats");
 
@@ -90,11 +85,10 @@ export function chatSettings(){
     label.append(inputCheck, modeDiv);
     span.append(label);
     accountContainer.append(title, span);
-    rightContainer.append(accountContainer);
-    return rightContainer;
+    html.append(accountContainer);
+    return html;
 
 }
-
 
 export function notificationSettings(){
 

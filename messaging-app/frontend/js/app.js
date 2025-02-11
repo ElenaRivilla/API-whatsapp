@@ -82,10 +82,12 @@ function home() {
         }
     }
 
-    function addSettingEvent(element, event, container){
-        element.addEventListener("click", () => {
+    function addSettingEvent(element, event, container, loadchahts = ''){
+        element.addEventListener('click', () => {
             updateDOM(event().html(), container);
         });
+        //if (loadchahts) loadFriends();
+        return;
     }
 
     function getUsernameFromNode(node) {
@@ -148,21 +150,14 @@ function home() {
     // La parte de Settings:
     function settingsFunctions() {
         settingsButton.addEventListener("click", () => {
-            leftContainer.empty();
             updateDOM(generateSettings(user).html(), leftContainer);
-    
-            const backButton = $('.back-button');
-            backButton.addEventListener("click", () => {
-                updateDOM(generateRightPanelFund().html(), rightContainer);
-                loadFriends();
-            });
-
-            addSettingEvent($("#Cuenta"), accountSettings, rightContainer);
-            addSettingEvent($$("#Privacidad"), privacitySettings, rightContainer);
-            addSettingEvent($("#Chats"), chatSettings, rightContainer);
-            addSettingEvent($("#Notifiaciones"), notificationSettings, rightContainer);
-            addSettingEvent($("#Ayuda"), helpSettings, rightContainer);
-            addSettingEvent($("#Cerrar Sessión"), closeSession, rightContainer);
+            addSettingEvent($('.back-button')[0], generateRightPanelFund, rightContainer, "reloadChats");
+            addSettingEvent($("#account")[0], accountSettings, rightContainer);
+            addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
+            addSettingEvent($("#chats")[0], chatSettings, rightContainer);
+            addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
+            addSettingEvent($("#help")[0], helpSettings, rightContainer);
+            addSettingEvent($("#logout")[0], closeSession, rightContainer);
         });
     }
 
