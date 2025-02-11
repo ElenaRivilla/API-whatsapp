@@ -163,7 +163,16 @@ def getFriends(username: str, request: Request):
         userId = verify_token(request.cookies.get("token"))
         if userId == db.getUserId(username):
             friendsList = db.getFriends(db.getUserId(username))
-        return friendsList
+        data = {
+            "friends": [
+            {
+                "username": friend['username'],
+                "image": friend['image'],
+                "bio": friend['bio']
+            } for friend in friendsList
+            ]
+        }
+        return data
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acceso denegado")
     except Exception as e:
         raise e

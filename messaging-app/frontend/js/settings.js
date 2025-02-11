@@ -11,10 +11,10 @@ export function generateSettings(user) {
     const settingsTitle = $("<h3>").addClass("text-xl ml-4").text("Ajustes");
     settingsBar.append(backButton, settingsTitle);
     const profileContainer = $('<div>').addClass('profile-container h-24 flex items-center my-5');
-    const contenedorUser = $('<div>').addClass('flex flex-col ml-6');
+    const contenedorUser = $('<div>').addClass('flex flex-col ml-6 w-42');
     const profileImg = $('<img>').addClass('h-16 rounded-full').attr('src', user.image);
-    const profileName = $('<h2>').addClass('text-xl font-bold ').text(user.username);
-    const profileBio = $("<p>").addClass("text-sm w-56 sm:w-62 md:w-62 truncate").text(user.bio);
+    const profileName = $('<h2>').addClass('text-xl font-bold w-42').text(user.username);
+    const profileBio = $("<p>").addClass("text-sm w-56 sm:w-62 md:min-w-30 truncate").text(user.bio);
     contenedorUser.append(profileName, profileBio);
     profileContainer.append(profileImg, contenedorUser);
 
@@ -50,33 +50,24 @@ export function accountSettings(user) {
     const html = $("<div>");
     const accountContainer = $("<div>").addClass("account-settings p-10");
     const title = $("<h2>").addClass("text-2xl font-bold mb-4").text("Configuración de Cuenta");
-    
-    const inputImage = $('<div>').addClass('input-image-container');
-    const img = $('<img>').addClass('h-16 w-16 rounded-full').attr("src", user.image);
+    accountContainer.append(title);
+
+    const imageContainer = $('<div>').addClass('input-image-container');
+    const imageText = $('<p>').addClass('block text-lg font-medium mb-2 mt-4').text('Foto de perfil:');
+    const img = $('<img>').addClass('h-20 w-20 rounded-full').attr("src", user.image);
     const fileInput = $('<input>').attr("type", "file").attr("accept", "image/*").addClass('hidden');
-    inputImage.append(img, fileInput);
+    imageContainer.append(imageText, fileInput, img);
 
-    img.on('click', function() {
-        fileInput.click();
-    });
-
-    fileInput.on('change', function(event) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            img.attr('src', e.target.result);
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    });
-    inputImage.append(img);
-
+    const nameContainer = $('<div>');
     const nameLabel = $("<label>").addClass("block text-lg font-medium mb-2").text("Nombre");
     const nameInput = $("<input>").addClass("w-full p-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("type", "text").attr("placeholder", "Nuevo nombre");
-    accountContainer.append(nameLabel, nameInput);
+    nameContainer.append(nameLabel, nameInput);
 
-    const bioLabel = $("<label>").addClass("block text-lg font-medium mb-2 mt-4").text("Bio");
+    const bioContainer = $('<div>');
+    const bioLabel = $("<label>").addClass("block text-lg font-medium mb-2 mt-4").text("Biografia");
     const bioInput = $("<textarea>").addClass("w-full p-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Nueva bio");
-    accountContainer.append(bioLabel, bioInput);
-    accountContainer.append(title, inputImage, nameLabel, bioLabel);
+    bioContainer.append(bioLabel, bioInput);
+    accountContainer.append(imageContainer, nameContainer, bioContainer);
     html.append(accountContainer);
     return html;
 }
@@ -99,7 +90,6 @@ export function chatSettings(){
     accountContainer.append(title, span);
     html.append(accountContainer);
     return html;
-
 }
 
 export function notificationSettings(){

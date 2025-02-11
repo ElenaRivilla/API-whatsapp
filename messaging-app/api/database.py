@@ -105,7 +105,7 @@ class database(object):
 
     def getFriends(self, userId):
         self.conecta()
-        sql="SELECT id, username, password, bio FROM usuarisclase WHERE id != %s"
+        sql="SELECT id, username, password, bio, image FROM usuarisclase WHERE id != %s"
         self.cursor.execute(sql, (userId))
         ResQuery=self.cursor.fetchall()
         self.desconecta()
