@@ -1,10 +1,11 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid } from "./errControl.js";
-import { userExists, getUsersHome, getMessagesUser } from "./apiManager.js";
+import { userExists, getUsersHome, getMessagesUser, getContacts } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import {generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession} from "./settings.js";
 import {generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode} from "./static.js";
+import {generateContacts} from "./contactsList.js";
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -70,24 +71,24 @@ function home() {
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".chats");
     const settingsButton = $('.settings-bar')[0];
+    const backButton = $('.back-button');
     const searchBar = $(".search-bar");
     const header = $("header");
 
-    function addFriendsEvents(node, event) {
+    if (window.innerWidth < 768) {
+        updateDOM(generateSearchBar().html(), searchBar);
+        searchBar.addClass("block");
+    }
+   
+
+    generateRightPanelFund();
+    function addEvents(node, event) {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
         // elemento es el nodo
         for (let childNode of node[0].children) {
             childNode.addEventListener("click", () => event(childNode));
 
         }
-    }
-
-    function addSettingEvent(element, event, container){
-        element.addEventListener('click', () => {
-            updateDOM(event().html(), container);
-            user.setOpenChat(false);
-        });
-        return;
     }
 
     function getUsernameFromNode(node) {
@@ -106,6 +107,7 @@ function home() {
             $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
             header.removeClass("block").addClass("hidden");
         }
+        
         return;
     }
 
@@ -115,7 +117,7 @@ function home() {
             const response = await getUsersHome();
             const chats = generateChats(response.contacts); // Genera los chats.
             updateDOM(chats.html(), leftContainer);  // Actualiza el DOM con los chats generados.
-            addFriendsEvents(leftContainer, openChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
+            addEvents(leftContainer, openChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
         } catch (error) {
             console.error("Error fetching users:", error);
         }
@@ -132,7 +134,6 @@ function home() {
             const response = await getMessagesUser(user1, user2, loadSize);
             const chat = generateChat(response, user2);
             updateDOM(chat.html(), rightContainer);
-            user.setOpenChat(true);
             // add event listeners?
             if (window.innerWidth < 768) {
                 const backContainer = $(".back-button");
@@ -151,12 +152,18 @@ function home() {
     // La parte de Settings:
     function settingsFunctions() {
         settingsButton.addEventListener("click", () => {
-            updateDOM(generateSettings(user).html(), leftContainer);
-
-            $('.back-button')[0].addEventListener('click', () => {
-                if (!user.hasOpenChat){
-                    updateDOM(generateRightPanelFund().html(), rightContainer);
-                }
+            if (window.innerWidth < 768){
+                header.removeClass("block").addClass("hidden");
+            }
+            updateDOM("", leftContainer);
+            const settings = generateSettings(user);
+            updateDOM(settings.html(), leftContainer);
+    
+            const backButton = $('.back-button');
+            backButton.on("click", () => {
+                header.removeClass("hidden").addClass("block");
+                updateDOM("", rightContainer)
+                generateRightPanelFund();
                 loadFriends();
             });
             
@@ -190,10 +197,37 @@ function home() {
         searchBar.addClass("block");
     }
     settingsFunctions();
+
     // La parte de Contacts:
-    updateDOM(generateRightPanelFund().html(), rightContainer);
-    // TODO setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes?
+    async function contacts(user) {
+        try {
+            const response = await getContacts(user);
+            const contactButton = $(".contact-button");
+            response.friends.sort((a, b) => a.username.localeCompare(b.username));
+
+            contactButton.on("click", () => {
+            if (window.innerWidth < 768) {
+                header.removeClass("block").addClass("hidden");
+            }
+            
+            updateDOM("", leftContainer);
+            const contactHtml = generateContacts(response.friends);
+            updateDOM(contactHtml.html(), leftContainer);
+            });
+            
+        } catch (error) {
+            console.error("Error fetching contacts:", error);
+        }
+    }
+    contacts(user.username);
+
+    
+
+    // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
+    // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
+
     loadFriends();
+
     window.addEventListener('resize', () => {
         updateDOM(generateSearchBar().html(), searchBar);
         if (window.innerWidth > 768) {
