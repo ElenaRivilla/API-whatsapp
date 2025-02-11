@@ -73,19 +73,19 @@ function home() {
     const searchBar = $(".search-bar");
     const header = $("header");
 
-    if (window.innerWidth < 768) {
-        updateDOM(generateSearchBar().html(), searchBar);
-        searchBar.addClass("block");
-    }
-
-    generateRightPanelFund();
-    function addEvents(node, event) {
+    function addFriendsEvents(node, event) {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
         // elemento es el nodo
         for (let childNode of node[0].children) {
             childNode.addEventListener("click", () => event(childNode));
 
         }
+    }
+
+    function addSettingEvent(element, event, container){
+        element.addEventListener("click", () => {
+            updateDOM(event().html(), container);
+        });
     }
 
     function getUsernameFromNode(node) {
@@ -113,7 +113,7 @@ function home() {
             const response = await getUsersHome();
             const chats = generateChats(response.contacts); // Genera los chats.
             updateDOM(chats.html(), leftContainer);  // Actualiza el DOM con los chats generados.
-            addEvents(leftContainer, openChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
+            addFriendsEvents(leftContainer, openChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
         } catch (error) {
             console.error("Error fetching users:", error);
         }
@@ -148,71 +148,33 @@ function home() {
     // La parte de Settings:
     function settingsFunctions() {
         settingsButton.addEventListener("click", () => {
-            updateDOM("", leftContainer);
-            const settings = generateSettings(user);
-            updateDOM(settings.html(), leftContainer);
+            leftContainer.empty();
+            updateDOM(generateSettings(user).html(), leftContainer);
     
             const backButton = $('.back-button');
-            backButton.on("click", () => {
-                updateDOM("", rightContainer)
-                generateRightPanelFund();
+            backButton.addEventListener("click", () => {
+                updateDOM(generateRightPanelFund().html(), rightContainer);
                 loadFriends();
             });
 
-            // Creo la constante del boton aquí por que si la pongo arriba, no la detecta.
-            const accountSettingButton = $("#Cuenta");
-            accountSettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const cuenta = accountSettings();
-                updateDOM(cuenta.html(), rightContainer);
-            });
-
-            const privacitySettingButton = $("#Privacidad");
-            privacitySettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const privacity = privacitySettings();
-                updateDOM(privacity.html(), rightContainer);
-            });
-
-            const chatSettingButton = $("#Chats");
-            chatSettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const chat = chatSettings();
-                updateDOM(chat.html(), rightContainer);
-            });
-
-            const notificationSettingButton = $("#Notifiaciones");
-            notificationSettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const notify = notificationSettings();
-                updateDOM(notify.html(), rightContainer);
-            });
-
-            const helpSettingButton = $("#Ayuda");
-            helpSettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const help = helpSettings();
-                updateDOM(help.html(), rightContainer);
-            });
-
-            const closeSessionSettingButton = $("#Cerrar Sessión");
-            closeSessionSettingButton.on("click", () => {
-                updateDOM("", rightContainer);
-                const closeSession = closeSession();
-                updateDOM(closeSession.html(), rightContainer);
-            });
+            addSettingEvent($("#Cuenta"), accountSettings, rightContainer);
+            addSettingEvent($$("#Privacidad"), privacitySettings, rightContainer);
+            addSettingEvent($("#Chats"), chatSettings, rightContainer);
+            addSettingEvent($("#Notifiaciones"), notificationSettings, rightContainer);
+            addSettingEvent($("#Ayuda"), helpSettings, rightContainer);
+            addSettingEvent($("#Cerrar Sessión"), closeSession, rightContainer);
         });
     }
+
+    if (window.innerWidth < 768) {
+        updateDOM(generateSearchBar().html(), searchBar);
+        searchBar.addClass("block");
+    }
     settingsFunctions();
-
     // La parte de Contacts:
-    
-
-    // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
-    // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
-
+    generateRightPanelFund();
+    // TODO setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes?
     loadFriends();
-
     window.addEventListener('resize', () => {
         updateDOM(generateSearchBar().html(), searchBar);
         if (window.innerWidth > 768) {
