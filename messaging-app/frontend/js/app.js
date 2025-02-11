@@ -82,11 +82,10 @@ function home() {
         }
     }
 
-    function addSettingEvent(element, event, container, loadchahts = ''){
+    function addSettingEvent(element, event, container){
         element.addEventListener('click', () => {
             updateDOM(event().html(), container);
         });
-        //if (loadchahts) loadFriends();
         return;
     }
 
@@ -151,7 +150,11 @@ function home() {
     function settingsFunctions() {
         settingsButton.addEventListener("click", () => {
             updateDOM(generateSettings(user).html(), leftContainer);
-            addSettingEvent($('.back-button')[0], generateRightPanelFund, rightContainer, "reloadChats");
+
+            $('.back-button')[0].addEventListener('click', () => {
+                updateDOM(generateRightPanelFund().html(), rightContainer);
+                loadFriends();
+            });
             addSettingEvent($("#account")[0], accountSettings, rightContainer);
             addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
             addSettingEvent($("#chats")[0], chatSettings, rightContainer);
@@ -167,7 +170,7 @@ function home() {
     }
     settingsFunctions();
     // La parte de Contacts:
-    generateRightPanelFund();
+    updateDOM(generateRightPanelFund().html(), rightContainer);
     // TODO setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes?
     loadFriends();
     window.addEventListener('resize', () => {
