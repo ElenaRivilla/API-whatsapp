@@ -154,6 +154,8 @@ function home() {
     
             const backButton = $('.back-button');
             backButton.on("click", () => {
+                updateDOM("", rightContainer)
+                generateRightPanelFund();
                 loadFriends();
             });
 
