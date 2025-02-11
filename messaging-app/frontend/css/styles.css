@@ -28,10 +28,6 @@ body{
     stroke: #ffffff; /* Cambiar el color del relleno del círculo */
 }
 
-.icon {
-    fill: var(--accent-color);
-}
-
 .filterButton {
     background-color: var(--container-color);
 }
