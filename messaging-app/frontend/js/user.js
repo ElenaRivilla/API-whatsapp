@@ -3,6 +3,15 @@ export class User{
         this.username = newUser['username'];
         this.bio = newUser['bio'];
         this.image = newUser['image'];
+        this.hasOpenChat = false;
+    }
+
+    setOpenChat(bool){
+        if (typeof(bool) == "boolean"){
+            this.hasOpenChat = bool;
+            return;
+        }
+        return new Error("El parametro de setOpenChat ha de ser un booleano");        
     }
 
     toString(){
