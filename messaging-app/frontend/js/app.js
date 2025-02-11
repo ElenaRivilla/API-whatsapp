@@ -85,6 +85,7 @@ function home() {
     function addSettingEvent(element, event, container){
         element.addEventListener('click', () => {
             updateDOM(event().html(), container);
+            user.setOpenChat(false);
         });
         return;
     }
@@ -131,6 +132,7 @@ function home() {
             const response = await getMessagesUser(user1, user2, loadSize);
             const chat = generateChat(response, user2);
             updateDOM(chat.html(), rightContainer);
+            user.setOpenChat(true);
             // add event listeners?
             if (window.innerWidth < 768) {
                 const backContainer = $(".back-button");
@@ -152,7 +154,9 @@ function home() {
             updateDOM(generateSettings(user).html(), leftContainer);
 
             $('.back-button')[0].addEventListener('click', () => {
-                updateDOM(generateRightPanelFund().html(), rightContainer);
+                if (!user.hasOpenChat){
+                    updateDOM(generateRightPanelFund().html(), rightContainer);
+                }
                 loadFriends();
             });
             addSettingEvent($("#account")[0], accountSettings, rightContainer);
