@@ -58,13 +58,7 @@ export function accountSettings() {
     const bioInput = $("<textarea>").addClass("w-full p-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Nueva bio");
     bioLabel.append(bioInput);
 
-    const label = $("<label>").addClass("relative inline-block w-20 h-8");
-    const span = $("<span>").addClass("relative inline-block font-medium w-40 h-8").text("Cambiar modo");
-    const inputCheck = $("<input>").addClass("sr-only peer rounded").attr("type", "checkbox");
-    const modeDiv = $("<div>").addClass("w-20 h-full bg-gray-400 rounded-full cursor-pointer transition duration-300 peer-checked:bg-[#468FAF] peer-checked:before:translate-x-12 peer-checked:before:bg- before:content-[''] before:absolute before:top-1 before:left-1 before:bg-white before:w-6 before:h-6 before:rounded-full before:transition before:duration-300");
-    label.append(inputCheck, modeDiv);
-    span.append(label);
-    accountContainer.append(title, nameLabel, bioLabel, span);
+    accountContainer.append(title, nameLabel, bioLabel);
     rightContainer.append(accountContainer);
     return rightContainer;
 }
@@ -80,8 +74,8 @@ export function chatSettings(){
 
     const label = $("<label>").addClass("relative inline-block w-20 h-8");
     const span = $("<span>").addClass("relative inline-block font-medium w-40 h-8").text("Cambiar modo");
-    const inputCheck = $("<input>").addClass("sr-only peer").attr("type", "checkbox");
-    const modeDiv = $("<div>").addClass("w-20 h-full bg-gray-400 rounded-full cursor-pointer transition duration-300 peer-checked:bg-blue-600 peer-checked:before:translate-x-12 peer-checked:before:bg- before:content-[''] before:absolute before:top-1 before:left-1 before:bg-white before:w-6 before:h-6 before:rounded-full before:transition before:duration-300");
+    const inputCheck = $("<input>").addClass("sr-only peer rounded").attr("type", "checkbox");
+    const modeDiv = $("<div>").addClass("w-20 h-full bg-gray-400 rounded-full cursor-pointer transition duration-300 peer-checked:bg-[#468FAF] peer-checked:before:translate-x-12 peer-checked:before:bg- before:content-[''] before:absolute before:top-1 before:left-1 before:bg-white before:w-6 before:h-6 before:rounded-full before:transition before:duration-300");
     label.append(inputCheck, modeDiv);
     span.append(label);
     accountContainer.append(title, span);
