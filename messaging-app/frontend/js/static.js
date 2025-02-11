@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", cargaDOM);
 
 function cargaDOM() {
     generateRightPanelFund();
-    generateHeaderMobile();
+    generateSearchBar();
 }
 
 function generateRightPanelFund() {
@@ -24,9 +24,9 @@ function generateRightPanelFund() {
     footerContiner.append(footerText, footerSVG);
 }
 
-export function generateHeaderMobile() {
-    const fatherContainer = $("<div>").addClass("block sm:hidden md:hidden");
-    const headerContainer = $("<div>").addClass("w-full h-20 flex justify-between items-center py-2 px-4");
+export function generateSearchBar() {
+    const html = $("<div>");
+    /* const headerContainer = $("<div>").addClass("w-full h-20 flex justify-between items-center py-2 px-4");
 
     const leftContainer = $("<div>").addClass("flex items-center");
     const icon1 = $("<img>").addClass("h-8 mr-2").attr("src", "../assets/svg/settings.svg");
@@ -38,15 +38,15 @@ export function generateHeaderMobile() {
     rightContainer.append(logo);
 
     headerContainer.append(leftContainer, rightContainer);
-    fatherContainer.append(headerContainer);
+    fatherContainer.append(headerContainer); */
 
-    const searchBar = $('<div>').addClass("container-search flex items-center py-2 rounded-md my-3");
+    const searchBar = $('<div>').addClass("container-search flex items-center py-2 rounded-md my-3 sm:block md:hidden");
     const searchWrapper = $('<div>').addClass("relative w-full flex items-center");
-    const searchInput = $('<input>').addClass("input-search flex-grow h-10 w-full rounded-full pl-10 border focus:border-[#468FAF] focus:ring-0").attr("type", "search").attr("placeholder", "Buscar contactos...");
+    const searchInput = $('<input>').addClass("input-search flex-grow h-10 w-full rounded-full pl-10 border focus:outline-none focus:ring-2 focus:ring-[#A9D6E5] focus:border-[#A9D6E5]").attr("type", "search").attr("placeholder", "Buscar contactos...");
     const searchIcon = $("<img>").addClass("h-5 absolute left-3").attr("src", "../assets/svg/search.svg");
 
     searchWrapper.append(searchInput, searchIcon);
     searchBar.append(searchWrapper);
-    fatherContainer.append(searchBar);
-    return fatherContainer;
+    html.append(searchBar);
+    return html;
 }
