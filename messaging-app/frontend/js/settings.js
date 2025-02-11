@@ -50,33 +50,24 @@ export function accountSettings(user) {
     const html = $("<div>");
     const accountContainer = $("<div>").addClass("account-settings p-10");
     const title = $("<h2>").addClass("text-2xl font-bold mb-4").text("Configuración de Cuenta");
-    
+    accountContainer.append(title);
+
     const imageContainer = $('<div>').addClass('input-image-container');
-    const img = $('<img>').addClass('h-16 w-16 rounded-full').attr("src", user.image);
+    const imageText = $('<p>').addClass('block text-lg font-medium mb-2 mt-4').text('Foto de perfil:');
+    const img = $('<img>').addClass('h-20 w-20 rounded-full').attr("src", user.image);
     const fileInput = $('<input>').attr("type", "file").attr("accept", "image/*").addClass('hidden');
+    imageContainer.append(imageText, fileInput, img);
 
-    img.on('click', function() {
-        fileInput.click();
-    });
-
-    fileInput.on('change', function(event) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            img.attr('src', e.target.result);
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    });
-    imageContainer.append(fileInput, img);
     const nameContainer = $('<div>');
     const nameLabel = $("<label>").addClass("block text-lg font-medium mb-2").text("Nombre");
     const nameInput = $("<input>").addClass("w-full p-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("type", "text").attr("placeholder", "Nuevo nombre");
     nameContainer.append(nameLabel, nameInput);
 
     const bioContainer = $('<div>');
-    const bioLabel = $("<label>").addClass("block text-lg font-medium mb-2 mt-4").text("Bio");
+    const bioLabel = $("<label>").addClass("block text-lg font-medium mb-2 mt-4").text("Biografia");
     const bioInput = $("<textarea>").addClass("w-full p-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Nueva bio");
     bioContainer.append(bioLabel, bioInput);
-    accountContainer.append(nameContainer, bioContainer);
+    accountContainer.append(imageContainer, nameContainer, bioContainer);
     html.append(accountContainer);
     return html;
 }
