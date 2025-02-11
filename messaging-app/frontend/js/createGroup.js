@@ -44,9 +44,9 @@ function generateContacts() {
             const profileImage = $("<img>").addClass("profile-image sm:min-h-18 sm:min-w-18 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", contact.imageUrl);
             containerImage.append(profileImage);
     
-            const containerInfo = $("<div>").addClass("container-info truncate w-full h-20 p-0 md:p-0 lg:p-4 flex flex-col justify-center items-start");
+            const containerInfo = $("<div>").addClass("container-info truncate w-full p-2 h-20 md:p-1 lg:p-4 flex flex-col justify-center items-start");
             const username = $("<h3>").addClass("username text-base sm:text-2xl md:text-lg lg:text-lg font-bold block md:hidden lg:block").text(contact.username);
-            const bio = $("<p>").addClass("message truncate block sm:block md:hidden lg:block").text(contact.bio);
+            const bio = $("<p>").addClass("message truncate block sm:block md:hidden lg:block text-xs w-56 sm:w-62 md:w-62 truncate").text(contact.bio);
             containerInfo.append(username).append(bio);
     
             chatDiv.append(containerImage).append(containerInfo);
@@ -65,7 +65,7 @@ function generateContacts() {
         renderContacts(filteredContacts); // Actualizamos la lista de contactos con los contactos que coinciden con el texto introducido
     });
 
-    const groupContainer = $("<div>").addClass("container-group flex items-center justify-center h-12 sm:w-1/8 sm:h-5 md:my-0 md:my-3 md:mx-3 lg:mb-3 max-h-12 lg:h-20 sm:my-6 md:flex md:items-center md:justify-center");
+   /*  const groupContainer = $("<div>").addClass("container-group flex items-center justify-center h-12 sm:w-1/8 sm:h-5 md:my-0 md:my-3 md:mx-3 lg:mb-3 max-h-12 lg:h-20 sm:my-6 md:flex md:items-center md:justify-center");
     const nextButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
     const nextImg = $("<img>").addClass("h-5 transform rotate-180").attr("src", "../assets/svg/arrow.svg");
     const groupLink = $('<a>', { href: './createGroup.html' });
@@ -73,6 +73,6 @@ function generateContacts() {
     nextButton.append(groupLink)
     groupContainer.append(nextButton);
 
-    buttonContainer.append(groupContainer);
+    buttonContainer.append(groupContainer); */
 }
 

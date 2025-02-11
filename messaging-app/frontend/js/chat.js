@@ -5,7 +5,7 @@ export function generateChats(chats){
     for (let chat of chats) {
         chatDiv = $("<div>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-18 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center");
         containerImage = $("<div>").addClass("container-image w-20 h-20 sm:w-28 sm:h-28 md:w-20 md:h-14 flex justify-center items-center");
-        profileImage = $("<img>").addClass("profile-image h-20 w-20 sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-20 min-w-20 max-h-16 max-w-16 rounded-full").attr("src", chat['imageUrl']);
+        profileImage = $("<img>").addClass("profile-image h-20 w-20 sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-11 min-w-11 max-h-16 max-w-16 rounded-full").attr("src", chat['imageUrl']);
         containerImage.append(profileImage);
 
         containerInfo = $("<div>").addClass("container-info truncate w-full p-2 h-20 md:p-1 lg:p-4 flex flex-col justify-center items-start");
@@ -13,7 +13,7 @@ export function generateChats(chats){
         message = $("<p>").addClass("message truncate block text-sm sm:text-sm sm:block md:text-sm md:hidden lg:text-sm lg:block").text(chat['message']);
         containerInfo.append(username).append(message);
 
-        dateContainer = $("<div>").addClass("flex flex-col justify-center items-center m-4 md:m-0");
+        dateContainer = $("<div>").addClass("flex flex-col justify-center items-center m-4 md:m-4");
         date = $("<h5>").addClass("date text-sm").text(chat.time);
         dateContainer.append(date);
 
@@ -37,8 +37,8 @@ function generateMessages(response, user){
     const html = $("<div>").addClass("messages-container overflow-y-auto custom-scrollbar w-full px-6 justify-center h-[85%]");
     let infoFriend = $("<div>").addClass("info-friend h-[10%] flex-col items-center w-full sticky top-0 bg-gray-100 z-10");
     let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full");
-    let backButton = $('<button>').addClass('p-2 bg-[#468FAF] rounded-full h-7 w-7 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden');
-    let backLink = $('<a>').attr('href', './chatsList.html').addClass('flex items-center justify-center w-full h-full');
+    let backButton = $('<button>').addClass('back-button p-2 bg-[#468FAF] rounded-full h-7 w-7 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden');
+    let backLink = $('<a>').addClass('back-button flex items-center justify-center w-full h-full');
     let backImg = $('<img>').addClass('w-3').attr('src', '../assets/svg/arrow.svg');
     let profileImage = $("<img>").attr("src", response['imageUrl']).attr("alt", "Profile Image").addClass("w-11 sm:w-16 md:w-[4'5rem] sm:mr-4 rounded-full");
     let friendName = $("<h3>").addClass("text-xl sm:text-2xl font-bold ml-3").text(user);
