@@ -78,8 +78,7 @@ function home() {
         updateDOM(generateSearchBar().html(), searchBar);
         searchBar.addClass("block");
     }
-
-    generateRightPanelFund();
+    
     function addEvents(node, event) {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
         // elemento es el nodo
