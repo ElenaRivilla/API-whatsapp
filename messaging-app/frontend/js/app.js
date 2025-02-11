@@ -159,8 +159,9 @@ function home() {
                 }
                 loadFriends();
             });
+            
             $("#account")[0].addEventListener("click", () => {
-                accountSettings(user);
+                updateDOM(accountSettings(user).html(), rightContainer);
             });
             addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
             addSettingEvent($("#chats")[0], chatSettings, rightContainer);

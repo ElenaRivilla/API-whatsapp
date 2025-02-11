@@ -69,15 +69,16 @@ export function accountSettings(user) {
         reader.readAsDataURL(event.target.files[0]);
     });
     inputImage.append(img);
-
+    const nameContainer = $('<div>');
     const nameLabel = $("<label>").addClass("block text-lg font-medium mb-2").text("Nombre");
     const nameInput = $("<input>").addClass("w-full p-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("type", "text").attr("placeholder", "Nuevo nombre");
-    accountContainer.append(nameLabel, nameInput);
+    nameContainer.append(nameLabel, nameInput);
 
+    const bioContainer = $('<div>');
     const bioLabel = $("<label>").addClass("block text-lg font-medium mb-2 mt-4").text("Bio");
     const bioInput = $("<textarea>").addClass("w-full p-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Nueva bio");
-    accountContainer.append(bioLabel, bioInput);
-    accountContainer.append(title, inputImage, nameLabel, bioLabel);
+    bioContainer.append(bioLabel, bioInput);
+    accountContainer.append(nameContainer, bioContainer);
     html.append(accountContainer);
     return html;
 }
@@ -100,7 +101,6 @@ export function chatSettings(){
     accountContainer.append(title, span);
     html.append(accountContainer);
     return html;
-
 }
 
 export function notificationSettings(){
