@@ -60,14 +60,15 @@ export function accountSettings() {
 
     const bioLabel = $("<label>").addClass("block text-lg font-medium mb-2 mt-4").text("Bio");
     const bioInput = $("<textarea>").addClass("w-full p-2 border rounded").attr("placeholder", "Nueva bio");
-    bioLabel.append(bioInput); 
+    bioLabel.append(bioInput);
 
-    const label = $("<label>").addClass("relative inline-block w-20 h-8").text("Cambiar modo:");
+    const label = $("<label>").addClass("relative inline-block w-20 h-8");
+    const span = $("<span>").addClass("relative inline-block font-medium w-40 h-8").text("Cambiar modo");
     const inputCheck = $("<input>").addClass("sr-only peer").attr("type", "checkbox");
-    const modeDiv = $("<div>").addClass("w-full h-full bg-gray-400 rounded-full cursor-pointer transition duration-300 peer-checked:bg-blue-600 peer-checked:before:translate-x-12 peer-checked:before:bg- before:content-[''] before:absolute before:top-1 before:left-1 before:bg-white before:w-6 before:h-6 before:rounded-full before:transition before:duration-300");
-    
+    const modeDiv = $("<div>").addClass("w-20 h-full bg-gray-400 rounded-full cursor-pointer transition duration-300 peer-checked:bg-blue-600 peer-checked:before:translate-x-12 peer-checked:before:bg- before:content-[''] before:absolute before:top-1 before:left-1 before:bg-white before:w-6 before:h-6 before:rounded-full before:transition before:duration-300");
     label.append(inputCheck, modeDiv);
-    accountContainer.append(title, nameLabel, bioLabel, label);
+    span.append(label);
+    accountContainer.append(title, nameLabel, bioLabel, span);
     rightContainer.append(accountContainer);
     return rightContainer;
 }
