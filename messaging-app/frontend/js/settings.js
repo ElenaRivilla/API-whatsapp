@@ -46,20 +46,38 @@ export function generateSettings(user) {
     html.append(settingsBar, profileContainer, separator, listSettings);
     return html;
 }
-
-export function accountSettings() {
+// TODO INCOMPLETO!
+export function accountSettings(user) {
     const html = $("<div>");
     const accountContainer = $("<div>").addClass("account-settings p-10");
     const title = $("<h2>").addClass("text-2xl font-bold mb-4").text("Configuración de Cuenta");
+    
+    const inputImage = $('<div>').addClass('input-image-container');
+    const img = $('<img>').addClass('h-16 w-16 rounded-full').attr("src", user.image);
+    const fileInput = $('<input>').attr("type", "file").attr("accept", "image/*").addClass('hidden');
+    inputImage.append(img, fileInput);
+
+    img.on('click', function() {
+        fileInput.click();
+    });
+
+    fileInput.on('change', function(event) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            img.attr('src', e.target.result);
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+    inputImage.append(img);
 
     const nameLabel = $("<label>").addClass("block text-lg font-medium mb-2").text("Nombre");
     const nameInput = $("<input>").addClass("w-full p-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("type", "text").attr("placeholder", "Nuevo nombre");
-    nameLabel.append(nameInput);
+    accountContainer.append(nameLabel, nameInput);
 
     const bioLabel = $("<label>").addClass("block text-lg font-medium mb-2 mt-4").text("Bio");
     const bioInput = $("<textarea>").addClass("w-full p-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Nueva bio");
-    bioLabel.append(bioInput);
-    accountContainer.append(title, nameLabel, bioLabel);
+    accountContainer.append(bioLabel, bioInput);
+    accountContainer.append(title, inputImage, nameLabel, bioLabel);
     html.append(accountContainer);
     return html;
 }
