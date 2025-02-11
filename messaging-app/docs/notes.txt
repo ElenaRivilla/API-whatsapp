@@ -14,3 +14,29 @@
         .catch(error => {
             console.error("Error al llamar a la función userExists:", error);
         }); */
+
+--------------- efectos de jquery ----------------
+
+leftContainer.hide().html(settings.html()).fadeIn(1000);
+rightContainer.hide().html(chat.html()).fadeIn(600);
+leftContainer.hide().fadeIn(600); // Despliega el contenedor con una transición de jQuery
+
+ function openChat(node) {
+        // Carga los 10 mensajes entre el usuario anfitrion y el usuario amigo (reciever_id).
+        loadMessages(user.username, getUsernameFromNode(node), 10);
+        if (window.innerWidth < 768) {
+            $(".contacts").fadeOut(300, function() {
+                $(this).removeClass("block").addClass("hidden");
+                setTimeout(() => {
+                    $(".chats").fadeIn(300, function() {
+                    $(this).removeClass("hidden md:block sm:hidden").addClass("block");
+                    });
+                }, 300); // Delay the fadeIn of chats by 300ms to make the transition smoother
+                });
+        
+                header.fadeOut(300, function() {
+                $(this).removeClass("block").addClass("hidden");
+                });
+        }
+        return;
+    }
