@@ -1,6 +1,6 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid } from "./errControl.js";
-import { userExists, getUsersHome, getMessagesUser, getContacts } from "./apiManager.js";
+import { userExists, getUsersHome, getMessagesUser, getContacts, sendMessage } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
@@ -105,7 +105,14 @@ function home() {
             $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
             header.removeClass("block").addClass("hidden");
         }
-
+        // const chat = $('.messages-container')[0];
+        // chat.addEventListener('scroll', () => {
+        //     console.log('se mete al listener')
+        //     if (chat.scrollTop === 0){
+        //         console.log('se mete al if')
+        //         loadMessages(user.username, getUsernameFromNode(node), 20);
+        //     }
+        // });
         return;
     }
 
@@ -127,10 +134,10 @@ function home() {
         return;
     }
 
-    async function loadMessages(user1, user2, loadSize) {
+    async function loadMessages(sender, receiver, loadSize) {
         try {
-            const response = await getMessagesUser(user1, user2, loadSize);
-            const chat = generateChat(response, user2);
+            const response = await getMessagesUser(sender, receiver, loadSize);
+            const chat = generateChat(response, receiver);
             updateDOM(chat.html(), rightContainer);
             user.setOpenChat(true);
             // add event listeners?
@@ -142,10 +149,33 @@ function home() {
                     header.removeClass("hidden ").addClass("block sm:block");
                 });
             }
+            $('.textBarForm')[0].addEventListener("submit", function (event) {
+                event.preventDefault();  // Prevent the default form submission (page reload).
+                send(receiver);
+            });
         }
         catch (error) {
             console.error("Error:", error);
         }
+    }
+
+    async function send(receiver) {
+        const msgBody = $('.write-message')[0].value;
+        if (msgBody){
+            try{
+                const message = {
+                    "body": msgBody,
+                    "receiver": receiver
+                };
+                await sendMessage(message);
+                await loadMessages(user.username, receiver, 10);
+                await loadFriends();
+            }
+            catch(error){
+                console.error("Error:", error);
+            }
+        }
+        return;
     }
 
     // La parte de Settings:
@@ -198,20 +228,15 @@ function home() {
     async function contacts(user) {
         try {
             const response = await getContacts(user);
-            const contactButton = $(".contact-button");
             response.friends.sort((a, b) => a.username.localeCompare(b.username));
 
-            $(document).ready(function () {
-                contactButton.on("click", () => {
-                    if (window.innerWidth < 768) {
-                        header.removeClass("block").addClass("hidden");
-                    }
-                    updateDOM(generateContacts(response.friends).html(), leftContainer);
-                    if (!user.hasOpenChat){
-                        updateDOM(generateRightPanelFund().html(), rightContainer);
-                    }
-                });
-            });
+            if (window.innerWidth < 768) {
+                header.removeClass("block").addClass("hidden");
+            }
+            updateDOM(generateContacts(response.friends).html(), leftContainer);
+            if (!user.hasOpenChat){
+                updateDOM(generateRightPanelFund().html(), rightContainer);
+            }
 
             $(document).on("click", ".add-group-button", function () {
                 $(".container-group").remove();
@@ -222,7 +247,7 @@ function home() {
     }
 
     function chats() {
-        $(".chat-button").addEventListener("click", () => loadFriends);
+        $(".chat-button")[0].addEventListener("click", () => loadFriends);
         if (!user.hasOpenChat){
             updateDOM(generateRightPanelFund().html(), rightContainer);
         }
@@ -244,11 +269,15 @@ function home() {
         searchBar.addClass("block");
     }
 
+    function creationGroup(name, description, userList, admin) {
+        const response = createGroup(name, description, userList, admin)
+    }
+
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
     loadFriends();
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
     settingsFunctions();
-    contacts(user.username);
+    $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
     contactsGroup();
     chats();
     

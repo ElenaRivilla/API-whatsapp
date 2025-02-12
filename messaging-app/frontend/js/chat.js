@@ -91,7 +91,7 @@ function generateMessages(response, user){
 function generateChatBar(){
     const sendMessageContainer = $("<div>").addClass("send-container p-6 absolute bottom-0 sm:p-0 w-full md:px-4 md:pb-4 bg-transparent p-0 rounded-full h-[15%] flex justify-end flex-col");
     const messageBar = $("<div>").addClass("message-bar");
-    const form = $("<form>").attr("method", "post").addClass("flex items-center");
+    const form = $("<form>").attr("method", "post").addClass("textBarForm flex items-center");
     const input = $("<input>").attr("type", "text").addClass(`write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}]`).attr({"placeholder": "Escribe un mensaje...", "style": "background-color: var(--typebar-color)"});
     const button = $("<button>").attr({"type": "submit", "style": "background-color: var(--send-button-color)"}).addClass("send-button h-10 w-10 sm:w-16 sm:h-16 ml-2 sm:ml-4 p-2 text-white flex items-center justify-center rounded-full");
     const img = $("<img>").addClass("w-10 ml-1 sm:ml-1.5").attr("src", "../assets/svg/send.svg");
