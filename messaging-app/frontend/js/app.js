@@ -264,6 +264,10 @@ function home() {
         searchBar.addClass("block");
     }
 
+    function creationGroup(name, description, userList, admin) {
+        const response = createGroup(name, description, userList, admin)
+    }
+
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes    
     
     window.addEventListener('resize', () => {
