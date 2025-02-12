@@ -1,11 +1,18 @@
-function generateContacts() {
-    
+import { contacts } from "../tests/tests.js";
+document.addEventListener("DOMContentLoaded", cargaDOM);
+
+function cargaDOM() {
+    generateContactsGroup();
+}
+
+export function generateContactsGroup() {
+
     const chatContainer = $(".scrollbar-custom");
     const buttonContainer = $(".nextButtonGroup-custom");
     
 
     const backBar = $("<div>").addClass("back-bar h-14 flex items-center");
-    const backButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
+    const backButton = $("<button>").addClass("back-button-contact p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
     const backLink = $("<a>", { href: "./home.html" });
     const backImg = $("<img>").addClass("h-5").attr("src", "../assets/svg/arrow.svg");
     backLink.append(backImg);
@@ -50,13 +57,13 @@ function generateContacts() {
         });
     }
    
-    renderContacts(contacts);
-
     searchInput.on("input", function() { // La barra del buscador 
         const searchUser = $(this).val().toLowerCase(); // Recoge el string escrito en el input del buscador y lo convierte en minusculas.
         const filteredContacts = contacts.filter(contact => contact.username.toLowerCase().includes(searchUser)); // Filtra la lista original de contactos con el texto puesto en 'searchUser'.
         renderContacts(filteredContacts); // Actualizamos la lista de contactos con los contactos que coinciden con el texto introducido
     });
+    renderContacts(contacts);
+
 
    /*  const groupContainer = $("<div>").addClass("container-group flex items-center justify-center h-12 sm:w-1/8 sm:h-5 md:my-0 md:my-3 md:mx-3 lg:mb-3 max-h-12 lg:h-20 sm:my-6 md:flex md:items-center md:justify-center");
     const nextButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");

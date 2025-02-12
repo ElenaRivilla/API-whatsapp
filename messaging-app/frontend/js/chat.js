@@ -22,7 +22,7 @@ export function generateChats(chats){
         chatDiv.append(containerImage).append(containerInfo).append(dateContainer);
         html.append(chatDiv);
 
-        hr = $("<hr>").addClass(`contact-separator border-t-2 border-[${backgroundColor}] m-1 sm:mx-8 sm:my-0.5 md:mx-4 md:my-4 lg:mt-4 lg:mx-4`);
+        hr = $("<hr>").addClass(`contact-separator border-t-2 m-1 sm:mx-8 sm:my-0.5 md:mx-4 md:my-4 lg:mt-4 lg:mx-4`).attr("style", 'border-color: var(--background-color)');
         html.append(hr);
     }
     return html;
@@ -37,14 +37,14 @@ export function generateChat(response, user){
 
 function generateMessages(response, user){
     const html = $("<div>").addClass("messages-container overflow-y-auto custom-scrollbar w-full px-6 justify-center h-[85%]");
-    let infoFriend = $("<div>").addClass("info-friend h-[10%] flex-col items-center w-full sticky top-0 bg-gray-100 z-10");
-    let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full");
-    let backButton = $('<button>').addClass(`back-button p-2 bg-[${backgroundColor}] rounded-full h-7 w-7 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden`);
+    let infoFriend = $("<div>").addClass("info-friend h-[10%] flex-col items-center w-full sticky top-0 z-10");
+    let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full").attr("style", "background-color: var(--container-color)");
+    let backButton = $('<button>').addClass(`back-button p-2 rounded-full h-7 w-7 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden`).attr("style", "background-color: var(--background-color)");
     let backLink = $('<a>').addClass('back-button flex items-center justify-center w-full h-full');
     let backImg = $('<img>').addClass('w-3').attr('src', '../assets/svg/arrow.svg');
     let profileImage = $("<img>").attr("src", response['imageUrl']).attr("alt", "Profile Image").addClass("w-11 sm:w-16 md:w-[4'5rem] sm:mr-4 rounded-full");
     let friendName = $("<h3>").addClass("text-xl sm:text-2xl font-bold ml-3").text(user);
-    let hr = $("<hr>").addClass(`border-t-2 border-[${backgroundColor}] mx-8 block`);
+    let hr = $("<hr>").addClass(`border-t-2 mx-8 block`).attr("style", "border-color: var(--background-color)");
 
     backLink.append(backImg);
     backButton.append(backLink);
@@ -59,18 +59,18 @@ function generateMessages(response, user){
         article = $("<article>").addClass(`${msg['username'] === user ? "sender" : "receiver"}-container flex items-start mb-4 ${msg['username'] === user ? "" : "justify-end"} min-h-16 h-auto`);
 
         if (msg['username'] === user) {
-            messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto bg-gray-200 p-4 px-7 rounded-full");
+            messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").attr("style", "background-color: var(--received-msg-color);");
             messageText = $("<p>").addClass("message-sender text-xs sm:text-sm").text(msg['body']);
-            time = $("<time>").addClass("hour-message w-[100%] pr-2 text-xs text-gray-500 ml-2 flex justify-end").text(msg['date']);
+            time = $("<time>").addClass("hour-message w-[100%] pr-2 text-xs ml-2 flex justify-end").text(msg['date']).attr("style", "color: var(--text-color);");
 
             messageContainer.append(messageText).append(time);
             article.append(figure).append(messageContainer);
         } else {
-            messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").css("background-color", accentColor);
+            messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").attr("style", "background-color: var(--sent-msg-color);");
             messageText = $("<p>").addClass("message-receiver text-xs sm:text-sm").text(msg['body']);
 
             timeContainer = $("<div>").addClass("flex items-end w-full justify-end");
-            time = $("<time>").addClass("hour-message text-xs sm:text-sm text-gray-500 ml-2").text(msg['date']);
+            time = $("<time>").addClass("hour-message text-xs sm:text-sm ml-2").text(msg['date']).attr("style", "color: var(--text-color);");
             checkImage = $("<img>").attr("src", "../assets/svg/double-check-blue.svg").attr("alt", "Check Message").addClass("w-4 h-4 ml-1");
 
             timeContainer.append(time).append(checkImage);
@@ -92,8 +92,8 @@ function generateChatBar(){
     const sendMessageContainer = $("<div>").addClass("send-container p-6 absolute bottom-0 sm:p-0 w-full md:px-4 md:pb-4 bg-transparent p-0 rounded-full h-[15%] flex justify-end flex-col");
     const messageBar = $("<div>").addClass("message-bar");
     const form = $("<form>").attr("method", "post").addClass("flex items-center");
-    const input = $("<input>").attr("type", "text").addClass(`write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[${backgroundColor}] focus:border-[${backgroundColor}]`).attr("placeholder", "Escribe un mensaje...");
-    const button = $("<button>").attr("type", "submit").css("background-color", accentColor).addClass("send-button h-10 w-10 sm:w-16 sm:h-16 ml-2 sm:ml-4 p-2 text-white flex items-center justify-center rounded-full");
+    const input = $("<input>").attr("type", "text").addClass(`write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}]`).attr({"placeholder": "Escribe un mensaje...", "style": "background-color: var(--typebar-color)"});
+    const button = $("<button>").attr({"type": "submit", "style": "background-color: var(--send-button-color)"}).addClass("send-button h-10 w-10 sm:w-16 sm:h-16 ml-2 sm:ml-4 p-2 text-white flex items-center justify-center rounded-full");
     const img = $("<img>").addClass("w-10 ml-1 sm:ml-1.5").attr("src", "../assets/svg/send.svg");
 
     button.append(img);
