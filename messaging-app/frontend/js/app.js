@@ -221,6 +221,11 @@ function home() {
     }
     contacts(user.username);
 
+    function chats(){
+        const chat = $(".chat-button");
+        chat.on("click",loadFriends)
+    }
+    chats();
     
 
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
