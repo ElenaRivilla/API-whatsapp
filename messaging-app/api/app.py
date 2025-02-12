@@ -122,7 +122,7 @@ def getGroupMessages(loadSize: int, idGroup: int): # podriamos hacer una query p
 def getUsersMessages(loadSize: int, user1: str , user2: str, request: Request):
     try:
         userId = verify_token(request.cookies.get("token"))
-        if userId == db.getUserId(user1):
+        if userId == int(db.getUserId(user1)):
             response = {}
             response.update({"messages": db.getMessagesUsers(loadSize, db.getUserId(user1), db.getUserId(user2))})
             for message in response['messages']:
@@ -161,7 +161,7 @@ def getHome(request: Request):
 def getFriends(username: str, request: Request):
     try:
         userId = verify_token(request.cookies.get("token"))
-        if userId == db.getUserId(username):
+        if userId == int(db.getUserId(username)):
             friendsList = db.getFriends(db.getUserId(username))
         data = {
             "friends": [
@@ -187,18 +187,21 @@ def check(messageId: int):
         raise e
     
 @app.post('/sendMessage')
-def sendMessage(message: dict):
-    try:                              
+def sendMessage(message: dict, request: Request):
+    try:
+        userId = verify_token(request.cookies.get('token'))
         date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         status = "sent"
         completedMessage = {
             "date": date,
             "status": status,
+            "sender": userId,
             **message
         }
-        if not completedMessage['receiver_id']:
+        if not completedMessage['receiver']:
             db.sendGroupMessage(completedMessage)    
         else:
+            completedMessage['receiver'] = db.getUserId(message['receiver'])                              
             db.sendUsersMessage(completedMessage)
     except Exception as e:
         raise e

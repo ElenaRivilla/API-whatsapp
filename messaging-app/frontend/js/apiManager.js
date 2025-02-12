@@ -1,15 +1,9 @@
 import {responseValid} from "./errControl.js"; // Import all functions from error control module
 
+const domain = "http://127.0.0.1:8000/";
 // Function to check if a user exists by sending a POST request with username and password
 export function userExists(username, password) {
-    const domain = "http://127.0.0.1:8000/login";
-    /* const domain = "http://localhost:";
-    const port = 8000;
-    const endpoint = "/login";  */// API endpoint URL
-    
-    // Construct the URL with query parameters (if needed)
-    /* const url = `${domain}${port}${endpoint}`; */
-    const url = `${domain}`;
+    const url = `${domain}login`;
 
     // Perform the GET request using fetch
     return new Promise((resolve, reject) => {
@@ -38,8 +32,7 @@ export function userExists(username, password) {
 }
 
 export function getUsersHome() {
-    const domain = "http://127.0.0.1:8000/home";
-    const url = `${domain}`;
+    const url = `${domain}home`;
 
     return new Promise((resolve, reject) => {
         fetch(url, {
@@ -63,8 +56,7 @@ export function getUsersHome() {
 }
 
 export function getMessagesUser(user1, user2, loadSize) {
-    const domain = `http://127.0.0.1:8000/getMessages/${loadSize}/${user1}/${user2}`;
-    const url = `${domain}`;
+    const url = `${domain}getMessages/${loadSize}/${user1}/${user2}`;
 
     return new Promise((resolve, reject) => {
         fetch(url, {
@@ -88,8 +80,7 @@ export function getMessagesUser(user1, user2, loadSize) {
 }
 
 export function getContacts(user) {
-    const domain = `http://127.0.0.1:8000/getFriends/${user}`;
-    const url = `${domain}`;
+    const url = `${domain}getFriends/${user}`;
 
     return new Promise((resolve, reject) => {
         fetch(url, {
@@ -103,6 +94,31 @@ export function getContacts(user) {
         }).then((response) => {
             responseValid(response).then(() => {
                 resolve(response.json());
+            }).catch((error) => {
+                reject(error);
+            });
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
+
+export function sendMessage(message){
+    const url = `${domain}sendMessage`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            credentials: "include",
+            body: JSON.stringify(message)
+        }).then((response) => {
+            responseValid(response).then(() => {
+                resolve();
             }).catch((error) => {
                 reject(error);
             });
