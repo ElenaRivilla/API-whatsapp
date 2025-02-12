@@ -64,13 +64,6 @@ export function generateContactsGroup() {
     });
     renderContacts(contacts);
 
-
-    
-
-
-
-
-
    /*  const groupContainer = $("<div>").addClass("container-group flex items-center justify-center h-12 sm:w-1/8 sm:h-5 md:my-0 md:my-3 md:mx-3 lg:mb-3 max-h-12 lg:h-20 sm:my-6 md:flex md:items-center md:justify-center");
     const nextButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
     const nextImg = $("<img>").addClass("h-5 transform rotate-180").attr("src", "../assets/svg/arrow.svg");
@@ -80,5 +73,41 @@ export function generateContactsGroup() {
     groupContainer.append(nextButton);
 
     buttonContainer.append(groupContainer); */
+}
+
+export function formGroup(){
+    const chatContainer = $(".scrollbar-custom");
+    const html = $("<div>");
+    const form = $("<form>").addClass("w-full h-full bg-red-200");
+
+    const containerInfo = $("<div>").addClass("container-info");
+    const infoDiv = $("<div>");
+    const img = $("<img>");
+    const infoInnerDiv = $("<div>");
+
+    const labelNombre = $("<label>").attr("for", "nombre-grupo").text("Nombre grupo:");
+    const inputNombre = $("<input>").attr("type", "text").attr("id", "nombre-grupo").attr("placeholder", "Nombre grupo");
+
+    const labelDescripcion = $("<label>").attr("for", "descripcion-grupo").text("Descripción grupo:");
+    const inputDescripcion = $("<input>").attr("type", "text").attr("id", "descripcion-grupo").attr("placeholder", "Descripción grupo");
+
+    infoInnerDiv.append(labelNombre, inputNombre, labelDescripcion, inputDescripcion);
+    infoDiv.append(img, infoInnerDiv);
+    containerInfo.append(infoDiv);
+
+    const containerUsers = $("<div>").addClass("container-users");
+    const usersTitle = $("<h1>").text("Usuarios");
+    const separator = $("<hr>");
+    const usersDiv = $("<div>");
+
+    containerUsers.append(usersTitle, separator, usersDiv);
+
+    const button = $("<button>");
+
+    form.append(containerInfo, containerUsers, button);
+    html.append(form);
+    chatContainer.append(html);
+
+    return html;
 }
 
