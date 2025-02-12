@@ -1,12 +1,5 @@
-import { contacts } from "../tests/tests.js";
-document.addEventListener("DOMContentLoaded", cargaDOM);
-
-function cargaDOM() {
-    generateContacts();
-}
-
 function generateContacts() {
-
+    
     const chatContainer = $(".scrollbar-custom");
     const buttonContainer = $(".nextButtonGroup-custom");
     

@@ -71,7 +71,6 @@ function home() {
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".chats");
     const settingsButton = $('.settings-bar')[0];
-    const backButton = $('.back-button');
     const searchBar = $(".search-bar");
     const header = $("header");
 

@@ -1,6 +1,5 @@
 import pymysql.cursors
 from datetime import datetime
-from models import UserGroup
 
 class database(object):
     def conecta(self):
@@ -88,6 +87,8 @@ class database(object):
         self.cursor.execute(sql,(userId))
         ResQuery = self.cursor.fetchall()
         return ResQuery
+    
+    
     
     def getMessagesGroups(self, loadSize, group_id):
         self.conecta()
@@ -214,13 +215,30 @@ class database(object):
             return True
         return False
     
-    def addUserToGroup(self, user_group: UserGroup, join_date):
+    def insertGroup(self, name, description):
+        self.conecta()
+        sql = """INSERT INTO groups (name, description, size, creation_date) VALUES (%s, %s, 0, NOW());"""
+        self.cursor.execute(sql, (name, description))
+        ResQuery = self.cursor.lastrowid
+        self.desconecta()
+        return ResQuery
+    
+    def addUserToGroup(self, userId, joinDate, admin, groupId):
        self.conecta()
-       sql="INSERT INTO user_group VALUES (%s, %s, %s, 0);"
-       self.cursor.execute(sql,(user_group.ID_GROUP, user_group.ID_USER, join_date))
-       self.cursor.fetchone()
+       sql="INSERT INTO user_group VALUES (%s, %s, %s, %s);"
+       self.cursor.execute(sql,(userId, joinDate, admin, groupId))
        self.desconecta()
         
+    def updateGroupSize(self, groupId, size):
+        self.conecta()
+        sql = """ UPDATE groups
+                  SET size = %s
+                  WHERE id = %s;"""
+        self.cursor.execute(sql, (size, groupId))
+        self.desconecta()
+        return
+    
+    
     def deleteUserFromGroup(self, userId, groupId):
         if not self.userExistsInGroup(userId, groupId):
             raise Exception("User not registered in group")

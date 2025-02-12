@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import date, datetime
+from typing import List
 
 class Group(BaseModel):
     ID: int
@@ -35,3 +36,9 @@ class LastMessageUsers(BaseModel):
 class LoginRequest(BaseModel):
     USERNAME: str
     PASSWORD: str
+    
+class CreateGroupRequest(BaseModel):
+    NAME: str
+    DESCRIPTION: str
+    USERS: List[int]
+    ADMIN: int
