@@ -6,7 +6,6 @@ import { generateChats, generateChat } from "./chat.js";
 import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
 import { generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode } from "./static.js";
 import { generateContacts } from "./contactsList.js";
-import { generateContactsGroup } from "./createGroup.js"
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -72,7 +71,6 @@ function home() {
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".chats");
     const settingsButton = $('.settings-bar')[0];
-    const backButton = $('.back-button');
     const searchBar = $(".search-bar");
     const header = $("header");
 
@@ -164,7 +162,6 @@ function home() {
             backButton.on("click", () => {
                 header.removeClass("hidden").addClass("block");
                 updateDOM("", rightContainer)
-                generateRightPanelFund();
                 loadFriends();
             });
 
@@ -206,14 +203,20 @@ function home() {
             const contactButton = $(".contact-button");
             response.friends.sort((a, b) => a.username.localeCompare(b.username));
 
-            contactButton.on("click", () => {
-                if (window.innerWidth < 768) {
-                    header.removeClass("block").addClass("hidden");
-                }
+            $(document).ready(function () {
+                contactButton.on("click", () => {
+                    if (window.innerWidth < 768) {
+                        header.removeClass("block").addClass("hidden");
+                    }
 
-                updateDOM("", leftContainer);
-                const contactHtml = generateContacts(response.friends);
-                updateDOM(contactHtml.html(), leftContainer);
+                    updateDOM("", leftContainer);
+                    const contactHtml = generateContacts(response.friends);
+                    updateDOM(contactHtml.html(), leftContainer);
+                });
+            });
+
+            $(document).on("click", ".add-group-button", function () {
+                $(".container-search, .container-group").remove();
             });
         } catch (error) {
             console.error("Error fetching contacts:", error);
@@ -227,10 +230,7 @@ function home() {
             $(document).on("click", ".back-button-contact", function () {
                 header.removeClass("hidden").addClass("block");
                 loadFriends();
-                console.log("Botón de retroceso clickeado");
             });
-
-            // Puedes agregar más eventos aquí si es necesario
         });
     }
     contactsGroup();
