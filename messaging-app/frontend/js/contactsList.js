@@ -3,9 +3,9 @@ export function generateContacts(user) {
     const chatContainer = $("<div>").addClass("scrollbar-custom");
 
     const backBar = $("<div>").addClass("back-bar h-14 flex items-center");
-    const backButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
+    const backButton = $("<button>").addClass("back-button-contact p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
     const backLink = $("<a>");
-    const backImg = $("<img>").addClass("back-button-contact h-5").attr("src", "../assets/svg/arrow.svg");
+    const backImg = $("<img>").addClass("h-5").attr("src", "../assets/svg/arrow.svg");
     backLink.append(backImg);
     backButton.append(backLink);
     const contactsTitle = $("<h3>").addClass("text-xl ml-4").text("Nuevo chat");
@@ -21,8 +21,8 @@ export function generateContacts(user) {
 
     const groupContainer = $("<div>").addClass("container-group flex items-center h-12 my-4 mx-3 sm:w-1/8 sm:h-5 md:my-0 md:my-3 md:mx-3 lg:mb-3 max-h-12 lg:h-20 sm:my-6 md:flex md:items-center");
     const groupName = $('<h2>').addClass('text-base sm:text-2xl md:text-lg lg:text-lg font-bold block lg:block').text('Nuevo grupo');
-    const groupLink = $('<a>', { href: './createGroup.html' });
-    const addGroupButton = $("<img>").addClass("h-10 mr-3").attr("src", "../assets/svg/addGroup.svg");
+    const groupLink = $('<a>');
+    const addGroupButton = $("<img>").addClass(" add-group-button h-10 mr-3").attr("src", "../assets/svg/addGroup.svg");
     groupContainer.append(groupLink).append(groupName);
     chatContainer.append(backBar, searchBar, groupContainer);
 
