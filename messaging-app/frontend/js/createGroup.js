@@ -75,7 +75,7 @@ export function generateContactsGroup() {
      buttonContainer.append(groupContainer); */
 }
 
-export function formGroup(contacts) {
+export function formGroup() {
     const html = $("<div>");
     const form = $("<form>").addClass("w-full h-full p-10");
 
@@ -98,31 +98,38 @@ export function formGroup(contacts) {
     infoDiv.append(img, infoInnerDiv);
     containerInfo.append(infoDiv);
 
-    const containerUsers = $("<div>").addClass("container-users");
+    const containerUsersWrapper = $("<div>").addClass("w-full flex flex-col items-start mt-10");
     const usersTitle = $("<h1>").text("Usuarios").addClass("text-xl font-bold mt-4");
     const separator = $("<hr>").addClass("my-3 border-t-2 border-[#468FAF] w-full");
-    const usersDiv = $("<div>").addClass("h-full w-full");
+
+    containerUsersWrapper.append(usersTitle, separator);
+
+    const containerUsers = $("<div>").addClass("container-users w-full h-auto max-h-[40%] flex flex-wrap overflow-y-auto").css("scrollbar-width", "none").css("-ms-overflow-style", "none");
+    containerUsers.find("::-webkit-scrollbar").css("display", "none");
+
+    const button = $("<button>").text("Crear grupo").addClass("w-96 p-3 m-10 text-white rounded-2xl bg-[#468FAF] hover:bg-[#2C7DA0] absolute bottom-0");
+
+    form.append(containerInfo, containerUsersWrapper, containerUsers, button);
+    html.append(form);
+    return html;
+}
+
+export function generateGroupContainer(contacts) {
+    const groupContainer = $("<div>");
 
     contacts.forEach(contact => {
         const userDiv = $("<div>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-16 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center");
         const containerImage = $("<div>").addClass("container-image w-20 h-20 sm:w-28 sm:h-28 md:w-20 md:h-14 flex justify-center items-center");
-        const profileImage = $("<img>").addClass("profile-image sm:min-h-18 sm:min-w-18 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", contact.imageUrl);
+        const profileImage = $("<img>").addClass("profile-image sm:min-h-18 sm:min-w-18 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", contact.image);
         containerImage.append(profileImage);
         const containerInfo = $("<div>").addClass("container-info truncate w-full p-2 h-20 md:p-1 lg:p-4 flex flex-col justify-center items-start");
         const username = $("<h3>").addClass("username text-base sm:text-2xl md:text-lg lg:text-lg font-bold block md:hidden lg:block").text(contact.username);
         const bio = $("<p>").addClass("message truncate block sm:block md:hidden lg:block text-xs w-56 sm:w-62 md:w-62 truncate").text(contact.bio);
         containerInfo.append(username).append(bio);
         userDiv.append(containerImage).append(containerInfo);
-        chatContainer.append(userDiv);
+        groupContainer.append(userDiv);
     });
 
-
-    containerUsers.append(usersTitle, separator, usersDiv);
-
-    const button = $("<button>").text("Crear grupo").addClass("w-96 p-3 m-10 text-white rounded-2xl bg-[#468FAF] hover:bg-[#2C7DA0] absolute bottom-0");
-
-    form.append(containerInfo, containerUsers, button);
-    html.append(form);
-    return html;
+    return groupContainer;
 }
 
