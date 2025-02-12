@@ -59,18 +59,18 @@ function generateMessages(response, user){
         article = $("<article>").addClass(`${msg['username'] === user ? "sender" : "receiver"}-container flex items-start mb-4 ${msg['username'] === user ? "" : "justify-end"} min-h-16 h-auto`);
 
         if (msg['username'] === user) {
-            messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").attr("style", "background-color: var(--text-holder-color);");
+            messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").attr("style", "background-color: var(--received-msg-color);");
             messageText = $("<p>").addClass("message-sender text-xs sm:text-sm").text(msg['body']);
-            time = $("<time>").addClass("hour-message w-[100%] pr-2 text-xs text-gray-500 ml-2 flex justify-end").text(msg['date']);
+            time = $("<time>").addClass("hour-message w-[100%] pr-2 text-xs ml-2 flex justify-end").text(msg['date']).attr("style", "color: var(--text-color);");
 
             messageContainer.append(messageText).append(time);
             article.append(figure).append(messageContainer);
         } else {
-            messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").attr("style", "background-color: var(--accent-color);");
+            messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").attr("style", "background-color: var(--sent-msg-color);");
             messageText = $("<p>").addClass("message-receiver text-xs sm:text-sm").text(msg['body']);
 
             timeContainer = $("<div>").addClass("flex items-end w-full justify-end");
-            time = $("<time>").addClass("hour-message text-xs sm:text-sm text-gray-500 ml-2").text(msg['date']);
+            time = $("<time>").addClass("hour-message text-xs sm:text-sm ml-2").text(msg['date']).attr("style", "color: var(--text-color);");
             checkImage = $("<img>").attr("src", "../assets/svg/double-check-blue.svg").attr("alt", "Check Message").addClass("w-4 h-4 ml-1");
 
             timeContainer.append(time).append(checkImage);
@@ -92,8 +92,8 @@ function generateChatBar(){
     const sendMessageContainer = $("<div>").addClass("send-container p-6 absolute bottom-0 sm:p-0 w-full md:px-4 md:pb-4 bg-transparent p-0 rounded-full h-[15%] flex justify-end flex-col");
     const messageBar = $("<div>").addClass("message-bar");
     const form = $("<form>").attr("method", "post").addClass("flex items-center");
-    const input = $("<input>").attr("type", "text").addClass(`write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}]`).attr({"placeholder": "Escribe un mensaje...", "style": "background-color: var(--container-color)"});
-    const button = $("<button>").attr({"type": "submit", "style": "background-color: var(--text-holder-color)"}).addClass("send-button h-10 w-10 sm:w-16 sm:h-16 ml-2 sm:ml-4 p-2 text-white flex items-center justify-center rounded-full");
+    const input = $("<input>").attr("type", "text").addClass(`write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}]`).attr({"placeholder": "Escribe un mensaje...", "style": "background-color: var(--typebar-color)"});
+    const button = $("<button>").attr({"type": "submit", "style": "background-color: var(--send-button-color)"}).addClass("send-button h-10 w-10 sm:w-16 sm:h-16 ml-2 sm:ml-4 p-2 text-white flex items-center justify-center rounded-full");
     const img = $("<img>").addClass("w-10 ml-1 sm:ml-1.5").attr("src", "../assets/svg/send.svg");
 
     button.append(img);
