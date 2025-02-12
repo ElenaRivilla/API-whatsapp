@@ -93,26 +93,28 @@ function home() {
         return node.children[1].children[0].innerText;
     }
 
-    function openChat(node) {
-        // Carga los 10 mensajes entre el usuario anfitrion y el usuario amigo (reciever_id).
-        loadMessages(user.username, getUsernameFromNode(node), 10);
-        if (window.innerWidth < 768) {
-            const container = $(".container-user");
-            container.on("click", () => {
+    async function openChat(node) {
+        try{
+            // Carga los 10 mensajes entre el usuario anfitrion y el usuario amigo (reciever_id).
+            await loadMessages(user.username, getUsernameFromNode(node), 10);
+            if (window.innerWidth < 768) {
+                const container = $(".container-user");
+                container.on("click", () => {
+                });
+                $(".contacts").removeClass("block").addClass("hidden");
+                $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
+                header.removeClass("block").addClass("hidden");
+            }
+            const chat = document.querySelector(".messages-container");
+            chat.addEventListener('scroll', () => {
+                if (chat.scrollTop === 0){
+                    loadMessages(user.username, getUsernameFromNode(node), 20);
+                }
             });
-            $(".contacts").removeClass("block").addClass("hidden");
-            $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
-            header.removeClass("block").addClass("hidden");
+            return;
+        } catch (error) {
+            console.error("Error fetching users:", error);
         }
-        // const chat = $('.messages-container')[0];
-        // chat.addEventListener('scroll', () => {
-        //     console.log('se mete al listener')
-        //     if (chat.scrollTop === 0){
-        //         console.log('se mete al if')
-        //         loadMessages(user.username, getUsernameFromNode(node), 20);
-        //     }
-        // });
-        return;
     }
 
     async function loadFriends() {
@@ -240,6 +242,11 @@ function home() {
             $(document).on("click", ".add-group-button", function () {
                 $(".container-group").remove();
             });
+
+            $(document).on("click", ".back-button-contact", function () {
+                header.removeClass("hidden").addClass("block");
+                loadFriends();
+            });
         } catch (error) {
             console.error("Error fetching contacts:", error);
         }
@@ -252,29 +259,12 @@ function home() {
         }
     }
 
-    // TODO que alguien me explique esto
-    function contactsGroup() {
-        $(document).ready(function () {
-            // Evento para el botón de retroceso
-            $(document).on("click", ".back-button-contact", function () {
-                header.removeClass("hidden").addClass("block");
-                loadFriends();
-            });
-        });
-    }
-
     if (window.innerWidth < 768) {
         updateDOM(generateSearchBar().html(), searchBar);
         searchBar.addClass("block");
     }
 
-    // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
-    loadFriends();
-    // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
-    settingsFunctions();
-    $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
-    contactsGroup();
-    chats();
+    // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes    
     
     window.addEventListener('resize', () => {
         updateDOM(generateSearchBar().html(), searchBar);
@@ -285,6 +275,20 @@ function home() {
             loadFriends();
         }
     });
+
+    function initialize() {
+        loadFriends();
+        settingsFunctions();
+        $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
+        chats();
+    }
+
+    // TODO QUITAR
+    // TODO QUITAR
+    // TODO QUITAR
+    // TODO QUITAR
+    setDarkMode();
+    initialize();
     return;
 }
 
