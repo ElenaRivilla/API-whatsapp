@@ -1,8 +1,8 @@
-import { backgroundColor } from "./static.js";
+import { backgroundColor, accentColor, receivedMsg, textBar } from "./static.js";
 export function generateSettings(user) {
     const html = $("<div>");
     const settingsBar = $('<div>').addClass('settings-bar h-14 flex items-center');
-    const backButton = $('<button>').addClass(`back-button p-2 rounded-full h-12 w-12 flex items-center justify-center`).attr("style", "background-color: var(--background-color);");
+    const backButton = $('<button>').addClass(`back-button p-2 rounded-full h-12 w-12 flex items-center justify-center`).attr("style", "background-color: var(--send-button-color);");
     const backLink = $('<a>');
     const backImg = $('<img>').addClass('contrastIcon h-5').attr('src', '../assets/svg/arrow.svg');
     backLink.append(backImg);
@@ -60,12 +60,12 @@ export function accountSettings(user) {
 
     const nameContainer = $('<div>');
     const nameLabel = $("<label>").addClass("block text-lg font-medium mb-2").text("Nombre");
-    const nameInput = $("<input>").addClass("w-full p-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("type", "text").attr("placeholder", "Nuevo nombre");
+    const nameInput = $("<input>").addClass(`w-full p-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] bg-[${textBar}]`).attr("type", "text").attr("placeholder", "Nuevo nombre");
     nameContainer.append(nameLabel, nameInput);
 
     const bioContainer = $('<div>');
     const bioLabel = $("<label>").addClass("block text-lg font-medium mb-2 mt-4").text("Biografia");
-    const bioInput = $("<textarea>").addClass("w-full p-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Nueva bio");
+    const bioInput = $("<textarea>").addClass(`w-full p-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] bg-[${textBar}]`).attr("placeholder", "Nueva bio");
     bioContainer.append(bioLabel, bioInput);
     accountContainer.append(imageContainer, nameContainer, bioContainer);
     html.append(accountContainer);
