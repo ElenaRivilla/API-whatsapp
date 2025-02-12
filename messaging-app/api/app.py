@@ -120,18 +120,20 @@ def getGroupMessages(loadSize: int, idGroup: int): # podriamos hacer una query p
         raise HTTPException(status_code=500, detail=str(e))
     
     
-@app.put('/createGroup/{admin}/{users}')
-def putCreateGroup(request: CreateGroupRequest):
-    try: 
-        groupId = db.insertGroup(request.NAME, request.DESCRIPTION)
+@app.post("/createGroup")
+def create_group(request: CreateGroupRequest):
+    try:
+        group_id = db.createGroup(request.NAME, request.DESCRIPTION)
         
-        joinDate = datetime.now().strftime('%Y-%m-%d %H:%M:%S');
-        for userId in request.USERS:
-            db.addUserToGroup(userId, joinDate, groupId, 0)
+        # Agregar al administrador al grupo
+        db.addUserToGroup(group_id, request.ADMIN, admin=True)
         
-        db.addUserToGroup(request.ADMIN, joinDate, 1, groupId)
-        db.updateGroupSize(groupId, len(request.USERS) + 1)
-        return {"message": "Grupo creado exitosamente", "group-id": groupId}
+        # Agregar otros usuarios al grupo
+        for user in request.USERS:
+            if user != request.ADMIN:  # Evitar agregar al administrador dos veces
+                db.addUserToGroup(group_id, user)
+        
+        return {"message": "Grupo creado exitosamente", "group_id": group_id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
