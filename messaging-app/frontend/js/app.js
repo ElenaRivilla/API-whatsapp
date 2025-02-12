@@ -6,6 +6,7 @@ import { generateChats, generateChat, changeRadius } from "./chat.js";
 import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
 import { generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode } from "./static.js";
 import { generateContacts } from "./contactsList.js";
+import { formGroup, generateGroupContainer } from "./createGroup.js";
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -94,7 +95,7 @@ function home() {
     }
 
     async function openChat(node) {
-        try{
+        try {
             // Carga los 10 mensajes entre el usuario anfitrion y el usuario amigo (reciever_id).
             await loadMessages(user.username, getUsernameFromNode(node), 10);
             // Desplazar el contenedor hacia abajo
@@ -112,7 +113,7 @@ function home() {
             }
             const chat = document.querySelector(".messages-container");
             chat.addEventListener('scroll', () => {
-                if (chat.scrollTop === 0){
+                if (chat.scrollTop === 0) {
                     loadMessages(user.username, getUsernameFromNode(node), 20);
                 }
             });
@@ -167,8 +168,8 @@ function home() {
 
     async function send(receiver) {
         const msgBody = $('.write-message')[0].value;
-        if (msgBody){
-            try{
+        if (msgBody) {
+            try {
                 const message = {
                     "body": msgBody,
                     "receiver": receiver
@@ -177,7 +178,7 @@ function home() {
                 await loadMessages(user.username, receiver, 10);
                 await loadFriends();
             }
-            catch(error){
+            catch (error) {
                 console.error("Error:", error);
             }
         }
@@ -196,7 +197,7 @@ function home() {
                 if (window.innerWidth < 768) {
                     header.removeClass("hidden").addClass("block");
                 }
-                if (!user.hasOpenChat){
+                if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
                 }
                 loadFriends();
@@ -240,16 +241,22 @@ function home() {
                 header.removeClass("block").addClass("hidden");
             }
             updateDOM(generateContacts(response.friends).html(), leftContainer);
-            if (!user.hasOpenChat){
-                updateDOM(generateRightPanelFund().html(), rightContainer);
-            }
 
             $(document).on("click", ".add-group-button", function () {
                 $(".container-group").remove();
+                updateDOM(formGroup(response.friends).html(), rightContainer);
+                user.setOpenChat(false);
             });
-
+            
+            if ($._data($(document)[0], "events").click.some(event => event.selector === ".add-group-button")) {
+                creationGroup();
+            }
+            
             $(document).on("click", ".back-button-contact", function () {
                 header.removeClass("hidden").addClass("block");
+                if (!user.hasOpenChat) {
+                    updateDOM(generateRightPanelFund().html(), rightContainer);
+                }
                 loadFriends();
             });
         } catch (error) {
@@ -258,10 +265,12 @@ function home() {
     }
 
     function chats() {
-        $(".chat-button")[0].addEventListener("click", () => loadFriends);
-        if (!user.hasOpenChat){
-            updateDOM(generateRightPanelFund().html(), rightContainer);
-        }
+        $(".chat-button")[0].addEventListener("click", () => {
+            if (!user.hasOpenChat) {
+                loadFriends();
+                updateDOM(generateRightPanelFund().html(), rightContainer);
+            }
+        });
     }
 
     if (window.innerWidth < 768) {
@@ -269,12 +278,43 @@ function home() {
         searchBar.addClass("block");
     }
 
-    function creationGroup(name, description, userList, admin) {
-        const response = createGroup(name, description, userList, admin)
+    function creationGroup() {
+        const selectedContacts = [];
+    
+        // Añadir evento de clic a cada contenedor de usuario
+        $(".container-user").each(function() {
+            $(this).on("click", function() {
+                $(this).hide(); // Ocultar el contenedor de usuario
+                $(".contact-separator")[0].remove();
+    
+                // Extraer los atributos del contenedor de usuario
+                const username = $(this).find(".username").text();
+                const bio = $(this).find(".message").text();
+                const imageUrl = $(this).find(".profile-image").attr("src");
+    
+                // Crear un objeto con los atributos extraídos
+                const contact = {
+                    username: username,
+                    bio: bio,
+                    image: imageUrl
+                };
+    
+                // Añadir el objeto al array de contactos seleccionados
+                selectedContacts.push(contact);
+    
+                // Generar el contenedor del grupo con los contactos seleccionados
+                const newGroupContainer = generateGroupContainer(selectedContacts);
+    
+                // Añadir el nuevo contenedor del grupo al contenedor de usuarios en formGroup
+                const containerUsers = $(".container-users");
+                containerUsers.empty(); // Limpiar el contenedor antes de agregar nuevos contactos
+                containerUsers.append(newGroupContainer.html());
+            });
+        });
     }
 
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes    
-    
+
     window.addEventListener('resize', () => {
         updateDOM(generateSearchBar().html(), searchBar);
         if (window.innerWidth > 768) {
