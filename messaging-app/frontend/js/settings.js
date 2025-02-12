@@ -1,4 +1,4 @@
-import { backgroundColor, accentColor, receivedMsg, textBar } from "./static.js";
+import { backgroundColor, accentColor, receivedMsg, textBar, sendButton } from "./static.js";
 export function generateSettings(user) {
     const html = $("<div>");
     const settingsBar = $('<div>').addClass('settings-bar h-14 flex items-center');
@@ -84,7 +84,7 @@ export function chatSettings(){
     const label = $("<label>").addClass("relative inline-block w-20 h-8");
     const span = $("<span>").addClass("relative inline-block font-medium w-40 h-8").text("Cambiar modo");
     const inputCheck = $("<input>").addClass("sr-only peer rounded").attr("type", "checkbox");
-    const modeDiv = $("<div>").addClass(`modeChanger w-20 h-full rounded-full cursor-pointer transition duration-300 bg-[${accentColor}] peer:checked:bg-[${accentColor}] peer-checked:before:translate-x-12 peer-checked:before:bg- before:content-[''] before:absolute before:top-1 before:left-1 before:bg-white before:w-6 before:h-6 before:rounded-full before:transition before:duration-300`);
+    const modeDiv = $("<div>").addClass(`modeChanger w-20 h-full rounded-full cursor-pointer transition duration-300 bg-[${sendButton}] peer:checked:bg-[${sendButton}] peer-checked:before:translate-x-12 peer-checked:before:bg- before:content-[''] before:absolute before:top-1 before:left-1 before:bg-white before:w-6 before:h-6 before:rounded-full before:transition before:duration-300`);
     label.append(inputCheck, modeDiv);
     span.append(label);
     accountContainer.append(title, span);

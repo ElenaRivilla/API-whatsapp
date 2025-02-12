@@ -205,10 +205,10 @@ function home() {
                     if (window.innerWidth < 768) {
                         header.removeClass("block").addClass("hidden");
                     }
-
-                    updateDOM("", leftContainer);
-                    const contactHtml = generateContacts(response.friends);
-                    updateDOM(contactHtml.html(), leftContainer);
+                    updateDOM(generateContacts(response.friends).html(), leftContainer);
+                    if (!user.hasOpenChat){
+                        updateDOM(generateRightPanelFund().html(), rightContainer);
+                    }
                 });
             });
 
@@ -221,10 +221,13 @@ function home() {
     }
 
     function chats() {
-        const chat = $(".chat-button");
-        chat.on("click", loadFriends)
+        $(".chat-button").addEventListener("click", () => loadFriends);
+        if (!user.hasOpenChat){
+            updateDOM(generateRightPanelFund().html(), rightContainer);
+        }
     }
 
+    // TODO que alguien me explique esto
     function contactsGroup() {
         $(document).ready(function () {
             // Evento para el botón de retroceso

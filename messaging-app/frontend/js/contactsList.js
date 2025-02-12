@@ -1,9 +1,10 @@
+import { accentColor, textBar, sendButton, backgroundColor } from "./static.js";
 export function generateContacts(user) {
     const html = $("<div>");
     const chatContainer = $("<div>").addClass("scrollbar-custom");
 
     const backBar = $("<div>").addClass("back-bar h-14 flex items-center");
-    const backButton = $("<button>").addClass("back-button-contact p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
+    const backButton = $("<button>").addClass(`back-button-contact p-2 bg-[${sendButton}] rounded-full h-12 w-12 flex items-center justify-center`);
     const backLink = $("<a>");
     const backImg = $("<img>").addClass("h-5").attr("src", "../assets/svg/arrow.svg");
     backLink.append(backImg);
@@ -13,7 +14,7 @@ export function generateContacts(user) {
 
     const searchBar = $('<div>').addClass("container-search flex items-center p-2 rounded-md my-4 mx-3 sm:my-3 md:my-3 lg:my-3");
     const searchWrapper = $('<div>').addClass("relative w-full flex items-center");
-    const searchInput = $('<input>').addClass("input-search flex-grow h-10 w-full rounded-full pl-10 border focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("type", "search").attr("placeholder", "Buscar contactos...");
+    const searchInput = $('<input>').addClass(`input-search flex-grow h-10 w-full rounded-full pl-10 border focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] bg-[${textBar}]`).attr("type", "search").attr("placeholder", "Buscar contactos...");
     const searchIcon = $("<img>").addClass("h-5 absolute left-3").attr("src", "../assets/svg/search.svg");
 
     searchWrapper.append(searchInput, searchIcon);
@@ -29,7 +30,7 @@ export function generateContacts(user) {
     groupLink.append(addGroupButton);
 
     const contactsName = $('<h2>').addClass("text-xl font-bold ml-2 sm:ml-8 md:ml-4").text('Contactos');
-    const separator = $("<hr>").addClass("separator border-t-2 border-[#468FAF] m-2 sm:mx-8 md:mx-4 lg:mt-4 lg:mx-4")
+    const separator = $("<hr>").addClass(`separator border-t-2 border-[${backgroundColor}] m-2 sm:mx-8 md:mx-4 lg:mt-4 lg:mx-4`)
 
     chatContainer.append(contactsName, separator);
 
@@ -51,7 +52,7 @@ export function generateContacts(user) {
             chatDiv.append(containerImage).append(containerInfo);
             chatContainer.append(chatDiv);
     
-            const hr = $("<hr>").addClass("contact-separator border-t-2 border-[#468FAF] m-1 sm:mx-8 sm:my-0.5 md:mx-4 md:my-4 lg:mt-4 lg:mx-4")
+            const hr = $("<hr>").addClass(`contact-separator border-t-2 border-[${backgroundColor}] m-1 sm:mx-8 sm:my-0.5 md:mx-4 md:my-4 lg:mt-4 lg:mx-4`)
             chatContainer.append(hr);
         });
     }
