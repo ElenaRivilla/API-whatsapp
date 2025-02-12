@@ -80,11 +80,6 @@ function generateMessages(response, user){
         messagesWrapper.append(article);
     };
     html.append(messagesWrapper);
-    // Desplazar el contenedor hacia abajo
-    setTimeout(() => {
-        const container = $(".messages-container");
-        container.scrollTop(container[0].scrollHeight);
-    }, 0);
     return html;
 }
 
@@ -101,4 +96,17 @@ function generateChatBar(){
     messageBar.append(form);
     sendMessageContainer.append(messageBar);
     return sendMessageContainer;
+}
+
+export function changeRadius() {
+    $(".messages-wrapper").each(function () {
+        let content = $(this).find(".sender-container");
+        let content2 = $(this).find(".receiver-container");
+        if (content.length && content[0].scrollHeight > 40) {
+            $(this).removeClass("rounded-full").addClass("rounded-xl");
+        }
+        if (content2.length && content2[0].scrollHeight > 40) {
+            $(this).removeClass("rounded-full").addClass("rounded-xl");
+        }
+    });
 }

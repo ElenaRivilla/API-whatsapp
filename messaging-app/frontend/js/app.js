@@ -2,7 +2,7 @@
 import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser, getContacts, sendMessage } from "./apiManager.js";
 import { User } from "./user.js"
-import { generateChats, generateChat } from "./chat.js";
+import { generateChats, generateChat, changeRadius } from "./chat.js";
 import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
 import { generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode } from "./static.js";
 import { generateContacts } from "./contactsList.js";
@@ -97,6 +97,11 @@ function home() {
         try{
             // Carga los 10 mensajes entre el usuario anfitrion y el usuario amigo (reciever_id).
             await loadMessages(user.username, getUsernameFromNode(node), 10);
+            // Desplazar el contenedor hacia abajo
+            setTimeout(() => {
+                const container = $(".messages-container");
+                container.scrollTop(container[0].scrollHeight);
+            }, 0);
             if (window.innerWidth < 768) {
                 const container = $(".container-user");
                 container.on("click", () => {
@@ -141,7 +146,7 @@ function home() {
             const chat = generateChat(response, receiver);
             updateDOM(chat.html(), rightContainer);
             user.setOpenChat(true);
-            // add event listeners?
+            changeRadius();
             if (window.innerWidth < 768) {
                 const backContainer = $(".back-button");
                 backContainer.on("click", () => {
