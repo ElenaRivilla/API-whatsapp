@@ -3,9 +3,10 @@ import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser, getContacts } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
-import {generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession} from "./settings.js";
-import {generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode} from "./static.js";
-import {generateContacts} from "./contactsList.js";
+import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
+import { generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode } from "./static.js";
+import { generateContacts } from "./contactsList.js";
+import { generateContactsGroup } from "./createGroup.js"
 
 // TODO Remove liveServerPrefix when deploying the app
 const liveServerPrefix = "http://127.0.0.1:5500";
@@ -79,7 +80,7 @@ function home() {
         updateDOM(generateSearchBar().html(), searchBar);
         searchBar.addClass("block");
     }
-   
+
 
     generateRightPanelFund();
     function addEvents(node, event) {
@@ -107,7 +108,7 @@ function home() {
             $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
             header.removeClass("block").addClass("hidden");
         }
-        
+
         return;
     }
 
@@ -123,7 +124,7 @@ function home() {
         }
     }
 
-    function updateDOM(html, section){
+    function updateDOM(html, section) {
         section.empty(); // Limpiar el contenedor antes de agregar nuevos chats
         section.html(html);
         return;
@@ -152,13 +153,13 @@ function home() {
     // La parte de Settings:
     function settingsFunctions() {
         settingsButton.addEventListener("click", () => {
-            if (window.innerWidth < 768){
+            if (window.innerWidth < 768) {
                 header.removeClass("block").addClass("hidden");
             }
             updateDOM("", leftContainer);
             const settings = generateSettings(user);
             updateDOM(settings.html(), leftContainer);
-    
+
             const backButton = $('.back-button');
             backButton.on("click", () => {
                 header.removeClass("hidden").addClass("block");
@@ -166,21 +167,21 @@ function home() {
                 generateRightPanelFund();
                 loadFriends();
             });
-            
+
             $("#account")[0].addEventListener("click", () => {
                 updateDOM(accountSettings(user).html(), rightContainer);
             });
             //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
             $("#chats")[0].addEventListener('click', () => {
                 updateDOM(chatSettings().html(), rightContainer);
-                $(".modeChanger")[0].addEventListener('click', () =>{
-                    if(user.lightMode){
+                $(".modeChanger")[0].addEventListener('click', () => {
+                    if (user.lightMode) {
                         setDarkMode();
                         user.setLightMode(false);
                     }
-                    else{
+                    else {
                         setLightMode();
-                        user.setLightMode(true); 
+                        user.setLightMode(true);
                     }
                 });
             });
@@ -206,27 +207,39 @@ function home() {
             response.friends.sort((a, b) => a.username.localeCompare(b.username));
 
             contactButton.on("click", () => {
-            if (window.innerWidth < 768) {
-                header.removeClass("block").addClass("hidden");
-            }
-            
-            updateDOM("", leftContainer);
-            const contactHtml = generateContacts(response.friends);
-            updateDOM(contactHtml.html(), leftContainer);
+                if (window.innerWidth < 768) {
+                    header.removeClass("block").addClass("hidden");
+                }
+
+                updateDOM("", leftContainer);
+                const contactHtml = generateContacts(response.friends);
+                updateDOM(contactHtml.html(), leftContainer);
             });
-            
         } catch (error) {
             console.error("Error fetching contacts:", error);
         }
     }
     contacts(user.username);
 
-    function chats(){
+    function contactsGroup() {
+        $(document).ready(function () {
+            // Evento para el botón de retroceso
+            $(document).on("click", ".back-button-contact", function () {
+                header.removeClass("hidden").addClass("block");
+                loadFriends();
+                console.log("Botón de retroceso clickeado");
+            });
+
+            // Puedes agregar más eventos aquí si es necesario
+        });
+    }
+    contactsGroup();
+
+    function chats() {
         const chat = $(".chat-button");
-        chat.on("click",loadFriends)
+        chat.on("click", loadFriends)
     }
     chats();
-    
 
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
@@ -261,4 +274,4 @@ function init() {
 }
 
 // Run the init function when the document is fully loaded.
-document.addEventListener("DOMContentLoaded", init);
+$(document).ready(init);

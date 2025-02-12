@@ -3,9 +3,9 @@ export function generateContacts(user) {
     const chatContainer = $("<div>").addClass("scrollbar-custom");
 
     const backBar = $("<div>").addClass("back-bar h-14 flex items-center");
-    const backButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
+    const backButton = $("<button>").addClass("back-button-contact p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
     const backLink = $("<a>");
-    const backImg = $("<img>").addClass("back-button-contact h-5").attr("src", "../assets/svg/arrow.svg");
+    const backImg = $("<img>").addClass("h-5").attr("src", "../assets/svg/arrow.svg");
     backLink.append(backImg);
     backButton.append(backLink);
     const contactsTitle = $("<h3>").addClass("text-xl ml-4").text("Nuevo chat");

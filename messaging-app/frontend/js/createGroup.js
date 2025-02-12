@@ -1,18 +1,11 @@
-import { contacts } from "../tests/tests.js";
-document.addEventListener("DOMContentLoaded", cargaDOM);
-
-function cargaDOM() {
-    generateContacts();
-}
-
-function generateContacts() {
+export function generateContactsGroup() {
 
     const chatContainer = $(".scrollbar-custom");
     const buttonContainer = $(".nextButtonGroup-custom");
     
 
     const backBar = $("<div>").addClass("back-bar h-14 flex items-center");
-    const backButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
+    const backButton = $("<button>").addClass("back-button-contact p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
     const backLink = $("<a>", { href: "./home.html" });
     const backImg = $("<img>").addClass("h-5").attr("src", "../assets/svg/arrow.svg");
     backLink.append(backImg);
