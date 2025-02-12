@@ -79,8 +79,6 @@ function home() {
         searchBar.addClass("block");
     }
 
-
-    generateRightPanelFund();
     function addEvents(node, event) {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
         // elemento es el nodo
@@ -133,6 +131,7 @@ function home() {
             const response = await getMessagesUser(user1, user2, loadSize);
             const chat = generateChat(response, user2);
             updateDOM(chat.html(), rightContainer);
+            user.setOpenChat(true);
             // add event listeners?
             if (window.innerWidth < 768) {
                 const backContainer = $(".back-button");
@@ -154,23 +153,26 @@ function home() {
             if (window.innerWidth < 768) {
                 header.removeClass("block").addClass("hidden");
             }
-            updateDOM("", leftContainer);
-            const settings = generateSettings(user);
-            updateDOM(settings.html(), leftContainer);
+            updateDOM(generateSettings(user).html(), leftContainer);
 
-            const backButton = $('.back-button');
-            backButton.on("click", () => {
-                header.removeClass("hidden").addClass("block");
-                updateDOM("", rightContainer)
+            $('.back-button')[0].addEventListener("click", () => {
+                if (window.innerWidth < 768) {
+                    header.removeClass("hidden").addClass("block");
+                }
+                if (!user.hasOpenChat){
+                    updateDOM(generateRightPanelFund().html(), rightContainer);
+                }
                 loadFriends();
             });
 
             $("#account")[0].addEventListener("click", () => {
                 updateDOM(accountSettings(user).html(), rightContainer);
+                user.setOpenChat(false);
             });
             //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
             $("#chats")[0].addEventListener('click', () => {
                 updateDOM(chatSettings().html(), rightContainer);
+                user.setOpenChat(false);
                 $(".modeChanger")[0].addEventListener('click', () => {
                     if (user.lightMode) {
                         setDarkMode();
@@ -182,19 +184,14 @@ function home() {
                     }
                 });
             });
-            addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
-            addSettingEvent($("#help")[0], helpSettings, rightContainer);
+            //addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
+            //addSettingEvent($("#help")[0], helpSettings, rightContainer);
             $("#logout")[0].addEventListener("click", () => {
+                user.setOpenChat(false);
                 closeSession(loginUrl);
             });
         });
     }
-
-    if (window.innerWidth < 768) {
-        updateDOM(generateSearchBar().html(), searchBar);
-        searchBar.addClass("block");
-    }
-    settingsFunctions();
 
     // La parte de Contacts:
     async function contacts(user) {
@@ -222,7 +219,11 @@ function home() {
             console.error("Error fetching contacts:", error);
         }
     }
-    contacts(user.username);
+
+    function chats() {
+        const chat = $(".chat-button");
+        chat.on("click", loadFriends)
+    }
 
     function contactsGroup() {
         $(document).ready(function () {
@@ -233,19 +234,20 @@ function home() {
             });
         });
     }
-    contactsGroup();
 
-    function chats() {
-        const chat = $(".chat-button");
-        chat.on("click", loadFriends)
+    if (window.innerWidth < 768) {
+        updateDOM(generateSearchBar().html(), searchBar);
+        searchBar.addClass("block");
     }
-    chats();
 
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
+    settingsFunctions();
+    contacts(user.username);
+    contactsGroup();
+    chats();
     // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
-
     loadFriends();
-
+    
     window.addEventListener('resize', () => {
         updateDOM(generateSearchBar().html(), searchBar);
         if (window.innerWidth > 768) {
