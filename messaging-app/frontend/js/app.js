@@ -240,13 +240,13 @@ function home() {
         searchBar.addClass("block");
     }
 
+    // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
+    loadFriends();
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
     settingsFunctions();
     contacts(user.username);
     contactsGroup();
     chats();
-    // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes
-    loadFriends();
     
     window.addEventListener('resize', () => {
         updateDOM(generateSearchBar().html(), searchBar);
@@ -276,4 +276,4 @@ function init() {
 }
 
 // Run the init function when the document is fully loaded.
-$(document).ready(init);
+document.addEventListener("DOMContentLoaded", init);
