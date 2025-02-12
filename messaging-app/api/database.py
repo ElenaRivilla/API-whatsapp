@@ -53,13 +53,13 @@ class database(object):
                  JOIN usuarisclase u ON u.id = m.sender_id
                  WHERE (m.sender_id = %s AND m.receiver_id = %s)
                     OR (m.sender_id = %s AND m.receiver_id = %s)
-                 ORDER BY m.date ASC
+                 ORDER BY m.date desc
                  LIMIT %s;
             """
         self.cursor.execute(sql, (user1_id, user2_id, user2_id, user1_id, loadSize))
         ResQuery = self.cursor.fetchall()
         self.desconecta()
-        return ResQuery
+        return ResQuery[::-1]
     
     def getImage(self, username):
         self.conecta()
@@ -308,7 +308,7 @@ class database(object):
     def sendUsersMessage(self, message: dict):
         self.conecta()
         sql = "INSERT INTO message (date, status, body, sender_id, receiver_id) VALUES (%s, %s, %s, %s, %s);"
-        self.cursor.execute(sql, (message['date'], message['status'], message['body'], message['sender_id'], message['receiver_id']))
+        self.cursor.execute(sql, (message['date'], message['status'], message['body'], message['sender'], message['receiver']))
         self.desconecta()
         return
 
