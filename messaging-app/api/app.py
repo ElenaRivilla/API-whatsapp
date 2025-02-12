@@ -124,12 +124,14 @@ def getGroupMessages(loadSize: int, idGroup: int): # podriamos hacer una query p
 def putCreateGroup(request: CreateGroupRequest):
     try: 
         groupId = db.insertGroup(request.NAME, request.DESCRIPTION)
-        
         joinDate = datetime.now().strftime('%Y-%m-%d %H:%M:%S');
         for userId in request.USERS:
-            db.addUserToGroup(userId, joinDate, groupId, 0)
+            db.addUserToGroup(groupId, userId, joinDate, 0)
+        print("ID GRUPO", groupId)
         
-        db.addUserToGroup(request.ADMIN, joinDate, 1, groupId)
+        db.addUserToGroup(groupId, request.ADMIN, joinDate, 1)
+        print("ID GRU2PO", groupId)
+        
         db.updateGroupSize(groupId, len(request.USERS) + 1)
         return {"message": "Grupo creado exitosamente", "group-id": groupId}
     except Exception as e:

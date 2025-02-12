@@ -65,6 +65,12 @@ export function generateContactsGroup() {
     renderContacts(contacts);
 
 
+    
+
+
+
+
+
    /*  const groupContainer = $("<div>").addClass("container-group flex items-center justify-center h-12 sm:w-1/8 sm:h-5 md:my-0 md:my-3 md:mx-3 lg:mb-3 max-h-12 lg:h-20 sm:my-6 md:flex md:items-center md:justify-center");
     const nextButton = $("<button>").addClass("p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
     const nextImg = $("<img>").addClass("h-5 transform rotate-180").attr("src", "../assets/svg/arrow.svg");
