@@ -112,8 +112,7 @@ export function getContacts(user) {
     });
 }
 
-
-export function createGroup(user) {
+export function createGroup(name, description, userList, admin) {
     const domain = `http://127.0.0.1:8000/createGroup`;
     const url = `${domain}`;
 
@@ -125,7 +124,13 @@ export function createGroup(user) {
                 "Accept": "application/json"
             },
             mode: 'cors',
-            credentials: "include"
+            credentials: "include",
+            body: JSON.stringify({
+                'NAME': name, // Include name in the request body for the group
+                'DESCRIPTION': description, // Include description in the request body for the group
+                'USERS': userList, // Include users for the group
+                'ADMIN': admin // Include admin for the group
+            }) 
         }).then((response) => {
             responseValid(response).then(() => {
                 resolve(response.json());
