@@ -240,7 +240,9 @@ function home() {
 
             $(document).on("click", ".add-group-button", function () {
                 $(".container-group").remove();
+                updateDOM(formGroup(response.friends).html(), rightContainer);
             });
+            
         } catch (error) {
             console.error("Error fetching contacts:", error);
         }
@@ -261,6 +263,7 @@ function home() {
                 header.removeClass("hidden").addClass("block");
                 loadFriends();
             });
+            $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
         });
     }
 
@@ -277,7 +280,7 @@ function home() {
     loadFriends();
     // hacer add event-listeners a los botones como mostrar chat, nuevo grupo y settings, para que cambien el dom
     settingsFunctions();
-    $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
+   
     contactsGroup();
     chats();
     

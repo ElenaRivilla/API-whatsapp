@@ -1,12 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lista de chats</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+        src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
+
 <body>
-    <p>Mira la consola.</p>
-    <script type="module" src="../js/errContol.js"></script>
+    <main class="h-dvh flex flex-col p-5">
+        <header
+            class="flex flex-col md:flex-row lg:h-1/8 xl:h-1/8 sm:flex sm:mb-5 mb-0 lg:mb-5 md:h-[20%] min-h-[160px] md:min-h-[120px] sm:max-h-[140px]">
+            <div class="w-full md:w-[60%] mb-3 sm:mb-0 block sm:block md:block">
+                <div class="flex flex-col justify-end h-full">
+                    <div
+                        class="icons flex w-full md:mb-6 xl:mb-6 2xl:mb-6 md:w-1/2 block sm:block md:block lg:block xl:block">
+                        <button class="settings-bar mx-[1%] w-8 md:w-8 lg:w-10">
+                            <img src="../assets/svg/settings.svg" alt="button-settings" class="icon">
+                        </button>
+                        <button class="contact-button mx-[1%] w-8 md:w-8 lg:w-10">
+                            <img src="../assets/svg/add.svg" alt="button-add">
+                        </button>
+                        <button class="chat-button mx-[1%] w-8 md:w-8 lg:w-10 hidden sm:hidden md:inline">
+                            <img src="../assets/svg/chat.svg" alt="button-chat">
+                        </button>
+                    </div>
+                    <div class="search-bar">
+                        <!-- aquí va el buscador de contactos -->
+                    </div>
+                    <div class="filter-container sm:flex w-full sm:w-1/6 md:w-1/6 mt-auto h-auto sm:h-auto">
+                        <div class="filters flex w-full sm:w-full md:w-1/2 items-center justify-between">
+                            <img src="../assets/svg/filter.svg" class="icon mx-1.5 w-8 md:h-8 lg:w-12">
+                            <button
+                                class="filterButton button h-10 w-20 text-xs hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">todo</button>
+                            <button
+                                class="filterButton button h-10 w-20 text-xs hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">no
+                                leído</button>
+                            <button
+                                class="filterButton button h-10 w-20 text-xs hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">chats</button>
+                            <button
+                                class="filterButton button h-10 w-20 text-xs hover:b mx-1.5 py-2 px-3 sm:py-3 sm:px-5 rounded-3xl flex items-center justify-center">grupos</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-[40%] md:flex md:justify-end xl:justify-end mt-4 md:mt-0 hidden sm:hidden md:block">
+                <img src="../assets/svg/dove.svg" alt="logo" class="w-16 h-16 md:w-20 md:h-20">
+            </div>
+        </header>
+        <div class="flex flex-col md:flex-row h-full sm:h-[100%] md:h-[80%]"> <!-- md:h-[100%]  -->
+            <section
+                class=" contacts w-full p-4 md:w-[30%] h-full mb-4 md:mb-0 md:mr-10 block rounded-3xl overflow-y-auto custom-scrollbar shadow-2xl"
+                style="background-color: var(--container-color);">
+                <div class="scrollbar-custom">
+                    <!-- aquí se generan la lista de chats con jQuery -->
+                </div>
+            </section>
+            <section
+                class="chats relative w-full md:w-[70%] hidden md:block sm:hidden h-full rounded-3xl shadow-2xl flex flex-col justify-between"
+                style="background-color: var(--container-color);">
+                <!-- aquí se añaden los mensajes con jQuery -->
+
+            </section>
+        </div>
+    </main>
+    <script>
+        const chatContainer = $(".chats");
+        const form = $("<form>").addClass("w-full h-full p-10");
+
+        const containerInfo = $("<div>").addClass("container-info");
+        const infoDiv = $("<div>").addClass("flex items-center h-[40%]");
+        const img = $("<img>").addClass("w-44 h-44 rounded-full mr-10").attr("src", "https://picsum.photos/300/300?random=8");
+        const infoInnerDiv = $("<div>").addClass("flex flex-col w-full h-full space-y-5");
+
+        const labelNombre = $("<label>").attr("for", "nombre-grupo").text("Nombre del grupo").addClass("text-md font-bold");
+        const hrNombre = $("<hr>").addClass("my-3 border-t-2 border-[#468FAF] w-[45%]");
+        const inputNombre = $("<input>").attr("type", "text").attr("id", "nombre-grupo").addClass("rounded-full h-10 w-full focus:outline-none focus:ring-1 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Escribe el nombre").css("font-weight", "normal");
+        labelNombre.append(hrNombre, inputNombre);
+
+        const labelDescripcion = $("<label>").attr("for", "descripcion-grupo").text("Descripción del grupo").addClass("text-md font-bold");
+        const hrDescripcion = $("<hr>").addClass("my-3 border-t-2 border-[#468FAF] w-[45%]");
+        const inputDescripcion = $("<input>").attr("type", "text").attr("id", "descripcion-grupo").addClass("rounded-full w-full focus:outline-none focus:ring-1 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Escribe la descripción").css("font-weight", "normal");
+        labelDescripcion.append(hrDescripcion, inputDescripcion);
+
+        infoInnerDiv.append(labelNombre, labelDescripcion);
+        infoDiv.append(img, infoInnerDiv);
+        containerInfo.append(infoDiv);
+
+        const containerUsers = $("<div>").addClass("container-users");
+        const usersTitle = $("<h1>").text("Usuarios").addClass("text-xl font-bold mt-4");
+        const separator = $("<hr>").addClass("my-3 border-t-2 border-[#468FAF] w-full");
+        const usersDiv = $("<div>").addClass("h-full w-full");
+
+        // contacts.forEach(user, () => {
+        //     const userDiv = $("<div>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-16 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center");
+        //     const containerImage = $("<div>").addClass("container-image w-20 h-20 sm:w-28 sm:h-28 md:w-20 md:h-14 flex justify-center items-center");
+        //     const profileImage = $("<img>").addClass("profile-image sm:min-h-18 sm:min-w-18 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", contact.imageUrl);
+        //     containerImage.append(profileImage);
+
+        //     const containerInfo = $("<div>").addClass("container-info truncate w-full p-2 h-20 md:p-1 lg:p-4 flex flex-col justify-center items-start");
+        //     const username = $("<h3>").addClass("username text-base sm:text-2xl md:text-lg lg:text-lg font-bold block md:hidden lg:block").text(contact.username);
+        //     const bio = $("<p>").addClass("message truncate block sm:block md:hidden lg:block text-xs w-56 sm:w-62 md:w-62 truncate").text(contact.bio);
+        //     containerInfo.append(username).append(bio);
+
+        //     userDiv.append(containerImage).append(containerInfo);
+        //     chatContainer.append(userDiv);
+        // });
+        
+
+        containerUsers.append(usersTitle, separator, usersDiv);
+
+        const button = $("<button>").text("Submit").addClass("w-96 p-3 m-10 text-white rounded-2xl bg-[#468FAF] hover:bg-[#2C7DA0] absolute bottom-0");
+
+        form.append(containerInfo, containerUsers, button);
+        chatContainer.append(form);
+    </script>
 </body>
+
 </html>
