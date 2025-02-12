@@ -103,6 +103,36 @@ export function getContacts(user) {
     });
 }
 
+export function createGroup(name, description, userList, admin) {
+    const url = `${domain}createGroup`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            credentials: "include",
+            body: JSON.stringify({
+                'NAME': name, // Include name in the request body for the group
+                'DESCRIPTION': description, // Include description in the request body for the group
+                'USERS': userList, // Include users for the group
+                'ADMIN': admin // Include admin for the group
+            }) 
+        }).then((response) => {
+            responseValid(response).then(() => {
+                resolve(response.json());
+            }).catch((error) => {
+                reject(error);
+            });
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
+
 export function sendMessage(message){
     const url = `${domain}sendMessage`;
 

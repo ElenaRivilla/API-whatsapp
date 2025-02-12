@@ -1,19 +1,21 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from datetime import datetime, date, timedelta, timezone
 from database import database
-from models import UserGroup, LastMessageUsers, LoginRequest
+from models import UserGroup, LoginRequest, CreateGroupRequest
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
+from fastapi.middleware.cors import CORSMiddleware
+from typing import Optional
+from jose import JWTError, jwt
+from fastapi.security import OAuth2PasswordBearer
 from base64 import urlsafe_b64decode
+
 import hashlib
 import base64
 import os
 import re
 import math
-from fastapi.middleware.cors import CORSMiddleware
-from typing import Optional
-from jose import JWTError, jwt
-from fastapi.security import OAuth2PasswordBearer
+
 
 db = database()
 app = FastAPI(debug=True)
@@ -117,6 +119,25 @@ def getGroupMessages(loadSize: int, idGroup: int): # podriamos hacer una query p
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
+    
+@app.post("/createGroup")
+def create_group(request: CreateGroupRequest):
+    try:
+        group_id = db.createGroup(request.NAME, request.DESCRIPTION)
+        
+        # Agregar al administrador al grupo
+        db.addUserToGroup(group_id, request.ADMIN, admin=True)
+        
+        # Agregar otros usuarios al grupo
+        for user in request.USERS:
+            if user != request.ADMIN:  # Evitar agregar al administrador dos veces
+                db.addUserToGroup(group_id, user)
+        
+        return {"message": "Grupo creado exitosamente", "group_id": group_id}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 #End-point to get chat messages between two users
 @app.get('/getMessages/{loadSize}/{user1}/{user2}')
 def getUsersMessages(loadSize: int, user1: str , user2: str, request: Request):

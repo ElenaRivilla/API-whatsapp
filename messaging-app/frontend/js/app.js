@@ -238,7 +238,7 @@ function home() {
             }
 
             $(document).on("click", ".add-group-button", function () {
-                $(".container-search, .container-group").remove();
+                $(".container-group").remove();
             });
         } catch (error) {
             console.error("Error fetching contacts:", error);

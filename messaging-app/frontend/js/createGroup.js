@@ -1,3 +1,10 @@
+import { contacts } from "../tests/tests.js";
+document.addEventListener("DOMContentLoaded", cargaDOM);
+
+function cargaDOM() {
+    generateContactsGroup();
+}
+
 export function generateContactsGroup() {
 
     const chatContainer = $(".scrollbar-custom");
@@ -56,6 +63,12 @@ export function generateContactsGroup() {
         renderContacts(filteredContacts); // Actualizamos la lista de contactos con los contactos que coinciden con el texto introducido
     });
     renderContacts(contacts);
+
+
+    
+
+
+
 
 
    /*  const groupContainer = $("<div>").addClass("container-group flex items-center justify-center h-12 sm:w-1/8 sm:h-5 md:my-0 md:my-3 md:mx-3 lg:mb-3 max-h-12 lg:h-20 sm:my-6 md:flex md:items-center md:justify-center");

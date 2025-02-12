@@ -1,6 +1,5 @@
 import pymysql.cursors
 from datetime import datetime
-from models import UserGroup
 
 class database(object):
     def conecta(self):
@@ -88,6 +87,8 @@ class database(object):
         self.cursor.execute(sql,(userId))
         ResQuery = self.cursor.fetchall()
         return ResQuery
+    
+    
     
     def getMessagesGroups(self, loadSize, group_id):
         self.conecta()
@@ -213,14 +214,35 @@ class database(object):
         if ResQuery:
             return True
         return False
+       
+    def createGroup(self, name, description):
+        self.conecta()
+        creation_date = datetime.now().strftime('%Y-%m-%d')
+        sql = "INSERT INTO groups (name, description, size, creation_date) VALUES (%s, %s, 0, %s);"
+        self.cursor.execute(sql, (name, description, creation_date))
+        group_id = self.cursor.lastrowid
+        self.desconecta()
+        return group_id
     
-    def addUserToGroup(self, user_group: UserGroup, join_date):
-       self.conecta()
-       sql="INSERT INTO user_group VALUES (%s, %s, %s, 0);"
-       self.cursor.execute(sql,(user_group.ID_GROUP, user_group.ID_USER, join_date))
-       self.cursor.fetchone()
-       self.desconecta()
+    def addUserToGroup(self, group_id, user_id, admin=False):
+        self.conecta()
+        join_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        sql = "INSERT INTO user_group (id_group, id_user, join_date, admin) VALUES (%s, %s, %s, %s);"
+        self.cursor.execute(sql, (group_id, user_id, join_date, int(admin)))
+        sql_update_size = "UPDATE groups SET size = size + 1 WHERE id = %s;"
+        self.cursor.execute(sql_update_size, (group_id,))
+        self.desconecta()
         
+    def updateGroupSize(self, groupId, size):
+        self.conecta()
+        sql = """ UPDATE groups
+                  SET size = %s
+                  WHERE id = %s;"""
+        self.cursor.execute(sql, (size, groupId))
+        self.desconecta()
+        return
+    
+    
     def deleteUserFromGroup(self, userId, groupId):
         if not self.userExistsInGroup(userId, groupId):
             raise Exception("User not registered in group")
