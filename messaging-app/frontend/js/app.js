@@ -178,6 +178,10 @@ function home() {
                 };
                 await sendMessage(message);
                 await loadMessages(user.username, receiver, 10);
+                setTimeout(() => {
+                    const container = $(".messages-container");
+                    container.scrollTop(container[0].scrollHeight);
+                }, 0);
                 await loadFriends();
             }
             catch (error) {
