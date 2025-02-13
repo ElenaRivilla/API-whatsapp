@@ -277,3 +277,19 @@ def addUserToGroup( user_group: UserGroup):
         db.addUserToGroup(user_group, join_date)
     except Exception as e:
         raise e
+
+@app.post('/updateProfile')
+def updateProfile(updated_user: dict, request: Request):
+    try:
+        userId = verify_token(request.cookies.get('token'))
+        db.updateUserProfile(userId, updated_user['username'], updated_user['bio'])
+    
+        userChanged = db.getUpdatedUser(userId)
+        data = {
+            "username": userChanged['username'],
+            "bio": userChanged['bio'],
+        }
+        return data
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

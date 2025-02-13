@@ -1,6 +1,6 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid } from "./errControl.js";
-import { userExists, getUsersHome, getMessagesUser, getContacts, sendMessage } from "./apiManager.js";
+import { userExists, getUsersHome, getMessagesUser, getContacts, sendMessage, updateUserProfile } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
@@ -160,8 +160,8 @@ function home() {
 
     async function send(receiver) {
         const msgBody = $('.write-message')[0].value;
-        if (msgBody){
-            try{
+        if (msgBody) {
+            try {
                 const message = {
                     "body": msgBody,
                     "receiver": receiver
@@ -170,7 +170,7 @@ function home() {
                 await loadMessages(user.username, receiver, 10);
                 await loadFriends();
             }
-            catch(error){
+            catch (error) {
                 console.error("Error:", error);
             }
         }
@@ -189,16 +189,39 @@ function home() {
                 if (window.innerWidth < 768) {
                     header.removeClass("hidden").addClass("block");
                 }
-                if (!user.hasOpenChat){
+                if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
                 }
                 loadFriends();
             });
 
-            $("#account")[0].addEventListener("click", () => {
+            $("#account")[0].addEventListener("click", async () => {
                 updateDOM(accountSettings(user).html(), rightContainer);
                 user.setOpenChat(false);
+
+                const message = $(".send-message")[0];
+                $(".send-button")[0].addEventListener("click", async () => {
+                    const newName = $('.input-name')[0].value;
+                    const newBio = $('.text-bio')[0].value;
+                    const updateUser = {
+                        username: newName,
+                        bio: newBio,
+                    };
+                    try {
+                        const updatedUser = await updateUserProfile(updateUser);
+                        user.updateProfile(updatedUser.username, updatedUser.bio);
+                        document.cookie = "user=" + encodeURIComponent(user.toString()) + "; path=/; Secure; SameSite=Strict";
+                        message.classList.remove('hidden');
+                        setTimeout(() => { // TODO los botones del leftContainer dejan de funcionar al utilizar el segundo updateDOM.
+                            updateDOM(generateRightPanelFund(user).html(), rightContainer);
+                            updateDOM(generateSettings(user).html(), leftContainer);
+                        }, 3000); 
+                    } catch (error) {
+                        console.error("Error actualizando el perfil:", error);
+                    }
+                });
             });
+
             //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
             $("#chats")[0].addEventListener('click', () => {
                 updateDOM(chatSettings().html(), rightContainer);
@@ -233,7 +256,7 @@ function home() {
                 header.removeClass("block").addClass("hidden");
             }
             updateDOM(generateContacts(response.friends).html(), leftContainer);
-            if (!user.hasOpenChat){
+            if (!user.hasOpenChat) {
                 updateDOM(generateRightPanelFund().html(), rightContainer);
             }
 
@@ -247,7 +270,7 @@ function home() {
 
     function chats() {
         $(".chat-button")[0].addEventListener("click", () => loadFriends);
-        if (!user.hasOpenChat){
+        if (!user.hasOpenChat) {
             updateDOM(generateRightPanelFund().html(), rightContainer);
         }
     }
@@ -279,7 +302,7 @@ function home() {
     $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
     contactsGroup();
     chats();
-    
+
     window.addEventListener('resize', () => {
         updateDOM(generateSearchBar().html(), searchBar);
         if (window.innerWidth > 768) {
