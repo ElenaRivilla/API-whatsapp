@@ -109,7 +109,7 @@ function home() {
                 container.on("click", () => {
                 });
                 $(".contacts").removeClass("block").addClass("hidden");
-                $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
+                $(".chats").removeClass("hidden md:block sm:hidden").css('display', '');
                 header.removeClass("block").addClass("hidden");
             }
             const chat = document.querySelector(".messages-container");
@@ -154,8 +154,8 @@ function home() {
                 const backContainer = $(".back-button");
                 backContainer.on("click", () => {
                     $(".contacts").removeClass("hidden").addClass("block");
-                    $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
-                    header.removeClass("hidden ").addClass("block sm:block");
+                    $(".chats").removeClass("block").addClass("hidden md:hidden sm:hidden");
+                    header.removeClass("hidden").addClass("block sm:block");
                 });
             }
             $('.textBarForm')[0].addEventListener("submit", function (event) {
@@ -199,16 +199,17 @@ function home() {
         updateDOM(generateSettings(user).html(), leftContainer);
         leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
 
-        $('.back-button')[0].addEventListener("click", () => {
-            if (window.innerWidth < 768) {
-                header.removeClass("hidden").addClass("block");
-            }
-            if (!user.hasOpenChat) {
-                updateDOM(generateRightPanelFund().html(), rightContainer);
-                rightContainer.hide().fadeIn(400);
-            }
-            loadFriends();
-        });
+            $('.back-button')[0].addEventListener("click", () => {
+                if (window.innerWidth < 768) {
+                    header.removeClass("hidden").addClass("block");
+                }
+                if (!user.hasOpenChat) {
+                    updateDOM(generateRightPanelFund().html(), rightContainer);
+                    $(".chats").css('display', '');
+                    rightContainer.hide().fadeIn(400);
+                }
+                loadFriends();
+            });
 
         $("#account")[0].addEventListener("click", async () => {
             const settingsHtml = accountSettings(user);
@@ -292,6 +293,7 @@ function home() {
                 if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
                     rightContainer.hide().fadeIn(400);
+                    $(".chats").css('display', '');
                 }
                 loadFriends();
             });
@@ -363,6 +365,7 @@ function home() {
             searchBar.empty()
             $(".contacts").removeClass("hidden").addClass("block");
             $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
+            
             loadFriends();
         }
     });
@@ -378,7 +381,7 @@ function home() {
     // TODO QUITAR
     // TODO QUITAR
     // TODO QUITAR
-    setDarkMode();
+    setLightMode();
     initialize();
     return;
 }
