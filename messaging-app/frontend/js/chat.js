@@ -60,14 +60,14 @@ function generateMessages(response, user){
 
         if (msg['username'] === user) {
             messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").attr("style", "background-color: var(--received-msg-color);");
-            messageText = $("<p>").addClass("message-sender text-xs sm:text-sm").text(msg['body']);
+            messageText = $("<p>").addClass("message-sender text-xs sm:text-sm w-full break-words").text(msg['body']);
             time = $("<time>").addClass("hour-message w-[100%] pr-2 text-xs ml-2 flex justify-end").text(msg['date']).attr("style", "color: var(--text-color);");
 
             messageContainer.append(messageText).append(time);
             article.append(figure).append(messageContainer);
         } else {
             messageContainer = $("<div>").addClass("message-container w-auto max-w-[100%] min-h-16 h-auto p-4 px-7 rounded-full").attr("style", "background-color: var(--sent-msg-color);");
-            messageText = $("<p>").addClass("message-receiver text-xs sm:text-sm").text(msg['body']);
+            messageText = $("<p>").addClass("message-receiver text-xs sm:text-sm w-full break-words").text(msg['body']);
 
             timeContainer = $("<div>").addClass("flex items-end w-full justify-end");
             time = $("<time>").addClass("hour-message text-xs sm:text-sm ml-2").text(msg['date']).attr("style", "color: var(--text-color);");
@@ -99,14 +99,20 @@ function generateChatBar(){
 }
 
 export function changeRadius() {
-    $(".messages-wrapper").each(function () {
-        let content = $(this).find(".sender-container");
-        let content2 = $(this).find(".receiver-container");
-        if (content.length && content[0].scrollHeight > 40) {
+    // $(".message-container").each(function () {
+    //     if (this.scrollHeight > this.offsetHeight) {
+    //         $(this).removeClass("rounded-full").addClass("rounded-xl");
+    //     }
+    //     else{
+    //         $(this).removeClass("rounded-xl").addClass("rounded-full");
+    //     }
+    // });
+    $(".message-container").each(function () {
+        const child = this.children[0];
+        if (child.scrollHeight > child.offsetHeight) {
             $(this).removeClass("rounded-full").addClass("rounded-xl");
-        }
-        if (content2.length && content2[0].scrollHeight > 40) {
-            $(this).removeClass("rounded-full").addClass("rounded-xl");
+        } else {
+            $(this).removeClass("rounded-xl").addClass("rounded-full");
         }
     });
 }
