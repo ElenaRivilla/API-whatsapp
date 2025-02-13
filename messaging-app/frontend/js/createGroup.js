@@ -1,16 +1,8 @@
-import { contacts } from "../tests/tests.js";
-document.addEventListener("DOMContentLoaded", cargaDOM);
-
-function cargaDOM() {
-    generateContactsGroup();
-}
+import { accentColor, textBar, sendButton, backgroundColor } from "./static.js";
 
 export function generateContactsGroup() {
 
     const chatContainer = $(".scrollbar-custom");
-    const buttonContainer = $(".nextButtonGroup-custom");
-
-
     const backBar = $("<div>").addClass("back-bar h-14 flex items-center");
     const backButton = $("<button>").addClass("back-button-contact p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
     const backLink = $("<a>", { href: "./home.html" });
@@ -77,7 +69,7 @@ export function generateContactsGroup() {
 
 export function formGroup() {
     const html = $("<div>");
-    const form = $("<form>").addClass("w-full h-full p-10");
+    const form = $("<form>").addClass("w-full h-full p-10 relative"); //añadir post al form y que el botón tenga que redirigir al chat creado con el grupo
 
     const containerInfo = $("<div>").addClass("container-info");
     const infoDiv = $("<div>").addClass("flex items-center h-[40%]");
@@ -85,13 +77,13 @@ export function formGroup() {
     const infoInnerDiv = $("<div>").addClass("flex flex-col w-full h-full space-y-5");
 
     const labelNombre = $("<label>").attr("for", "nombre-grupo").text("Nombre del grupo").addClass("text-md font-bold");
-    const hrNombre = $("<hr>").addClass("my-3 border-t-2 border-[#468FAF] w-[45%]");
-    const inputNombre = $("<input>").attr("type", "text").attr("id", "nombre-grupo").addClass("rounded-full h-10 w-full focus:outline-none focus:ring-1 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Escribe el nombre").css("font-weight", "normal");
+    const hrNombre = $("<hr>").addClass(`my-3 border-t-2 border-[${backgroundColor}] w-[45%]`);
+    const inputNombre = $("<input>").attr("type", "text").attr("id", "nombre-grupo").addClass(`rounded-full h-10 w-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] bg-[${textBar}]`).attr("placeholder", "Escribe el nombre").css("font-weight", "normal");
     labelNombre.append(hrNombre, inputNombre);
 
     const labelDescripcion = $("<label>").attr("for", "descripcion-grupo").text("Descripción del grupo").addClass("text-md font-bold");
-    const hrDescripcion = $("<hr>").addClass("my-3 border-t-2 border-[#468FAF] w-[45%]");
-    const inputDescripcion = $("<input>").attr("type", "text").attr("id", "descripcion-grupo").addClass("rounded-full w-full focus:outline-none focus:ring-1 focus:ring-[#468FAF] focus:border-[#468FAF]").attr("placeholder", "Escribe la descripción").css("font-weight", "normal");
+    const hrDescripcion = $("<hr>").addClass(`my-3 border-t-2 border-[${backgroundColor}] w-[45%]`);
+    const inputDescripcion = $("<input>").attr("type", "text").attr("id", "descripcion-grupo").addClass(`rounded-full w-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] bg-[${textBar}]`).attr("placeholder", "Escribe la descripción").css("font-weight", "normal");
     labelDescripcion.append(hrDescripcion, inputDescripcion);
 
     infoInnerDiv.append(labelNombre, labelDescripcion);
@@ -100,14 +92,14 @@ export function formGroup() {
 
     const containerUsersWrapper = $("<div>").addClass("w-full flex flex-col items-start mt-10");
     const usersTitle = $("<h1>").text("Usuarios").addClass("text-xl font-bold mt-4");
-    const separator = $("<hr>").addClass("my-3 border-t-2 border-[#468FAF] w-full");
+    const separator = $("<hr>").addClass(`my-3 border-t-2 border-[${backgroundColor}] w-full`);
 
     containerUsersWrapper.append(usersTitle, separator);
 
     const containerUsers = $("<div>").addClass("container-users w-full h-auto max-h-[40%] flex flex-wrap overflow-y-auto").css("scrollbar-width", "none").css("-ms-overflow-style", "none");
     containerUsers.find("::-webkit-scrollbar").css("display", "none");
 
-    const button = $("<button>").text("Crear grupo").addClass("w-96 p-3 m-10 text-white rounded-2xl bg-[#468FAF] hover:bg-[#2C7DA0] absolute bottom-0");
+    const button = $("<button>").text("Crear grupo").addClass(`w-[30rem] p-3 mb-10 text-white rounded-2xl bg-[${sendButton}] hover:bg-[${accentColor}] absolute bottom-0 left-1/2 transform -translate-x-1/2`);
 
     form.append(containerInfo, containerUsersWrapper, containerUsers, button);
     html.append(form);
@@ -129,7 +121,5 @@ export function generateGroupContainer(contacts) {
         userDiv.append(containerImage).append(containerInfo);
         groupContainer.append(userDiv);
     });
-
     return groupContainer;
 }
-

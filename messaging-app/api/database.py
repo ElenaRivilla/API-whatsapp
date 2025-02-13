@@ -311,13 +311,13 @@ class database(object):
         self.cursor.execute(sql2, (groupId))       
         self.desconecta()
         
-    def getUsername(self, userId):
+    def getUpdatedUser(self, userId):
         self.conecta()
-        sql="SELECT username FROM usuarisclase WHERE id = %s"
+        sql="SELECT username, bio FROM usuarisclase WHERE id = %s"
         self.cursor.execute(sql, (userId))
         ResQuery=self.cursor.fetchone()
         self.desconecta()
-        return ResQuery['username']
+        return ResQuery
     
     def setMessageStatus(self, messageId, newStatus):
         self.conecta()
@@ -396,3 +396,9 @@ class database(object):
         ResQuery=self.cursor.fetchone()
         self.desconecta()
         return ResQuery['contraseña_encriptada']
+    
+    def updateUserProfile(self, userId, username, bio):
+        self.conecta()
+        sql = "UPDATE usuarisclase SET username= %s, bio= %s WHERE id= %s;"
+        self.cursor.execute(sql, (username, bio, userId))
+        self.desconecta()

@@ -23,18 +23,18 @@ export function generateSettings(user) {
     const settingsList = $("<ul>").addClass("flex flex-col h-full space-y-6");
 
     const settingsItems = [
-        { imgSrc: "../assets/svg/profile.svg", text: "Cuenta", id: "account"},
-        { imgSrc: "../assets/svg/padlock.svg", text: "Privacidad", id: "privacy"},
-        { imgSrc: "../assets/svg/chatBlue.svg", text: "Chats", id: "chats"},
-        { imgSrc: "../assets/svg/notifications.svg", text: "Notificaciones", id: 'notifications'},
-        { imgSrc: "../assets/svg/help.svg", text: "Ayuda", id: 'help'},
-        { imgSrc: "../assets/svg/logout.svg", text: "Cerrar sesión", imgClass: "h-9 ml-1", id: 'logout'}
+        { imgSrc: "../assets/svg/profile.svg", text: "Cuenta", id: "account" },
+        { imgSrc: "../assets/svg/padlock.svg", text: "Privacidad", id: "privacy" },
+        { imgSrc: "../assets/svg/chatBlue.svg", text: "Chats", id: "chats" },
+        { imgSrc: "../assets/svg/notifications.svg", text: "Notificaciones", id: 'notifications' },
+        { imgSrc: "../assets/svg/help.svg", text: "Ayuda", id: 'help' },
+        { imgSrc: "../assets/svg/logout.svg", text: "Cerrar sesión", imgClass: "h-9 ml-1", id: 'logout' }
     ];
 
     settingsItems.forEach(item => {
         const button = $("<button>");
-        const listItem = $("<li>").addClass("flex items-center").attr({"text": item.text, 'id': item.id});
-        const img = $("<img>").addClass(item.imgClass || "h-10").attr({"src": item.imgSrc, 'style': "color: var(--background-color);"});
+        const listItem = $("<li>").addClass("flex items-center").attr({ "text": item.text, 'id': item.id });
+        const img = $("<img>").addClass(item.imgClass || "h-10").attr({ "src": item.imgSrc, 'style': "color: var(--background-color);" });
         const text = $("<h2>").addClass("ml-4 text-xl").text(item.text);
         listItem.append(img, text);
         button.append(listItem);
@@ -48,35 +48,44 @@ export function generateSettings(user) {
 // TODO INCOMPLETO!
 export function accountSettings(user) {
     const html = $("<div>");
-    const accountContainer = $("<div>").addClass("account-settings p-10");
-    const title = $("<h2>").addClass("text-2xl font-bold mb-4").text("Configuración de Cuenta");
-    accountContainer.append(title);
+    const profileContainer = $('<div>').addClass('profile-container overflow-y-auto custom-scrollbar w-full h-[85%] p-6 flex flex-col md:flex-row');
+    const profileImgContainer = $('<div>').addClass('image-container flex flex-col items-center md:items-start md:w-1/5 mb-6 mr-2');
+    const profileTitle = $('<h2>').addClass('font-bold 2xl:text-xl xl:text-lg lg:text-base').text('Foto de perfil');
+    const profileSeparator = $('<hr>').addClass(`my-3 border-t-2 border-[${backgroundColor}] w-[65%]`);
+    const profileImg = $('<img>').addClass('rounded-full 2xl:h-44 mb-4 xl:h-36 lg:h-28 md:h-20').attr('src', user.image);
+    profileImgContainer.append(profileTitle, profileSeparator, profileImg);
 
-    const imageContainer = $('<div>').addClass('input-image-container');
-    const imageText = $('<p>').addClass('block text-lg font-medium mb-2 mt-4').text('Foto de perfil:');
-    const img = $('<img>').addClass('h-20 w-20 rounded-full').attr("src", user.image);
-    const fileInput = $('<input>').attr("type", "file").attr("accept", "image/*").addClass('hidden');
-    imageContainer.append(imageText, fileInput, img);
+    const infoContainer = $('<div>').addClass('profile-info flex flex-col w-full md:w-4/4');
+    const labelName = $('<label>').addClass('my-3');
+    const titleName = $('<h3>').addClass('text-md font-bold').text('Nombre');
+    const separatorName = $('<hr>').addClass(`my-3 border-t-2 border-[${backgroundColor}] w-[45%]`);
+    const inputName = $('<input>').addClass(`input-name rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] h-10 w-[90%]`).attr('type', 'text').attr({'placeholder': 'Escribe tu nombre..', "style": "background-color: var(--typebar-color)"}).val(user.username);
+    labelName.append(titleName, separatorName, inputName);
 
-    const nameContainer = $('<div>');
-    const nameLabel = $("<label>").addClass("block text-lg font-medium mb-2").text("Nombre");
-    const nameInput = $("<input>").addClass(`w-full p-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] bg-[${textBar}]`).attr("type", "text").attr("placeholder", "Nuevo nombre");
-    nameContainer.append(nameLabel, nameInput);
-
-    const bioContainer = $('<div>');
-    const bioLabel = $("<label>").addClass("block text-lg font-medium mb-2 mt-4").text("Biografia");
-    const bioInput = $("<textarea>").addClass(`w-full p-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] bg-[${textBar}]`).attr("placeholder", "Nueva bio");
-    bioContainer.append(bioLabel, bioInput);
-    accountContainer.append(imageContainer, nameContainer, bioContainer);
-    html.append(accountContainer);
+    const labelBio = $('<label>').addClass('my-3');
+    const titleBio = $('<h3>').addClass('text-md font-bold').text('Biografía');
+    const separatorBio = $('<hr>').addClass(`my-3 border-t-2 border-[${backgroundColor}] w-[45%]`);
+    const textBio = $('<textarea>').addClass(`text-bio rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] h-10 w-[90%] resize-none overflow-hidden`).attr({'placeholder': 'Escribe una nueva biografía...' , "style": "background-color: var(--typebar-color)"}).val(user.bio).on('input', function () {
+        this.style.height = '';
+        this.style.height = this.scrollHeight + 'px';
+    });
+    labelBio.append(titleBio, separatorBio, textBio);
+    infoContainer.append(labelName, labelBio);
+    const sendContainer = $('<div>').addClass('flex flex-col items-center mt-4');
+    const sendButton = $('<button>').addClass('send-button btn bg-[#468FAF] text-white py-2 px-4 rounded-full').text('Guardar cambios');
+    const message = $('<p>').addClass('send-message text-green-500 mb-2 hidden').text('Perfil actualizado con éxito.');
+    
+    sendContainer.append(message, sendButton);
+    profileContainer.append(profileImgContainer, infoContainer);
+    html.append(profileContainer, sendContainer);
     return html;
 }
 
-export function privacitySettings(){
+export function privacitySettings() {
 
 }
 
-export function chatSettings(){
+export function chatSettings() {
     const html = $("<div>");
     const accountContainer = $("<div>").addClass("account-settings p-6");
     const title = $("<h2>").addClass("text-2xl font-bold mb-4").text("Configuración de Chats");
@@ -92,15 +101,15 @@ export function chatSettings(){
     return html;
 }
 
-export function notificationSettings(){
+export function notificationSettings() {
 
 }
 
-export function helpSettings(){
+export function helpSettings() {
 
 }
 
-export function closeSession(url){
+export function closeSession(url) {
     document.cookie = "token= expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict";
     document.cookie = "user= expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict";
 

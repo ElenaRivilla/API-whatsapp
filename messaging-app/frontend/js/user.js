@@ -1,5 +1,5 @@
-export class User{
-    constructor(newUser){
+export class User {
+    constructor(newUser) {
         this.username = newUser['username'];
         this.bio = newUser['bio'];
         this.image = newUser['image'];
@@ -7,23 +7,28 @@ export class User{
         this.lightMode = true;
     }
 
-    setOpenChat(bool){
-        if (typeof(bool) == "boolean"){
+    setOpenChat(bool) {
+        if (typeof (bool) == "boolean") {
             this.hasOpenChat = bool;
             return;
         }
-        return new Error("El parametro de setOpenChat ha de ser un booleano");        
+        return new Error("El parametro de setOpenChat ha de ser un booleano");
     }
 
-    setLightMode(bool){
-        if (typeof(bool) == "boolean"){
+    setLightMode(bool) {
+        if (typeof (bool) == "boolean") {
             this.lightMode = bool;
             return;
         }
-        return new Error("El parametro de setOpenChat ha de ser un booleano");   
+        return new Error("El parametro de setOpenChat ha de ser un booleano");
     }
 
-    toString(){
+    updateProfile(newUsername, newBio) {
+        this.username = newUsername;
+        this.bio = newBio;
+    }
+
+    toString() {
         return JSON.stringify({
             'username': this.username,
             'bio': this.bio,

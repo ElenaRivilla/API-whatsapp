@@ -1,6 +1,6 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid } from "./errControl.js";
-import { userExists, getUsersHome, getMessagesUser, getContacts, sendMessage } from "./apiManager.js";
+import { userExists, getUsersHome, getMessagesUser, getContacts, sendMessage, updateUserProfile } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
@@ -74,6 +74,7 @@ function home() {
     const settingsButton = $('.settings-bar')[0];
     const searchBar = $(".search-bar");
     const header = $("header");
+    let isAddGroupButtonClicked = false;
 
     if (window.innerWidth < 768) {
         updateDOM(generateSearchBar().html(), searchBar);
@@ -129,6 +130,7 @@ function home() {
             const response = await getUsersHome();
             const chats = generateChats(response.contacts); // Genera los chats.
             updateDOM(chats.html(), leftContainer);  // Actualiza el DOM con los chats generados.
+            leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
             addEvents(leftContainer, openChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -145,7 +147,7 @@ function home() {
         try {
             const response = await getMessagesUser(user1, user2, loadSize);
             const chat = generateChat(response, user2);
-            updateDOM(chat.html(), rightContainer);
+            rightContainer.hide().html(chat.html()).fadeIn(400);
             user.setOpenChat(true);
             //changeRadius();
             if (window.innerWidth < 768) {
@@ -196,6 +198,7 @@ function home() {
                 header.removeClass("block").addClass("hidden");
             }
             updateDOM(generateSettings(user).html(), leftContainer);
+            leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
 
             $('.back-button')[0].addEventListener("click", () => {
                 if (window.innerWidth < 768) {
@@ -203,17 +206,43 @@ function home() {
                 }
                 if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
+                    rightContainer.hide().fadeIn(400);
                 }
                 loadFriends();
             });
 
-            $("#account")[0].addEventListener("click", () => {
+            $("#account")[0].addEventListener("click", async () => {
                 updateDOM(accountSettings(user).html(), rightContainer);
+                rightContainer.hide().fadeIn(400);
                 user.setOpenChat(false);
+
+                const message = $(".send-message")[0];
+                $(".send-button")[0].addEventListener("click", async () => {
+                    const newName = $('.input-name')[0].value;
+                    const newBio = $('.text-bio')[0].value;
+                    const updateUser = {
+                        username: newName,
+                        bio: newBio,
+                    };
+                    try {
+                        const updatedUser = await updateUserProfile(updateUser);
+                        user.updateProfile(updatedUser.username, updatedUser.bio);
+                        document.cookie = "user=" + encodeURIComponent(user.toString()) + "; path=/; Secure; SameSite=Strict";
+                        message.classList.remove('hidden');
+                        setTimeout(() => { // TODO los botones del leftContainer dejan de funcionar al utilizar el segundo updateDOM.
+                            updateDOM(generateRightPanelFund(user).html(), rightContainer);
+                            updateDOM(generateSettings(user).html(), leftContainer);
+                        }, 3000); 
+                    } catch (error) {
+                        console.error("Error actualizando el perfil:", error);
+                    }
+                });
             });
+
             //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
             $("#chats")[0].addEventListener('click', () => {
                 updateDOM(chatSettings().html(), rightContainer);
+                rightContainer.hide().fadeIn(400);
                 user.setOpenChat(false);
                 $(".modeChanger")[0].addEventListener('click', () => {
                     if (user.lightMode) {
@@ -245,21 +274,22 @@ function home() {
                 header.removeClass("block").addClass("hidden");
             }
             updateDOM(generateContacts(response.friends).html(), leftContainer);
+            leftContainer.hide().fadeIn(400);
 
             $(document).on("click", ".add-group-button", function () {
                 $(".container-group").remove();
                 updateDOM(formGroup(response.friends).html(), rightContainer);
+                rightContainer.hide().fadeIn(400);
+                isAddGroupButtonClicked = true;
+                creationGroup();
                 user.setOpenChat(false);
             });
-            
-            if ($._data($(document)[0], "events").click.some(event => event.selector === ".add-group-button")) {
-                creationGroup();
-            }
             
             $(document).on("click", ".back-button-contact", function () {
                 header.removeClass("hidden").addClass("block");
                 if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
+                    rightContainer.hide().fadeIn(400);
                 }
                 loadFriends();
             });
@@ -273,6 +303,7 @@ function home() {
             if (!user.hasOpenChat) {
                 loadFriends();
                 updateDOM(generateRightPanelFund().html(), rightContainer);
+                rightContainer.hide().fadeIn(400);
             }
         });
     }
@@ -282,37 +313,42 @@ function home() {
         searchBar.addClass("block");
     }
 
+    // Function to handle the creation of a group.
     function creationGroup() {
+        // Check if the add group button was clicked.
+        if (!isAddGroupButtonClicked) {
+            return; 
+        }
         const selectedContacts = [];
     
-        // Añadir evento de clic a cada contenedor de usuario
+        // Add click event to each user container.
         $(".container-user").each(function() {
             $(this).on("click", function() {
-                $(this).hide(); // Ocultar el contenedor de usuario
-                $(".contact-separator")[0].remove();
+                $(this).fadeOut(200); // Fade out the user container.
+                $(this).next(".contact-separator").remove(); // Remove the separator.
     
-                // Extraer los atributos del contenedor de usuario
+                // Extract attributes from the user container.
                 const username = $(this).find(".username").text();
                 const bio = $(this).find(".message").text();
                 const imageUrl = $(this).find(".profile-image").attr("src");
     
-                // Crear un objeto con los atributos extraídos
+                // Create an object with the extracted attributes.
                 const contact = {
                     username: username,
                     bio: bio,
                     image: imageUrl
                 };
     
-                // Añadir el objeto al array de contactos seleccionados
+                // Add the object to the selected contacts array.
                 selectedContacts.push(contact);
     
-                // Generar el contenedor del grupo con los contactos seleccionados
+                // Generate the group container with the selected contacts.
                 const newGroupContainer = generateGroupContainer(selectedContacts);
     
-                // Añadir el nuevo contenedor del grupo al contenedor de usuarios en formGroup
+                // Add the new group container to the users container in formGroup.
                 const containerUsers = $(".container-users");
-                containerUsers.empty(); // Limpiar el contenedor antes de agregar nuevos contactos
-                containerUsers.append(newGroupContainer.html());
+                containerUsers.empty(); // Clear the container before adding new contacts.
+                containerUsers.append(newGroupContainer.html()).hide().fadeIn(400); // Append the new group container with fadeIn effect.
             });
         });
     }

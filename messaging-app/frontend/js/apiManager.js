@@ -157,3 +157,28 @@ export function sendMessage(message){
         });
     });
 }
+
+export function updateUserProfile(updateUser) {
+    const url = `${domain}updateProfile`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            credentials: "include",
+            body: JSON.stringify(updateUser)
+        }).then((response) => {
+            responseValid(response).then(() => {
+                resolve(response.json());
+            }).catch((error) => {
+                reject(error);
+            });
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
