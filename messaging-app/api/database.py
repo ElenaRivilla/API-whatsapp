@@ -71,20 +71,34 @@ class database(object):
     
     def getLastMessagesUsers(self, userId):
         self.conecta()
-        sql= """SELECT 
-                u.username AS username,
-                m.body AS message,
-                m.date AS time,
-                u.image AS imageUrl
+        sql= """WITH latest_messages AS (
+                    SELECT 
+                        LEAST(sender_id, receiver_id) AS user1,
+                        GREATEST(sender_id, receiver_id) AS user2,
+                        MAX(date) AS last_message_time
+                    FROM message
+                    WHERE sender_id = %s OR receiver_id = %s
+                    GROUP BY user1, user2
+                )
+                SELECT 
+                    m.sender_id,
+                    m.receiver_id,
+                    m.body AS message,
+                    m.date AS time,
+                    u.username AS username,
+                    u.image AS imageUrl
                 FROM message m
-                JOIN usuarisclase u ON u.id = m.receiver_id
-                WHERE m.sender_id = %s 
-                AND m.date = (SELECT MAX(m2.date) 
-                             FROM message m2 
-                             WHERE m2.sender_id = m.sender_id 
-                             AND m2.receiver_id = m.receiver_id)
-                ORDER BY time DESC;"""
-        self.cursor.execute(sql,(userId))
+                JOIN latest_messages lm 
+                    ON (LEAST(m.sender_id, m.receiver_id) = lm.user1 
+                    AND GREATEST(m.sender_id, m.receiver_id) = lm.user2 
+                    AND m.date = lm.last_message_time)
+                JOIN usuarisclase u 
+                    ON u.id = (CASE 
+                                WHEN m.sender_id = %s THEN m.receiver_id 
+                                ELSE m.sender_id 
+                            END)
+                ORDER BY m.date DESC;"""
+        self.cursor.execute(sql,(userId, userId, userId))
         ResQuery = self.cursor.fetchall()
         return ResQuery
     
