@@ -74,6 +74,7 @@ function home() {
     const settingsButton = $('.settings-bar')[0];
     const searchBar = $(".search-bar");
     const header = $("header");
+    let isAddGroupButtonClicked = false;
 
     if (window.innerWidth < 768) {
         updateDOM(generateSearchBar().html(), searchBar);
@@ -240,12 +241,10 @@ function home() {
             $(document).on("click", ".add-group-button", function () {
                 $(".container-group").remove();
                 updateDOM(formGroup(response.friends).html(), rightContainer);
+                isAddGroupButtonClicked = true;
+                creationGroup();
                 user.setOpenChat(false);
             });
-            
-            if ($._data($(document)[0], "events").click.some(event => event.selector === ".add-group-button")) {
-                creationGroup();
-            }
             
             $(document).on("click", ".back-button-contact", function () {
                 header.removeClass("hidden").addClass("block");
@@ -274,6 +273,10 @@ function home() {
     }
 
     function creationGroup() {
+        if (!isAddGroupButtonClicked) {
+            return; // Salir de la función si el botón no ha sido presionado
+        }
+    
         const selectedContacts = [];
     
         // Añadir evento de clic a cada contenedor de usuario
