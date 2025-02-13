@@ -130,6 +130,7 @@ function home() {
             const response = await getUsersHome();
             const chats = generateChats(response.contacts); // Genera los chats.
             updateDOM(chats.html(), leftContainer);  // Actualiza el DOM con los chats generados.
+            leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
             addEvents(leftContainer, openChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -146,7 +147,7 @@ function home() {
         try {
             const response = await getMessagesUser(sender, receiver, loadSize);
             const chat = generateChat(response, receiver);
-            updateDOM(chat.html(), rightContainer);
+            rightContainer.hide().html(chat.html()).fadeIn(400);
             user.setOpenChat(true);
             changeRadius();
             if (window.innerWidth < 768) {
@@ -193,6 +194,7 @@ function home() {
                 header.removeClass("block").addClass("hidden");
             }
             updateDOM(generateSettings(user).html(), leftContainer);
+            leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
 
             $('.back-button')[0].addEventListener("click", () => {
                 if (window.innerWidth < 768) {
@@ -200,17 +202,20 @@ function home() {
                 }
                 if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
+                    rightContainer.hide().fadeIn(400);
                 }
                 loadFriends();
             });
 
             $("#account")[0].addEventListener("click", () => {
                 updateDOM(accountSettings(user).html(), rightContainer);
+                rightContainer.hide().fadeIn(400);
                 user.setOpenChat(false);
             });
             //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
             $("#chats")[0].addEventListener('click', () => {
                 updateDOM(chatSettings().html(), rightContainer);
+                rightContainer.hide().fadeIn(400);
                 user.setOpenChat(false);
                 $(".modeChanger")[0].addEventListener('click', () => {
                     if (user.lightMode) {
@@ -242,10 +247,12 @@ function home() {
                 header.removeClass("block").addClass("hidden");
             }
             updateDOM(generateContacts(response.friends).html(), leftContainer);
+            leftContainer.hide().fadeIn(400);
 
             $(document).on("click", ".add-group-button", function () {
                 $(".container-group").remove();
                 updateDOM(formGroup(response.friends).html(), rightContainer);
+                rightContainer.hide().fadeIn(400);
                 isAddGroupButtonClicked = true;
                 creationGroup();
                 user.setOpenChat(false);
@@ -255,6 +262,7 @@ function home() {
                 header.removeClass("hidden").addClass("block");
                 if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
+                    rightContainer.hide().fadeIn(400);
                 }
                 loadFriends();
             });
@@ -268,6 +276,7 @@ function home() {
             if (!user.hasOpenChat) {
                 loadFriends();
                 updateDOM(generateRightPanelFund().html(), rightContainer);
+                rightContainer.hide().fadeIn(400);
             }
         });
     }
@@ -288,7 +297,7 @@ function home() {
         // Add click event to each user container.
         $(".container-user").each(function() {
             $(this).on("click", function() {
-                $(this).hide(); // Hide the user container.
+                $(this).fadeOut(200); // Fade out the user container.
                 $(this).next(".contact-separator").remove(); // Remove the separator.
     
                 // Extract attributes from the user container.
@@ -312,7 +321,7 @@ function home() {
                 // Add the new group container to the users container in formGroup.
                 const containerUsers = $(".container-users");
                 containerUsers.empty(); // Clear the container before adding new contacts.
-                containerUsers.append(newGroupContainer.html()); // Append the new group container.
+                containerUsers.append(newGroupContainer.html()).hide().fadeIn(400); // Append the new group container with fadeIn effect.
             });
         });
     }
