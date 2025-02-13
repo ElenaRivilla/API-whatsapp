@@ -103,7 +103,37 @@ class database(object):
         ResQuery = self.cursor.fetchall()
         return ResQuery
     
+    def updateMessages(self, userId):
+        self.conecta()
+        sql= """SELECT 
+                    LEAST(m.sender_id, m.receiver_id) AS user1,
+                    GREATEST(m.sender_id, m.receiver_id) AS user2,
+                    m.id
+                FROM message m
+                WHERE m.receiver_id = %s 
+                    AND m.status = 'sent'
+                ORDER BY user1, user2, m.date ASC;"""
+        self.cursor.execute(sql,(userId))
+        ResQuery = self.cursor.fetchall()
+        self.desconecta()
+        for message in ResQuery:
+            self.checkMessage(message['id'])
+            print(message['id'])
+        return
     
+    def readMessages(self, user1, user2):
+        self.conecta()
+        sql= """SELECT 
+                    id
+                FROM message
+                WHERE receiver_id = %s AND sender_id = %s
+                    AND status = 'received';"""
+        self.cursor.execute(sql,(user1, user2))
+        ResQuery = self.cursor.fetchall()
+        self.desconecta()
+        for message in ResQuery:
+            self.checkMessage(message['id'])
+        return
     
     def getMessagesGroups(self, loadSize, group_id):
         self.conecta()
@@ -293,7 +323,7 @@ class database(object):
     def setMessageStatus(self, messageId, newStatus):
         self.conecta()
         sql = 'UPDATE message set status = %s where id = %s;'
-        self.cursor.execute(sql, (messageId, newStatus))
+        self.cursor.execute(sql, (newStatus, messageId))
         self.desconecta()
         return
 

@@ -71,8 +71,19 @@ function generateMessages(response, user){
 
             timeContainer = $("<div>").addClass("flex items-end w-full justify-end");
             time = $("<time>").addClass("hour-message text-xs sm:text-sm ml-2").text(msg['date']).attr("style", "color: var(--text-color);");
-            checkImage = $("<img>").attr("src", "../assets/svg/double-check-blue.svg").attr("alt", "Check Message").addClass("w-4 h-4 ml-1");
-
+            switch (msg['status']){
+                case "sent":
+                    checkImage = $("<img>").attr("src", "../assets/svg/check.svg").attr("alt", "Check Message").addClass("w-4 h-4 ml-1");
+                    break;
+                case "received":
+                    checkImage = $("<img>").attr("src", "../assets/svg/double-check.svg").attr("alt", "Check Message").addClass("w-4 h-4 ml-1");
+                    break;
+                case "seen":
+                    checkImage = $("<img>").attr("src", "../assets/svg/double-check-blue.svg").attr("alt", "Check Message").addClass("w-4 h-4 ml-1");
+                    break;
+                default:
+                    break;
+            }
             timeContainer.append(time).append(checkImage);
             messageContainer.append(messageText).append(timeContainer);
             article.append(messageContainer);
@@ -98,21 +109,21 @@ function generateChatBar(){
     return sendMessageContainer;
 }
 
-export function changeRadius() {
-    // $(".message-container").each(function () {
-    //     if (this.scrollHeight > this.offsetHeight) {
-    //         $(this).removeClass("rounded-full").addClass("rounded-xl");
-    //     }
-    //     else{
-    //         $(this).removeClass("rounded-xl").addClass("rounded-full");
-    //     }
-    // });
-    $(".message-container").each(function () {
-        const child = this.children[0];
-        if (child.scrollHeight > child.offsetHeight) {
-            $(this).removeClass("rounded-full").addClass("rounded-xl");
-        } else {
-            $(this).removeClass("rounded-xl").addClass("rounded-full");
-        }
-    });
-}
+// export function changeRadius() {
+//     // $(".message-container").each(function () {
+//     //     if (this.scrollHeight > this.offsetHeight) {
+//     //         $(this).removeClass("rounded-full").addClass("rounded-xl");
+//     //     }
+//     //     else{
+//     //         $(this).removeClass("rounded-xl").addClass("rounded-full");
+//     //     }
+//     // });
+//     $(".message-container").each(function () {
+//         const child = this.children[0];
+//         if (child.scrollHeight > child.offsetHeight) {
+//             $(this).removeClass("rounded-full").addClass("rounded-xl");
+//         } else {
+//             $(this).removeClass("rounded-xl").addClass("rounded-full");
+//         }
+//     });
+// }
