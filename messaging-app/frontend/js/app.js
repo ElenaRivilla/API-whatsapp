@@ -109,7 +109,7 @@ function home() {
                 container.on("click", () => {
                 });
                 $(".contacts").removeClass("block").addClass("hidden");
-                $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
+                $(".chats").removeClass("hidden md:block sm:hidden").css('display', '');
                 header.removeClass("block").addClass("hidden");
             }
             const chat = document.querySelector(".messages-container");
@@ -154,8 +154,8 @@ function home() {
                 const backContainer = $(".back-button");
                 backContainer.on("click", () => {
                     $(".contacts").removeClass("hidden").addClass("block");
-                    $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
-                    header.removeClass("hidden ").addClass("block sm:block");
+                    $(".chats").removeClass("block").addClass("hidden md:hidden sm:hidden");
+                    header.removeClass("hidden").addClass("block sm:block");
                 });
             }
             $('.textBarForm')[0].addEventListener("submit", function (event) {
@@ -206,6 +206,7 @@ function home() {
                 }
                 if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
+                    $(".chats").css('display', '');
                     rightContainer.hide().fadeIn(400);
                 }
                 loadFriends();
@@ -290,6 +291,7 @@ function home() {
                 if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
                     rightContainer.hide().fadeIn(400);
+                    $(".chats").css('display', '');
                 }
                 loadFriends();
             });
@@ -361,6 +363,7 @@ function home() {
             searchBar.empty()
             $(".contacts").removeClass("hidden").addClass("block");
             $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
+            
             loadFriends();
         }
     });
@@ -376,7 +379,7 @@ function home() {
     // TODO QUITAR
     // TODO QUITAR
     // TODO QUITAR
-    setDarkMode();
+    setLightMode();
     initialize();
     return;
 }
