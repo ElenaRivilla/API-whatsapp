@@ -60,6 +60,7 @@ export function accountSettings(user) {
     const titleName = $('<h3>').addClass('text-md font-bold').text('Nombre');
     const separatorName = $('<hr>').addClass(`my-3 border-t-2 border-[${backgroundColor}] w-[45%]`);
     const inputName = $('<input>').addClass(`input-name rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] h-10 w-[90%]`).attr('type', 'text').attr({'placeholder': 'Escribe tu nombre..', "style": "background-color: var(--typebar-color)"}).val(user.username);
+    console.log("Username Input Value:", user.username); 
     labelName.append(titleName, separatorName, inputName);
 
     const labelBio = $('<label>').addClass('my-3');
@@ -69,6 +70,7 @@ export function accountSettings(user) {
         this.style.height = '';
         this.style.height = this.scrollHeight + 'px';
     });
+    console.log("Bio Textarea Value:", user.bio); // Verifica que el valor de la biografía se está asignando correctamente
     labelBio.append(titleBio, separatorBio, textBio);
     infoContainer.append(labelName, labelBio);
     const sendContainer = $('<div>').addClass('flex flex-col items-center mt-4');
