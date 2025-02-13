@@ -2,7 +2,7 @@
 import { loginValid } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser, getContacts, sendMessage } from "./apiManager.js";
 import { User } from "./user.js"
-import { generateChats, generateChat, changeRadius } from "./chat.js";
+import { generateChats, generateChat } from "./chat.js";
 import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
 import { generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode } from "./static.js";
 import { generateContacts } from "./contactsList.js";
@@ -141,13 +141,13 @@ function home() {
         return;
     }
 
-    async function loadMessages(sender, receiver, loadSize) {
+    async function loadMessages(user1, user2, loadSize) {
         try {
-            const response = await getMessagesUser(sender, receiver, loadSize);
-            const chat = generateChat(response, receiver);
+            const response = await getMessagesUser(user1, user2, loadSize);
+            const chat = generateChat(response, user2);
             updateDOM(chat.html(), rightContainer);
             user.setOpenChat(true);
-            changeRadius();
+            //changeRadius();
             if (window.innerWidth < 768) {
                 const backContainer = $(".back-button");
                 backContainer.on("click", () => {
@@ -158,7 +158,7 @@ function home() {
             }
             $('.textBarForm')[0].addEventListener("submit", function (event) {
                 event.preventDefault();  // Prevent the default form submission (page reload).
-                send(receiver);
+                send(user2);
             });
         }
         catch (error) {
@@ -176,6 +176,10 @@ function home() {
                 };
                 await sendMessage(message);
                 await loadMessages(user.username, receiver, 10);
+                setTimeout(() => {
+                    const container = $(".messages-container");
+                    container.scrollTop(container[0].scrollHeight);
+                }, 0);
                 await loadFriends();
             }
             catch (error) {

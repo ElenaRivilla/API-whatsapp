@@ -151,6 +151,7 @@ def getUsersMessages(loadSize: int, user1: str , user2: str, request: Request):
                 format = date_time.strftime('%H:%M') # convertir el objeto datetime a una cadena en formato ISO 8601 antes de devolverlo como parte de la respuesta JSON.
                 message['date'] = format
             response.update(db.getImage(user2))
+            db.readMessages(userId, db.getUserId(user2))
             return response
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acceso denegado")
     except Exception as e:
@@ -173,6 +174,7 @@ def getHome(request: Request):
             } for message in lastMessage
             ]
         }
+        db.updateMessages(userId)
         return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
