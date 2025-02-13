@@ -277,41 +277,42 @@ function home() {
         searchBar.addClass("block");
     }
 
+    // Function to handle the creation of a group.
     function creationGroup() {
+        // Check if the add group button was clicked.
         if (!isAddGroupButtonClicked) {
-            return; // Salir de la función si el botón no ha sido presionado
+            return; 
         }
-    
         const selectedContacts = [];
     
-        // Añadir evento de clic a cada contenedor de usuario
+        // Add click event to each user container.
         $(".container-user").each(function() {
             $(this).on("click", function() {
-                $(this).hide(); // Ocultar el contenedor de usuario
-                $(this).next(".contact-separator").remove();
+                $(this).hide(); // Hide the user container.
+                $(this).next(".contact-separator").remove(); // Remove the separator.
     
-                // Extraer los atributos del contenedor de usuario
+                // Extract attributes from the user container.
                 const username = $(this).find(".username").text();
                 const bio = $(this).find(".message").text();
                 const imageUrl = $(this).find(".profile-image").attr("src");
     
-                // Crear un objeto con los atributos extraídos
+                // Create an object with the extracted attributes.
                 const contact = {
                     username: username,
                     bio: bio,
                     image: imageUrl
                 };
     
-                // Añadir el objeto al array de contactos seleccionados
+                // Add the object to the selected contacts array.
                 selectedContacts.push(contact);
     
-                // Generar el contenedor del grupo con los contactos seleccionados
+                // Generate the group container with the selected contacts.
                 const newGroupContainer = generateGroupContainer(selectedContacts);
     
-                // Añadir el nuevo contenedor del grupo al contenedor de usuarios en formGroup
+                // Add the new group container to the users container in formGroup.
                 const containerUsers = $(".container-users");
-                containerUsers.empty(); // Limpiar el contenedor antes de agregar nuevos contactos
-                containerUsers.append(newGroupContainer.html());
+                containerUsers.empty(); // Clear the container before adding new contacts.
+                containerUsers.append(newGroupContainer.html()); // Append the new group container.
             });
         });
     }

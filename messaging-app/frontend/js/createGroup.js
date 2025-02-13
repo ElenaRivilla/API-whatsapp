@@ -1,15 +1,8 @@
 import { accentColor, textBar, sendButton, backgroundColor } from "./static.js";
 
-function cargaDOM() {
-    generateContactsGroup();
-}
-
 export function generateContactsGroup() {
 
     const chatContainer = $(".scrollbar-custom");
-    const buttonContainer = $(".nextButtonGroup-custom");
-
-
     const backBar = $("<div>").addClass("back-bar h-14 flex items-center");
     const backButton = $("<button>").addClass("back-button-contact p-2 bg-[#468FAF] rounded-full h-12 w-12 flex items-center justify-center");
     const backLink = $("<a>", { href: "./home.html" });
@@ -76,7 +69,7 @@ export function generateContactsGroup() {
 
 export function formGroup() {
     const html = $("<div>");
-    const form = $("<form>").addClass("w-full h-full p-10 relative");
+    const form = $("<form>").addClass("w-full h-full p-10 relative"); //añadir post al form y que el botón tenga que redirigir al chat creado con el grupo
 
     const containerInfo = $("<div>").addClass("container-info");
     const infoDiv = $("<div>").addClass("flex items-center h-[40%]");
@@ -128,7 +121,5 @@ export function generateGroupContainer(contacts) {
         userDiv.append(containerImage).append(containerInfo);
         groupContainer.append(userDiv);
     });
-
     return groupContainer;
 }
-
