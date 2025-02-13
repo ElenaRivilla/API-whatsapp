@@ -288,7 +288,7 @@ function home() {
         $(".container-user").each(function() {
             $(this).on("click", function() {
                 $(this).hide(); // Ocultar el contenedor de usuario
-                $(".contact-separator")[0].remove();
+                $(this).next(".contact-separator").remove();
     
                 // Extraer los atributos del contenedor de usuario
                 const username = $(this).find(".username").text();
