@@ -1,5 +1,5 @@
 // Import necessary modules for error handling and API interaction.
-import { loginValid } from "./errControl.js";
+import { loginValid, SettingsAccountValidation } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser, getContacts, sendMessage, updateUserProfile } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
@@ -216,14 +216,18 @@ function home() {
             user.setOpenChat(false);
 
             const message = $(".send-message")[0];
-            $(".send-button")[0].addEventListener("click", async () => {
+
+            $(".send-button")[0].addEventListener("click", async (event) => {
+                event.preventDefault(); // Previene el envío del formulario por defecto
                 const newName = $('.input-name')[0].value;
                 const newBio = $('.text-bio')[0].value;
-                const updateUser = {
-                    username: newName,
-                    bio: newBio,
-                };
+
                 try {
+                    await SettingsAccountValidation(newName, newBio);
+                    const updateUser = {
+                        username: newName,
+                        bio: newBio,
+                    };
                     const updatedUser = await updateUserProfile(updateUser);
                     user.updateProfile(updatedUser.username, updatedUser.bio);
                     document.cookie = "user=" + encodeURIComponent(user.toString()) + "; path=/; Secure; SameSite=Strict";

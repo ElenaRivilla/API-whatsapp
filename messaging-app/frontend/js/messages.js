@@ -66,7 +66,7 @@ function generateMessages(messages) {
     let infoFriend = $("<div>").addClass("info-friend h-24 flex-col items-center w-full block sticky top-0 bg-gray-100 z-10");
     let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full block");
     let backButton = $('<button>').addClass('p-2 bg-[#468FAF] rounded-full h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center block sm:block md:hidden mr-5');
-    let backLink = $('<a>').attr('href', './chatsList.html').addClass('flex items-center justify-center w-full h-full');
+    let backLink = $('<a>').addClass('flex items-center justify-center w-full h-full');
     let backImg = $('<img>').addClass('h-5').attr('src', '../assets/svg/arrow.svg');
     let profileImage = $("<img>").attr("src", "https://picsum.photos/300/300?random=1").attr("alt", "Profile Image").addClass("w-16  sm:mr-4 block sm:block md:hidden lg:hidden rounded-full");
     let friendName = $("<h3>").addClass("text-xl sm:text-2xl font-bold ml-3 block").text("Alice Johnson");

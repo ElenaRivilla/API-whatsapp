@@ -56,26 +56,26 @@ export function accountSettings(user) {
     profileImgContainer.append(profileTitle, profileSeparator, profileImg);
 
     const infoContainer = $('<div>').addClass('profile-info flex flex-col w-full md:w-4/4');
-    const labelName = $('<label>').addClass('my-3');
+    const labelName = $('<label>').addClass('my-4');
     const titleName = $('<h3>').addClass('text-md font-bold').text('Nombre');
     const separatorName = $('<hr>').addClass(`my-3 border-t-2 border-[${backgroundColor}] w-[45%]`);
+    const errorMessageName = $('<p>').addClass('regexName-message text-red-500 mb-2 hidden absolute sm:absolute md:absolute').text('No admite números y máximo 50 carácteres.');
     const inputName = $('<input>').addClass(`input-name rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] h-10 w-[90%]`).attr('type', 'text').attr({'placeholder': 'Escribe tu nombre..', "style": "background-color: var(--typebar-color)"}).val(user.username);
-    console.log("Username Input Value:", user.username); 
-    labelName.append(titleName, separatorName, inputName);
+    labelName.append(titleName, separatorName, inputName, errorMessageName,);
 
-    const labelBio = $('<label>').addClass('my-3');
+    const labelBio = $('<label>').addClass('my-4');
     const titleBio = $('<h3>').addClass('text-md font-bold').text('Biografía');
     const separatorBio = $('<hr>').addClass(`my-3 border-t-2 border-[${backgroundColor}] w-[45%]`);
-    const textBio = $('<textarea>').addClass(`text-bio rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] h-10 w-[90%] resize-none overflow-hidden`).attr({'placeholder': 'Escribe una nueva biografía...' , "style": "background-color: var(--typebar-color)"}).val(user.bio).on('input', function () {
-        this.style.height = '';
-        this.style.height = this.scrollHeight + 'px';
-    });
-    console.log("Bio Textarea Value:", user.bio); // Verifica que el valor de la biografía se está asignando correctamente
-    labelBio.append(titleBio, separatorBio, textBio);
+    const errorMessageBio = $('<p>').addClass('regexBio-message text-red-500 mb-2 hidden absolute sm:absolute md:absolute').text('No admite más de 175 carácteres.');
+    const textBio = $('<textarea>').addClass(`text-bio rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] h-10 w-[90%] resize-none overflow-y-auto scrollbar-hide`)
+    .attr({'placeholder': 'Escribe una nueva biografía...', "style": "background-color: var(--typebar-color); max-height: 80px;"}).val(user.bio);
+
+
+    labelBio.append(titleBio, separatorBio, textBio, errorMessageBio);
     infoContainer.append(labelName, labelBio);
-    const sendContainer = $('<div>').addClass('flex flex-col items-center mt-4');
+    const sendContainer = $('<div>').addClass('flex flex-col items-center mt-4 relative');
+    const message = $('<p>').addClass('send-message text-green-500 mb-2 hidden absolute bottom-[100%]').text('Perfil actualizado con éxito.');
     const sendButton = $('<button>').addClass('send-button btn bg-[#468FAF] text-white py-2 px-4 rounded-full').text('Guardar cambios');
-    const message = $('<p>').addClass('send-message text-green-500 mb-2 hidden').text('Perfil actualizado con éxito.');
     
     sendContainer.append(message, sendButton);
     profileContainer.append(profileImgContainer, infoContainer);

@@ -42,3 +42,12 @@ body{
 .modeChanger:checked{
     background-color: var(--background-color);
 }
+
+.text-bio::-webkit-scrollbar {
+    display: none; /* Oculta la barra en Chrome, Edge y Safari */
+}
+
+.text-bio {
+    -ms-overflow-style: none;  /* Oculta la barra en Internet Explorer y Edge */
+    scrollbar-width: none;  /* Oculta la barra en Firefox */
+}
