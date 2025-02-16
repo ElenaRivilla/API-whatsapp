@@ -1,4 +1,5 @@
 import { backgroundColor, accentColor, receivedMsg, textBar, sendButton } from "./static.js";
+
 export function generateSettings(user) {
     const html = $("<div>");
     const settingsBar = $('<div>').addClass('settings-bar h-14 flex items-center');
@@ -75,9 +76,9 @@ export function accountSettings(user) {
     infoContainer.append(labelName, labelBio);
     const sendContainer = $('<div>').addClass('flex flex-col items-center mt-4 relative');
     const message = $('<p>').addClass('send-message text-green-500 mb-2 hidden absolute bottom-[100%]').text('Perfil actualizado con éxito.');
-    const sendButton = $('<button>').addClass('send-button btn bg-[#468FAF] text-white py-2 px-4 rounded-full').text('Guardar cambios');
+    const sendButtonElement = $('<button>').addClass(`send-button btn bg-[${sendButton}] hover:bg-[${accentColor}] text-white py-2 px-4 rounded-full`).text('Guardar cambios');
     
-    sendContainer.append(message, sendButton);
+    sendContainer.append(message, sendButtonElement);
     profileContainer.append(profileImgContainer, infoContainer);
     html.append(profileContainer, sendContainer);
     return html;

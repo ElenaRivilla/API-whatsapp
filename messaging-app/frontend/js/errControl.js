@@ -43,12 +43,48 @@ export function SettingsAccountValidation(newName, newBio) {
     });
 }
 
-// TODO pendiente revisar y cambiar
 export function responseValid(response) {
     return new Promise((resolve, reject) => {
         if (!response.ok) {
-            reject(new Error(`Error en la respuesta del servidor: ${response.status} ${response.statusText}`));
+            let errorMessage = "";
+
+            switch (response.status) {
+                case 400:
+                    errorMessage = "La solicitud es incorrecta.";
+                    break;
+                case 401:
+                    errorMessage = "No estás autenticado. Por favor, inicia sesión.";
+                    break;
+                case 403:
+                    errorMessage = "No tienes permiso para acceder a este recurso.";
+                    break;
+                case 404:
+                    errorMessage = "Usuario o contraseña incorrectos.";
+                    break;
+                case 408:
+                    errorMessage = "La solicitud tardó demasiado en responder.";
+                    break;
+                case 429:
+                    errorMessage = "Demasiadas solicitudes. Espera un momento antes de intentar nuevamente.";
+                    break;
+                case 500:
+                    errorMessage = "¡Ups! Algo falló en nuestro sistema. Estamos trabajando en ello, intenta más tarde.";
+                    break;
+                case 502:
+                    errorMessage = "Estamos teniendo problemas con nuestros servidores. Por favor, intenta acceder nuevamente en unos minutos.";
+                    break;
+                case 503:
+                    errorMessage = "El servidor está en mantenimiento o sobrecargado. Inténtalo más tarde.";
+                    break;
+                case 504:
+                    errorMessage = "La conexión tardó demasiado en responder.";
+                    break;
+                default:
+                    errorMessage = `Error ${response.status}: ${response.statusText}. Algo inesperado ocurrió.`;
+            }
+
+            return reject(new Error(errorMessage));
         }
-        resolve();
+        resolve(response);
     });
 }

@@ -40,5 +40,5 @@ class LoginRequest(BaseModel):
 class CreateGroupRequest(BaseModel):
     NAME: str
     DESCRIPTION: str
-    USERS: List[int]
+    USERS: List[str]
     ADMIN: int
