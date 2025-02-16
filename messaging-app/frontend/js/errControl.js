@@ -14,6 +14,35 @@ export function loginValid(username, password) {
     });
 }
 
+
+export function SettingsAccountValidation(newName, newBio) {
+    return new Promise((resolve, reject) => {
+        const nameRegex = /^[A-Za-z]{1,50}$/;
+        const bioRegex = /^.{1,175}$/;
+        let isValid = true;
+
+        if (!nameRegex.test(newName) || newName.trim() === "") {
+            $('.regexName-message').removeClass('hidden');
+            isValid = false;
+        } else {
+            $('.regexName-message').addClass('hidden');
+        }
+
+        if (!bioRegex.test(newBio) || newBio.trim() === "") {
+            $('.regexBio-message').removeClass('hidden');
+            isValid = false;
+        } else {
+            $('.regexBio-message').addClass('hidden');
+        }
+
+        if (isValid) {
+            resolve();
+        } else {
+            reject(new Error("Validation failed"));
+        }
+    });
+}
+
 // TODO pendiente revisar y cambiar
 export function responseValid(response) {
     return new Promise((resolve, reject) => {
