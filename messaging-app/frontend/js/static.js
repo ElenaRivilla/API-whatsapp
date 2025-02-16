@@ -1,7 +1,7 @@
 export function generateRightPanelFund() {
     const html = $("<div>");
     const groupTextContainer = $("<div>").addClass("group-text-container flex flex-col items-center justify-center h-[95%]");
-    const imageSVG = $("<img>").addClass("h-28 mb-4").attr({"src": "../assets/svg/dove.svg"});
+    const imageSVG = $("<img>").addClass("h-28 mb-4").attr({"src": "../assets/svg/dove.svg"}).attr("alt", "logo dove");;
     const doveContainer = $("<h2>").addClass("mb-2 font-bold").text("Dove");
     const textContainer = $("<h2>").addClass("font-bold").text("Conversa sin límites, conecta con el mundo.");
 
@@ -9,7 +9,7 @@ export function generateRightPanelFund() {
 
     const footerContiner = $("<div>").addClass("footer back-bar h-4 mb-3 flex items-center justify-center bottom-0");
     const footerText = $("<p>").addClass("flex items-center justify-center h-full text-base mr-2 italic").text("Creado por la empresa TriCoded");
-    const footerSVG = $("<img>").addClass("h-8").attr("src", "../assets/svg/logoCompany.svg");
+    const footerSVG = $("<img>").addClass("h-8").attr("src", "../assets/svg/logoCompany.svg").attr("alt", "logo company");
 
     footerContiner.append(footerText, footerSVG);
     html.append(groupTextContainer, footerContiner);
@@ -34,8 +34,16 @@ export function generateSearchBar() {
 
     const searchBar = $('<div>').addClass("container-search flex items-center py-2 rounded-md my-3 sm:block md:hidden");
     const searchWrapper = $('<div>').addClass("relative w-full flex items-center");
-    const searchInput = $('<input>').addClass(`input-search flex-grow h-10 w-full rounded-full pl-10 border focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}]`).attr("type", "search").attr("placeholder", "Buscar contactos...");
-    const searchIcon = $("<img>").addClass("h-5 absolute left-3").attr("src", "../assets/svg/search.svg");
+    const searchInput = $('<input>').addClass(`input-search flex-grow h-10 w-full rounded-full pl-10 border focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}]`).attr({
+        "type": "search",
+        "placeholder": "Buscar contactos...",
+        "aria-label": "Buscar contactos"
+    });
+    const searchIcon = $("<img>").addClass("h-5 absolute left-3").attr({
+        "src": "../assets/svg/search.svg",
+        "alt": "search button",
+        "aria-hidden": "true"
+    });
 
     searchWrapper.append(searchInput, searchIcon);
     searchBar.append(searchWrapper);
@@ -58,10 +66,10 @@ export function setDarkMode(){
     document.documentElement.style.setProperty('--accent-color', '#89C2D9');
     document.documentElement.style.setProperty('--container-color', '#01497C');
     document.documentElement.style.setProperty('--text-color', '#ffffff');
-    document.documentElement.style.setProperty('--received-msg-color', '#2A6F97');
-    document.documentElement.style.setProperty('--sent-msg-color', '#61A5C2');
+    document.documentElement.style.setProperty('--received-msg-color', '#012A4A');
+    document.documentElement.style.setProperty('--sent-msg-color', '#2A6F97');
     document.documentElement.style.setProperty('--typebar-color', '#012A4A');
-    document.documentElement.style.setProperty('--send-button-color', '#468FAF');
+    document.documentElement.style.setProperty('--send-button-color', '#2A6F97');
     backgroundColor = rootStyles.getPropertyValue('--background-color').trim();
     accentColor = rootStyles.getPropertyValue('--accent-color').trim();
     containerColor = rootStyles.getPropertyValue('--container-color').trim();
@@ -80,7 +88,7 @@ export function setLightMode(){
     document.documentElement.style.setProperty('--received-msg-color', '#e5e7eb');
     document.documentElement.style.setProperty('--sent-msg-color', '#A9D6E5');
     document.documentElement.style.setProperty('--typebar-color', '#ffffff');
-    document.documentElement.style.setProperty('--send-button-color', '#468FAF');
+    document.documentElement.style.setProperty('--send-button-color', '#2C7DA0');
     backgroundColor = rootStyles.getPropertyValue('--background-color').trim();
     accentColor = rootStyles.getPropertyValue('--accent-color').trim();
     containerColor = rootStyles.getPropertyValue('--container-color').trim();

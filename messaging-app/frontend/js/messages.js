@@ -40,7 +40,7 @@ function generateChats(chats) {
     for (let chat of chats) {
         chatDiv = $("<div>").addClass("container-user flex h-12 my-4 mx-3 sm:w-1/8 sm:h-24 md:my-0 md:mb-5 md:mx-3 lg:mb-3 max-h-24 lg:h-20 sm:m-6 sm:mb-1 md:flex md:items-center");
         containerImage = $("<div>").addClass("container-image w-40 h-16");
-        profileImage = $("<img>").addClass("profile-image sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", chat['imageUrl']);
+        profileImage = $("<img>").addClass("profile-image sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", chat['imageUrl']).attr("alt", "profile image");;
         containerImage.append(profileImage);
 
         containerInfo = $("<div>").addClass("container-info text-sm truncate w-full h-20 p-0 md:p-0 lg:p-4");
@@ -67,7 +67,7 @@ function generateMessages(messages) {
     let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full block");
     let backButton = $('<button>').addClass('p-2 bg-[#468FAF] rounded-full h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center block sm:block md:hidden mr-5');
     let backLink = $('<a>').addClass('flex items-center justify-center w-full h-full');
-    let backImg = $('<img>').addClass('h-5').attr('src', '../assets/svg/arrow.svg');
+    let backImg = $('<img>').addClass('h-5').attr('src', '../assets/svg/arrow.svg').attr("alt", "back button");;
     let profileImage = $("<img>").attr("src", "https://picsum.photos/300/300?random=1").attr("alt", "Profile Image").addClass("w-16  sm:mr-4 block sm:block md:hidden lg:hidden rounded-full");
     let friendName = $("<h3>").addClass("text-xl sm:text-2xl font-bold ml-3 block").text("Alice Johnson");
     let hr = $("<hr>").addClass("border-t-2 border-[#468FAF] mx-8¡10 block");
@@ -117,7 +117,7 @@ function generateMessages(messages) {
     let form = $("<form>").attr("method", "post").addClass("flex items-center");
     let input = $("<input>").attr("type", "text").addClass("write-message h-16 flex-grow p-6 border border-gray-300 rounded-full").attr("placeholder", "Escribe un mensaje...");
     let button = $("<button>").attr("type", "submit").css("background-color", "#A9D6E5").addClass("send-button w-16 h-16 ml-4 p-2 text-white rounded-full");
-    let img = $("<img>").addClass("w-10 ml-1.5").attr("src", "../assets/svg/send.svg");
+    let img = $("<img>").addClass("w-10 ml-1.5").attr("src", "../assets/svg/send.svg").attr("alt", "send button");
 
     button.append(img);
     form.append(input).append(button);

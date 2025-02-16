@@ -6,6 +6,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
+from typing import List
 from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer
 from base64 import urlsafe_b64decode
@@ -121,9 +122,11 @@ def getGroupMessages(loadSize: int, idGroup: int): # podriamos hacer una query p
     
     
 @app.post("/createGroup")
-def create_group(request: CreateGroupRequest):
+def createGroup(request: CreateGroupRequest):
     try:
-        group_id = db.createGroup(request.NAME, request.DESCRIPTION)
+        for user in request.USERS:
+            # Verificar que los usuarios existen INNACABADO
+            group_id = db.createGroup(request.NAME, request.DESCRIPTION)
         
         # Agregar al administrador al grupo
         db.addUserToGroup(group_id, request.ADMIN, admin=True)
@@ -199,7 +202,7 @@ def getFriends(username: str, request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acceso denegado")
     except Exception as e:
         raise e
-
+    
 # End-point to change message status
 @app.get('/check/{messageId}')
 def check(messageId: int):

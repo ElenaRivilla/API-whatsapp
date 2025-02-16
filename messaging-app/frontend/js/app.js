@@ -1,6 +1,6 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid, SettingsAccountValidation } from "./errControl.js";
-import { userExists, getUsersHome, getMessagesUser, getContacts, sendMessage, updateUserProfile } from "./apiManager.js";
+import { userExists, getUsersHome, getMessagesUser, getContacts, createGroup,sendMessage, updateUserProfile} from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
@@ -237,8 +237,9 @@ function home() {
             user.setOpenChat(false);
 
             const message = $(".send-message")[0];
-
-            $(".send-button")[0].addEventListener("click", async (event) => {
+            
+            const sendButton = $(".send-button")[0];
+            sendButton.addEventListener("click", async (event) => {
                 event.preventDefault(); // Previene el envío del formulario por defecto
                 const newName = $('.input-name')[0].value;
                 const newBio = $('.text-bio')[0].value;
@@ -300,7 +301,7 @@ function home() {
             updateDOM(generateContacts(response.friends).html(), leftContainer);
             leftContainer.hide().fadeIn(400);
 
-            $(document).on("click", ".add-group-button", function () {
+            $(".add-group-button")[0].addEventListener("click", function () {
                 $(".container-group").remove();
                 updateDOM(formGroup(response.friends).html(), rightContainer);
                 rightContainer.hide().fadeIn(400);
@@ -369,7 +370,7 @@ function home() {
     
                 // Generate the group container with the selected contacts.
                 const newGroupContainer = generateGroupContainer(selectedContacts);
-    
+                
                 // Add the new group container to the users container in formGroup.
                 const containerUsers = $(".container-users");
                 containerUsers.empty(); // Clear the container before adding new contacts.

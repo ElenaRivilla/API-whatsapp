@@ -1,3 +1,12 @@
+@font-face {
+    font-family: montserrat;
+    src: url("../assets/fonts/Montserrat-Regular.ttf");
+}
+
+body {
+    font-family: "montserrat";
+}
+
 #slogan{
     font-style: italic;
     font-size: .8rem;
