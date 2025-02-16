@@ -1,7 +1,7 @@
 export function generateRightPanelFund() {
     const html = $("<div>");
     const groupTextContainer = $("<div>").addClass("group-text-container flex flex-col items-center justify-center h-[95%]");
-    const imageSVG = $("<img>").addClass("h-28 mb-4").attr({"src": "../assets/svg/dove.svg"});
+    const imageSVG = $("<img>").addClass("h-28 mb-4").attr({"src": "../assets/svg/dove.svg"}).attr("alt", "logo dove");;
     const doveContainer = $("<h2>").addClass("mb-2 font-bold").text("Dove");
     const textContainer = $("<h2>").addClass("font-bold").text("Conversa sin límites, conecta con el mundo.");
 
@@ -9,7 +9,7 @@ export function generateRightPanelFund() {
 
     const footerContiner = $("<div>").addClass("footer back-bar h-4 mb-3 flex items-center justify-center bottom-0");
     const footerText = $("<p>").addClass("flex items-center justify-center h-full text-base mr-2 italic").text("Creado por la empresa TriCoded");
-    const footerSVG = $("<img>").addClass("h-8").attr("src", "../assets/svg/logoCompany.svg");
+    const footerSVG = $("<img>").addClass("h-8").attr("src", "../assets/svg/logoCompany.svg").attr("alt", "logo company");
 
     footerContiner.append(footerText, footerSVG);
     html.append(groupTextContainer, footerContiner);
@@ -35,7 +35,7 @@ export function generateSearchBar() {
     const searchBar = $('<div>').addClass("container-search flex items-center py-2 rounded-md my-3 sm:block md:hidden");
     const searchWrapper = $('<div>').addClass("relative w-full flex items-center");
     const searchInput = $('<input>').addClass(`input-search flex-grow h-10 w-full rounded-full pl-10 border focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}]`).attr("type", "search").attr("placeholder", "Buscar contactos...");
-    const searchIcon = $("<img>").addClass("h-5 absolute left-3").attr("src", "../assets/svg/search.svg");
+    const searchIcon = $("<img>").addClass("h-5 absolute left-3").attr("src", "../assets/svg/search.svg").attr("alt", "search button");;
 
     searchWrapper.append(searchInput, searchIcon);
     searchBar.append(searchWrapper);

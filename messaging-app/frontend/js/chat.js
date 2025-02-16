@@ -7,7 +7,7 @@ export function generateChats(chats){
     for (let chat of chats) {
         chatDiv = $("<div>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-18 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center");
         containerImage = $("<div>").addClass("container-image w-20 h-20 sm:w-28 sm:h-28 md:w-20 md:h-14 flex justify-center items-center");
-        profileImage = $("<img>").addClass("profile-image h-20 w-20 sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-11 min-w-11 max-h-16 max-w-16 rounded-full").attr("src", chat['imageUrl']);
+        profileImage = $("<img>").addClass("profile-image h-20 w-20 sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-11 min-w-11 max-h-16 max-w-16 rounded-full").attr("src", chat['imageUrl']).attr("alt", "profile image");
         containerImage.append(profileImage);
 
         containerInfo = $("<div>").addClass("container-info truncate w-full p-2 h-20 md:p-1 lg:p-4 flex flex-col justify-center items-start");
@@ -41,7 +41,7 @@ function generateMessages(response, user){
     let infoFriendInner = $("<div>").addClass("info-friend-inner h-24 flex items-center bg-gray-100 w-full").attr("style", "background-color: var(--container-color)");
     let backButton = $('<button>').addClass(`back-button p-2 rounded-full h-7 w-7 sm:h-12 sm:w-12 flex items-center justify-center mr-5 block sm:hidden md:hidden`).attr("style", "background-color: var(--background-color)");
     let backLink = $('<a>').addClass('back-button flex items-center justify-center w-full h-full');
-    let backImg = $('<img>').addClass('w-3').attr('src', '../assets/svg/arrow.svg');
+    let backImg = $('<img>').addClass('w-3').attr('src', '../assets/svg/arrow.svg').attr("alt", "back button");
     let profileImage = $("<img>").attr("src", response['imageUrl']).attr("alt", "Profile Image").addClass("w-11 sm:w-16 md:w-[4'5rem] sm:mr-4 rounded-full");
     let friendName = $("<h3>").addClass("text-xl sm:text-2xl font-bold ml-3").text(user);
     let hr = $("<hr>").addClass(`border-t-2 mx-8 block`).attr("style", "border-color: var(--background-color)");
@@ -100,7 +100,7 @@ function generateChatBar(){
     const form = $("<form>").attr("method", "post").addClass("textBarForm flex items-center");
     const input = $("<input>").attr("type", "text").addClass(`write-message h-12 sm:h-16 flex-grow p-4 sm:p-6 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}]`).attr({"placeholder": "Escribe un mensaje...", "style": "background-color: var(--typebar-color)"});
     const button = $("<button>").attr({"type": "submit", "style": "background-color: var(--send-button-color)"}).addClass("send-button h-10 w-10 sm:w-16 sm:h-16 ml-2 sm:ml-4 p-2 text-white flex items-center justify-center rounded-full");
-    const img = $("<img>").addClass("w-10 ml-1 sm:ml-1.5").attr("src", "../assets/svg/send.svg");
+    const img = $("<img>").addClass("w-10 ml-1 sm:ml-1.5").attr("src", "../assets/svg/send.svg").attr("alt", "send icon");;
 
     button.append(img);
     form.append(input).append(button);

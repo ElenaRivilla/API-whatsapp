@@ -4,7 +4,7 @@ export function generateSettings(user) {
     const settingsBar = $('<div>').addClass('settings-bar h-14 flex items-center');
     const backButton = $('<button>').addClass(`back-button p-2 rounded-full h-12 w-12 flex items-center justify-center`).attr("style", "background-color: var(--send-button-color);");
     const backLink = $('<a>');
-    const backImg = $('<img>').addClass('contrastIcon h-5').attr('src', '../assets/svg/arrow.svg');
+    const backImg = $('<img>').addClass('contrastIcon h-5').attr('src', '../assets/svg/arrow.svg').attr("alt", "back button");
     backLink.append(backImg);
     backButton.append(backLink);
 
@@ -12,7 +12,7 @@ export function generateSettings(user) {
     settingsBar.append(backButton, settingsTitle);
     const profileContainer = $('<div>').addClass('profile-container h-24 flex items-center my-5');
     const contenedorUser = $('<div>').addClass('flex flex-col ml-6 w-42');
-    const profileImg = $('<img>').addClass('h-16 rounded-full').attr('src', user.image);
+    const profileImg = $('<img>').addClass('h-16 rounded-full').attr('src', user.image).attr("alt", "user image");
     const profileName = $('<h2>').addClass('text-xl font-bold w-42').text(user.username);
     const profileBio = $("<p>").addClass("text-sm w-56 sm:w-62 md:min-w-30 truncate").text(user.bio);
     contenedorUser.append(profileName, profileBio);
@@ -34,7 +34,7 @@ export function generateSettings(user) {
     settingsItems.forEach(item => {
         const button = $("<button>");
         const listItem = $("<li>").addClass("flex items-center").attr({ "text": item.text, 'id': item.id });
-        const img = $("<img>").addClass(item.imgClass || "h-10").attr({ "src": item.imgSrc, 'style': "color: var(--background-color);" });
+        const img = $("<img>").addClass(item.imgClass || "h-10").attr({ "src": item.imgSrc, 'style': "color: var(--background-color);" }).attr("alt", "settings");
         const text = $("<h2>").addClass("ml-4 text-xl").text(item.text);
         listItem.append(img, text);
         button.append(listItem);
@@ -52,7 +52,7 @@ export function accountSettings(user) {
     const profileImgContainer = $('<div>').addClass('image-container flex flex-col items-center md:items-start md:w-1/5 mb-6 mr-2');
     const profileTitle = $('<h2>').addClass('font-bold 2xl:text-xl xl:text-lg lg:text-base').text('Foto de perfil');
     const profileSeparator = $('<hr>').addClass(`my-3 border-t-2 border-[${backgroundColor}] w-[65%]`);
-    const profileImg = $('<img>').addClass('rounded-full 2xl:h-44 mb-4 xl:h-36 lg:h-28 md:h-20').attr('src', user.image);
+    const profileImg = $('<img>').addClass('rounded-full 2xl:h-44 mb-4 xl:h-36 lg:h-28 md:h-20').attr('src', user.image).attr("alt", "user image");;
     profileImgContainer.append(profileTitle, profileSeparator, profileImg);
 
     const infoContainer = $('<div>').addClass('profile-info flex flex-col w-full md:w-4/4');

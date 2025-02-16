@@ -1,3 +1,8 @@
+@font-face {
+    font-family: montserrat;
+    src: url("../assets/fonts/Montserrat-Regular.ttf");
+}
+
 :root {
     --background-color: #468FAF;
     --accent-color: #A9D6E5;
@@ -11,7 +16,7 @@
 
 body{
     background-color: var(--background-color);
-    font-family: "Montserrat";
+    font-family: "montserrat";
     color: var(--text-color);
 }
 
