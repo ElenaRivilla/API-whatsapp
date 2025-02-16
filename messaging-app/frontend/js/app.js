@@ -82,19 +82,16 @@ function home() {
     }
 
     function addEvents(node, event) {
-        // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
-        // elemento es el nodo
-        for (let childNode of node[0].children) {
-            childNode.addEventListener("click", () => {
-                event(getUsernameFromNode(childNode));
+        const buttons = node.find(".button-user");
+        buttons.each(function() {
+            $(this).on("click", () => {
+                event(getUsernameFromNode(this));
             });
-
-        }
+        });
     }
-
+    
     function getUsernameFromNode(node) {
-        // Recibe el nombre del usuario (ej: el usuario al que vas a hablar en el chat)
-        return node.children[1].children[0].innerText;
+        return node.querySelector(".username").innerText;
     }
 
     // TODO revisar
