@@ -1,5 +1,5 @@
 // Import necessary modules for error handling and API interaction.
-import { loginValid } from "./errControl.js";
+import { loginValid, SettingsAccountValidation } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser, getContacts, sendMessage, updateUserProfile } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
@@ -109,7 +109,7 @@ function home() {
                 container.on("click", () => {
                 });
                 $(".contacts").removeClass("block").addClass("hidden");
-                $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
+                $(".chats").removeClass("hidden md:block sm:hidden").css('display', '');
                 header.removeClass("block").addClass("hidden");
             }
 
@@ -173,8 +173,8 @@ function home() {
                 const backContainer = $(".back-button");
                 backContainer.on("click", () => {
                     $(".contacts").removeClass("hidden").addClass("block");
-                    $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
-                    header.removeClass("hidden ").addClass("block sm:block");
+                    $(".chats").removeClass("block").addClass("hidden md:hidden sm:hidden");
+                    header.removeClass("hidden").addClass("block sm:block");
                 });
             }
             $('.textBarForm')[0].addEventListener("submit", function (event) {
@@ -212,74 +212,79 @@ function home() {
 
     // La parte de Settings:
     function settingsFunctions() {
-        settingsButton.addEventListener("click", () => {
-            if (window.innerWidth < 768) {
-                header.removeClass("block").addClass("hidden");
-            }
-            updateDOM(generateSettings(user).html(), leftContainer);
-            leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
+        if (window.innerWidth < 768) {
+            header.removeClass("block").addClass("hidden");
+        }
+        updateDOM(generateSettings(user).html(), leftContainer);
+        leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
 
             $('.back-button')[0].addEventListener("click", () => {
                 if (window.innerWidth < 768) {
                     header.removeClass("hidden").addClass("block");
+                    $(".chats").removeClass("block").css('display', '');
                 }
                 if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
+                    $(".chats").css('display', '');
                     rightContainer.hide().fadeIn(400);
                 }
                 loadFriends();
             });
 
-            $("#account")[0].addEventListener("click", async () => {
-                updateDOM(accountSettings(user).html(), rightContainer);
-                rightContainer.hide().fadeIn(400);
-                user.setOpenChat("");
+        $("#account")[0].addEventListener("click", async () => {
+            const settingsHtml = accountSettings(user);
+            rightContainer.hide().html(settingsHtml).fadeIn(400); // Asegura de que el contenedor derecho se actualiza correctamente
+            user.setOpenChat(false);
 
-                const message = $(".send-message")[0];
-                $(".send-button")[0].addEventListener("click", async () => {
-                    const newName = $('.input-name')[0].value;
-                    const newBio = $('.text-bio')[0].value;
+            const message = $(".send-message")[0];
+
+            $(".send-button")[0].addEventListener("click", async (event) => {
+                event.preventDefault(); // Previene el envío del formulario por defecto
+                const newName = $('.input-name')[0].value;
+                const newBio = $('.text-bio')[0].value;
+
+                try {
+                    await SettingsAccountValidation(newName, newBio);
                     const updateUser = {
                         username: newName,
                         bio: newBio,
                     };
-                    try {
-                        const updatedUser = await updateUserProfile(updateUser);
-                        user.updateProfile(updatedUser.username, updatedUser.bio);
-                        document.cookie = "user=" + encodeURIComponent(user.toString()) + "; path=/; Secure; SameSite=Strict";
-                        message.classList.remove('hidden');
-                        setTimeout(() => { // TODO los botones del leftContainer dejan de funcionar al utilizar el segundo updateDOM.
-                            updateDOM(generateRightPanelFund(user).html(), rightContainer);
-                            updateDOM(generateSettings(user).html(), leftContainer);
-                        }, 3000); 
-                    } catch (error) {
-                        console.error("Error actualizando el perfil:", error);
-                    }
-                });
+                    const updatedUser = await updateUserProfile(updateUser);
+                    user.updateProfile(updatedUser.username, updatedUser.bio);
+                    document.cookie = "user=" + encodeURIComponent(user.toString()) + "; path=/; Secure; SameSite=Strict";
+                    message.classList.remove('hidden');
+                    setTimeout(() => { // TODO los botones del leftContainer dejan de funcionar al utilizar el segundo updateDOM.
+                        updateDOM(generateRightPanelFund().html(), rightContainer);
+                        settingsFunctions();
+                    }, 3000); 
+                } catch (error) {
+                    console.error("Error actualizando el perfil:", error);
+                }
             });
+            
+        });
 
-            //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
-            $("#chats")[0].addEventListener('click', () => {
-                updateDOM(chatSettings().html(), rightContainer);
-                rightContainer.hide().fadeIn(400);
-                user.setOpenChat("");
-                $(".modeChanger")[0].addEventListener('click', () => {
-                    if (user.lightMode) {
-                        setDarkMode();
-                        user.setLightMode(false);
-                    }
-                    else {
-                        setLightMode();
-                        user.setLightMode(true);
-                    }
-                });
+        //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
+        $("#chats")[0].addEventListener('click', () => {
+            updateDOM(chatSettings().html(), rightContainer);
+            rightContainer.hide().fadeIn(400);
+            user.setOpenChat(false);
+            $(".modeChanger")[0].addEventListener('click', () => {
+                if (user.lightMode) {
+                    setDarkMode();
+                    user.setLightMode(false);
+                }
+                else {
+                    setLightMode();
+                    user.setLightMode(true);
+                }
             });
-            //addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
-            //addSettingEvent($("#help")[0], helpSettings, rightContainer);
-            $("#logout")[0].addEventListener("click", () => {
-                user.setOpenChat("");
-                closeSession(loginUrl);
-            });
+        });
+        //addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
+        //addSettingEvent($("#help")[0], helpSettings, rightContainer);
+        $("#logout")[0].addEventListener("click", () => {
+            user.setOpenChat(false);
+            closeSession(loginUrl);
         });
     }
 
@@ -309,6 +314,7 @@ function home() {
                 if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
                     rightContainer.hide().fadeIn(400);
+                    $(".chats").css('display', '');
                 }
                 loadFriends();
             });
@@ -378,35 +384,23 @@ function home() {
             searchBar.empty()
             $(".contacts").removeClass("hidden").addClass("block");
             $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
+            
             loadFriends();
         }
     });
 
     function initialize() {
         loadFriends();
-        settingsFunctions();
+        settingsButton.addEventListener("click", settingsFunctions);
         $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
         chats();
-        setInterval(async () => {
-            try{
-                loadFriends(false);
-                if(user.hasOpenChat){
-                    const chat = $(".messages-container");
-                    const height = chat[0].scrollTop;
-                    await loadChat(user.hasOpenChat, false);
-                    // Desplazar el contenedor donde estaba
-                    setTimeout(() => {
-                        chat.scrollTop(height);
-                    }, 0);
-                }
-            } catch (error) {
-                console.error("Error fetching contacts:", error);
-            }
-            
-        }, 10000);
-        return;
     }
 
+    // TODO QUITAR
+    // TODO QUITAR
+    // TODO QUITAR
+    // TODO QUITAR
+    setLightMode();
     initialize();
     return;
 }
