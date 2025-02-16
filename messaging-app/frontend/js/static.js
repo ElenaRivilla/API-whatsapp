@@ -34,8 +34,16 @@ export function generateSearchBar() {
 
     const searchBar = $('<div>').addClass("container-search flex items-center py-2 rounded-md my-3 sm:block md:hidden");
     const searchWrapper = $('<div>').addClass("relative w-full flex items-center");
-    const searchInput = $('<input>').addClass(`input-search flex-grow h-10 w-full rounded-full pl-10 border focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}]`).attr("type", "search").attr("placeholder", "Buscar contactos...");
-    const searchIcon = $("<img>").addClass("h-5 absolute left-3").attr("src", "../assets/svg/search.svg").attr("alt", "search button");;
+    const searchInput = $('<input>').addClass(`input-search flex-grow h-10 w-full rounded-full pl-10 border focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}]`).attr({
+        "type": "search",
+        "placeholder": "Buscar contactos...",
+        "aria-label": "Buscar contactos"
+    });
+    const searchIcon = $("<img>").addClass("h-5 absolute left-3").attr({
+        "src": "../assets/svg/search.svg",
+        "alt": "search button",
+        "aria-hidden": "true"
+    });
 
     searchWrapper.append(searchInput, searchIcon);
     searchBar.append(searchWrapper);
