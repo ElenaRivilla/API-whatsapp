@@ -58,10 +58,10 @@ export function setDarkMode(){
     document.documentElement.style.setProperty('--accent-color', '#89C2D9');
     document.documentElement.style.setProperty('--container-color', '#01497C');
     document.documentElement.style.setProperty('--text-color', '#ffffff');
-    document.documentElement.style.setProperty('--received-msg-color', '#2A6F97');
-    document.documentElement.style.setProperty('--sent-msg-color', '#61A5C2');
+    document.documentElement.style.setProperty('--received-msg-color', '#012A4A');
+    document.documentElement.style.setProperty('--sent-msg-color', '#2A6F97');
     document.documentElement.style.setProperty('--typebar-color', '#012A4A');
-    document.documentElement.style.setProperty('--send-button-color', '#468FAF');
+    document.documentElement.style.setProperty('--send-button-color', '#2A6F97');
     backgroundColor = rootStyles.getPropertyValue('--background-color').trim();
     accentColor = rootStyles.getPropertyValue('--accent-color').trim();
     containerColor = rootStyles.getPropertyValue('--container-color').trim();
@@ -80,7 +80,7 @@ export function setLightMode(){
     document.documentElement.style.setProperty('--received-msg-color', '#e5e7eb');
     document.documentElement.style.setProperty('--sent-msg-color', '#A9D6E5');
     document.documentElement.style.setProperty('--typebar-color', '#ffffff');
-    document.documentElement.style.setProperty('--send-button-color', '#468FAF');
+    document.documentElement.style.setProperty('--send-button-color', '#2C7DA0');
     backgroundColor = rootStyles.getPropertyValue('--background-color').trim();
     accentColor = rootStyles.getPropertyValue('--accent-color').trim();
     containerColor = rootStyles.getPropertyValue('--container-color').trim();
