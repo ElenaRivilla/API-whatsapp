@@ -202,6 +202,7 @@ function home() {
             $('.back-button')[0].addEventListener("click", () => {
                 if (window.innerWidth < 768) {
                     header.removeClass("hidden").addClass("block");
+                    $(".chats").removeClass("block").css('display', '');
                 }
                 if (!user.hasOpenChat) {
                     updateDOM(generateRightPanelFund().html(), rightContainer);
@@ -237,6 +238,7 @@ function home() {
                     console.error("Error actualizando el perfil:", error);
                 }
             });
+            
         });
 
         //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
