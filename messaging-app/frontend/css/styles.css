@@ -1,12 +1,12 @@
 :root {
     --background-color: #468FAF;
-    --accent-color: #A9D6E5;
+    --accent-color: #61A5C2;
     --container-color: #f3f4f6;
     --text-color: #000000;
     --received-msg-color: #e5e7eb;
     --sent-msg-color: #A9D6E5;
     --typebar-color: #ffffff;
-    --send-button-color: #468FAF;
+    --send-button-color: #2C7DA0;
 }
 
 body{

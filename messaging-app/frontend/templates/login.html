@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="../js/app.js"></script>
     <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <section class="bg-white p-20 rounded-2xl shadow-lg w-full max-w-xl h-screen sm:h-auto">
@@ -23,14 +24,14 @@
                 <input type="password" id="password" name="password" required placeholder="Introduce tu contraseña"
                     class="w-full p-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]">
             </div>
-            <button type="submit" class=`w-full p-3 text-white rounded-2xl bg-[${sendButton}] hover:bg-[${accentColor}]`>Iniciar sesión</button>
+            <button type="submit" class="w-full p-3 text-base text-white rounded-2xl bg-[var(--send-button-color)] hover:bg-[var(--accent-color)]">Iniciar sesión</button>
 
             <div class="flex justify-between items-center mt-4 sm:flex-row sm:space-x-16 sm:mx-8 sm:items-center sm:justify-start sm:space-y-0 flex-col space-y-2">
                 <div class="flex items-center">
                     <input type="checkbox" id="rememberMe" name="rememberMe" class="h-4 w-4 text-white border-gray-300 rounded accent-[#468FAF] hover:accent-[#2C7DA0]">
                     <label for="rememberMe" class="ml-2 text-gray-600">Recuérdame</label>
                 </div>
-                <a href="#" class="text-sm sm:mt-0 mt-2 text-[#468FAF] hover:text-[#2C7DA0]">Has olvidado tu contraseña?</a>
+                <a href="#" class="text-sm sm:mt-0 mt-2 text-[var(--send-button-color)] hover:text-[var(--accent-color)]">Has olvidado tu contraseña?</a>
             </div>
         </form>
     </section>
