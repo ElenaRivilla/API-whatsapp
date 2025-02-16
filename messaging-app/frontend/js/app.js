@@ -85,7 +85,9 @@ function home() {
         // node[0] porque aparentemente cuando pillas un nodo con jquery hace un array con metadatos y el primer
         // elemento es el nodo
         for (let childNode of node[0].children) {
-            childNode.addEventListener("click", () => event(childNode));
+            childNode.addEventListener("click", () => {
+                event(getUsernameFromNode(childNode));
+            });
 
         }
     }
@@ -95,15 +97,13 @@ function home() {
         return node.children[1].children[0].innerText;
     }
 
-    async function openChat(node) {
+    // TODO revisar
+    async function loadChat(user2, fisrtTime = true) {
         try {
             // Carga los 10 mensajes entre el usuario anfitrion y el usuario amigo (reciever_id).
-            await loadMessages(user.username, getUsernameFromNode(node), 10);
-            // Desplazar el contenedor hacia abajo
-            setTimeout(() => {
-                const container = $(".messages-container");
-                container.scrollTop(container[0].scrollHeight);
-            }, 0);
+            await loadMessages(user.username, user2, 10, fisrtTime);
+            const chat = $(".messages-container");
+
             if (window.innerWidth < 768) {
                 const container = $(".container-user");
                 container.on("click", () => {
@@ -112,26 +112,43 @@ function home() {
                 $(".chats").removeClass("hidden md:block sm:hidden").addClass("block");
                 header.removeClass("block").addClass("hidden");
             }
-            const chat = document.querySelector(".messages-container");
-            chat.addEventListener('scroll', () => {
-                if (chat.scrollTop === 0) {
-                    loadMessages(user.username, getUsernameFromNode(node), 20);
+
+            let scrollTimeOut;
+            chat[0].addEventListener('scroll', () => {
+                console.log("hace scroll")
+                clearTimeout(scrollTimeOut);
+                if (chat[0].scrollTop === 0) {
+                    scrollTimeOut = setTimeout(() => {
+                        console.log("hace el evento")
+                        loadMessages(user.username, user2, 20, false);
+                    }, 500);
                 }
             });
+
+            if (fisrtTime){
+                // Desplazar el contenedor hacia abajo
+                setTimeout(() => {
+                    chat.scrollTop(chat[0].scrollHeight);
+                }, 0);
+            }
+
+            await loadFriends(false);
             return;
         } catch (error) {
             console.error("Error fetching users:", error);
         }
     }
 
-    async function loadFriends() {
+    async function loadFriends(fade = true) {
         // Carga todos la lista de amigos del usuario
         try {
             const response = await getUsersHome();
             const chats = generateChats(response.contacts); // Genera los chats.
             updateDOM(chats.html(), leftContainer);  // Actualiza el DOM con los chats generados.
-            leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
-            addEvents(leftContainer, openChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
+            if(fade){
+                leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
+            }
+            addEvents(leftContainer, loadChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
         } catch (error) {
             console.error("Error fetching users:", error);
         }
@@ -143,12 +160,14 @@ function home() {
         return;
     }
 
-    async function loadMessages(user1, user2, loadSize) {
+    async function loadMessages(user1, user2, loadSize, fade = true) {
         try {
             const response = await getMessagesUser(user1, user2, loadSize);
-            const chat = generateChat(response, user2);
-            rightContainer.hide().html(chat.html()).fadeIn(400);
-            user.setOpenChat(true);
+            updateDOM(generateChat(response, user2).html(), rightContainer);
+            if (fade){
+                rightContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
+            }
+            user.setOpenChat(user2);
             //changeRadius();
             if (window.innerWidth < 768) {
                 const backContainer = $(".back-button");
@@ -177,12 +196,12 @@ function home() {
                     "receiver": receiver
                 };
                 await sendMessage(message);
-                await loadMessages(user.username, receiver, 10);
+                await loadMessages(user.username, receiver, 10, false);
                 setTimeout(() => {
                     const container = $(".messages-container");
                     container.scrollTop(container[0].scrollHeight);
                 }, 0);
-                await loadFriends();
+                await loadFriends(false);
             }
             catch (error) {
                 console.error("Error:", error);
@@ -214,7 +233,7 @@ function home() {
             $("#account")[0].addEventListener("click", async () => {
                 updateDOM(accountSettings(user).html(), rightContainer);
                 rightContainer.hide().fadeIn(400);
-                user.setOpenChat(false);
+                user.setOpenChat("");
 
                 const message = $(".send-message")[0];
                 $(".send-button")[0].addEventListener("click", async () => {
@@ -243,7 +262,7 @@ function home() {
             $("#chats")[0].addEventListener('click', () => {
                 updateDOM(chatSettings().html(), rightContainer);
                 rightContainer.hide().fadeIn(400);
-                user.setOpenChat(false);
+                user.setOpenChat("");
                 $(".modeChanger")[0].addEventListener('click', () => {
                     if (user.lightMode) {
                         setDarkMode();
@@ -258,7 +277,7 @@ function home() {
             //addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
             //addSettingEvent($("#help")[0], helpSettings, rightContainer);
             $("#logout")[0].addEventListener("click", () => {
-                user.setOpenChat(false);
+                user.setOpenChat("");
                 closeSession(loginUrl);
             });
         });
@@ -282,7 +301,7 @@ function home() {
                 rightContainer.hide().fadeIn(400);
                 isAddGroupButtonClicked = true;
                 creationGroup();
-                user.setOpenChat(false);
+                user.setOpenChat("");
             });
             
             $(document).on("click", ".back-button-contact", function () {
@@ -351,9 +370,7 @@ function home() {
                 containerUsers.append(newGroupContainer.html()).hide().fadeIn(400); // Append the new group container with fadeIn effect.
             });
         });
-    }
-
-    // setInterval(loadFriends(), 30000); // que lo haga cada x minutos, asi se refrescan los mensajes    
+    }  
 
     window.addEventListener('resize', () => {
         updateDOM(generateSearchBar().html(), searchBar);
@@ -370,13 +387,26 @@ function home() {
         settingsFunctions();
         $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
         chats();
+        setInterval(async () => {
+            try{
+                loadFriends(false);
+                if(user.hasOpenChat){
+                    const chat = $(".messages-container");
+                    const height = chat[0].scrollTop;
+                    await loadChat(user.hasOpenChat, false);
+                    // Desplazar el contenedor donde estaba
+                    setTimeout(() => {
+                        chat.scrollTop(height);
+                    }, 0);
+                }
+            } catch (error) {
+                console.error("Error fetching contacts:", error);
+            }
+            
+        }, 10000);
+        return;
     }
 
-    // TODO QUITAR
-    // TODO QUITAR
-    // TODO QUITAR
-    // TODO QUITAR
-    setDarkMode();
     initialize();
     return;
 }

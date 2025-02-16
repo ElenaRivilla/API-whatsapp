@@ -3,13 +3,13 @@ export class User {
         this.username = newUser['username'];
         this.bio = newUser['bio'];
         this.image = newUser['image'];
-        this.hasOpenChat = false;
+        this.hasOpenChat = "";
         this.lightMode = true;
     }
 
-    setOpenChat(bool) {
-        if (typeof (bool) == "boolean") {
-            this.hasOpenChat = bool;
+    setOpenChat(user) {
+        if (typeof (user) == "string") {
+            this.hasOpenChat = user;
             return;
         }
         return new Error("El parametro de setOpenChat ha de ser un booleano");
