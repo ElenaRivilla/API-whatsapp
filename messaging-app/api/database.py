@@ -3,9 +3,8 @@ from datetime import datetime
 
 class database(object):
     def conecta(self):
-        self.db = pymysql.connect(host='192.168.193.133',
-                                     user='ivanmartin',
-                                     password='45192834L',
+        self.db = pymysql.connect(host='localhost',
+                                     user='root',
                                      db='tricod',
                                      charset='utf8mb4',
                                      autocommit=True,

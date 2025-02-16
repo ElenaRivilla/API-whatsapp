@@ -5,7 +5,7 @@ export function generateChats(chats){
     let chatDiv, containerImage, profileImage, containerInfo, username, message, dateContainer, date, hr;
 
     for (let chat of chats) {
-        chatDiv = $("<div>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-18 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center");
+        chatDiv = $("<button>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-18 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center");
         containerImage = $("<div>").addClass("container-image w-20 h-20 sm:w-28 sm:h-28 md:w-20 md:h-14 flex justify-center items-center");
         profileImage = $("<img>").addClass("profile-image h-20 w-20 sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-11 min-w-11 max-h-16 max-w-16 rounded-full").attr("src", chat['imageUrl']);
         containerImage.append(profileImage);
