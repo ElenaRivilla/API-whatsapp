@@ -171,13 +171,10 @@ export function updateUserProfile(updateUser) {
             credentials: "include",
             body: JSON.stringify(updateUser)
         }).then((response) => {
-            console.log(response);
             return responseValid(response).then(() => {
                 resolve(response.json());
             }).catch((error) => {
                 reject(error);
             });
-        })//.catch((error) => {
-        //     reject(error);
-        // });
+        });
 }

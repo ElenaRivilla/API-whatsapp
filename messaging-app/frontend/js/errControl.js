@@ -44,9 +44,6 @@ export function SettingsAccountValidation(newName, newBio) {
 }
 
 export function responseValid(response) {
-    console.log(response)
-    console.log(response.ok)
-    console.log(response.status)
     return new Promise((resolve, reject) => {
         if (response.ok) resolve();
 
