@@ -256,7 +256,7 @@ function home() {
                         settingsFunctions();
                     }, 3000); 
                 } catch (error) {
-                    console.error("Error actualizando el perfil:", error);
+                    console.error(error);
                 }
             });
             
