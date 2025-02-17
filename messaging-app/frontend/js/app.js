@@ -393,12 +393,7 @@ function home() {
         $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
         chats();
     }
-
-    // TODO QUITAR
-    // TODO QUITAR
-    // TODO QUITAR
-    // TODO QUITAR
-    setLightMode();
+    
     initialize();
     return;
 }
