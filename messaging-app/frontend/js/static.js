@@ -113,7 +113,7 @@ export function errorMessage() {
         paddingLeft: '5%',
         paddingRight: '5%'
     });
-    const textError = $('<p>').addClass('text-red-500 flex flex-col justify-center items-center font-bold ');
+    const textError = $('<p>').addClass('errorText text-red-500 flex flex-col justify-center items-center font-bold ');
     const buttonError = $('<button>').addClass('ml-2').append($('<img>').attr('src', '../assets/svg/close.svg').css({ width: '2rem', marginLeft: '2rem' })
     );
 
