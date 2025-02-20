@@ -177,7 +177,7 @@ export function updateUserProfile(updateUser) {
             }).catch((error) => {
                 reject(error);
             });
-        }).catch((error) => {
+        }).catch((error) => {zzz
             reject(error);
         });
     });
