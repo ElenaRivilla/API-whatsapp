@@ -98,3 +98,26 @@ export function setLightMode() {
     textBar = rootStyles.getPropertyValue('--typebar-color').trim();
     sendButton = rootStyles.getPropertyValue('--send-button-color').trim();
 }
+
+export function errorMessage() {
+    const containerError = $('<div>').css({
+        display: 'flex',
+        position: 'fixed',
+        justifyContent: 'space-between',
+        backgroundColor: '#f3f4f6e1',
+        zIndex: 999,
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '6rem',
+        paddingLeft: '5%',
+        paddingRight: '5%'
+    });
+    const textError = $('<p>').addClass('text-red-500 flex flex-col justify-center items-center font-bold ');
+    const buttonError = $('<button>').addClass('ml-2').append($('<img>').attr('src', '../assets/svg/close.svg').css({ width: '2rem', marginLeft: '2rem' })
+    );
+
+    containerError.append(textError, buttonError);
+    $('body').prepend(containerError); // Add the error message container to the top of the body
+    buttonError.on('click', () => containerError.remove());
+}
