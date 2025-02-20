@@ -87,7 +87,7 @@ export function accountSettings(user) {
     const labelBio = $('<label>').addClass('my-4').attr("aria-label", "Bio");
     const titleBio = $('<h3>').addClass('text-md font-bold').text('Biografía');
     const separatorBio = $('<hr>').addClass(`my-3 border-t-2 border-[${backgroundColor}] w-[45%]`);
-    const errorMessageBio = $('<p>').addClass('regexBio-message text-red-500 mb-2 hidden absolute sm:absolute md:absolute').text('No admite más de 175 carácteres.');
+    const errorMessageBio = $('<p>').addClass('regexBio-message text-red-500 mb-2 hidden absolute sm:absolute md:absolute').text('No admite campo vacío o más de 175 carácteres.');
     const textBio = $('<textarea>').addClass(`text-bio rounded-full focus:outline-none focus:ring-2 focus:ring-[${accentColor}] focus:border-[${accentColor}] h-10 w-[90%] resize-none overflow-y-auto scrollbar-hide`)
         .attr({
             'placeholder': 'Escribe una nueva biografía...',
