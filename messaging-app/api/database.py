@@ -5,6 +5,7 @@ class database(object):
     def conecta(self):
         self.db = pymysql.connect(host='localhost',
                                      user='root',
+                                     password='',
                                      db='tricod',
                                      charset='utf8mb4',
                                      autocommit=True,

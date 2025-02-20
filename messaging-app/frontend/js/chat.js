@@ -2,9 +2,10 @@ import { backgroundColor, accentColor, containerColor } from "./static.js";
 
 export function generateChats(chats) {
     const html = $("<div>");
-    let chatDiv, containerImage, profileImage, containerInfo, username, message, dateContainer, date, hr;
+    let button, chatDiv, containerImage, profileImage, containerInfo, username, message, dateContainer, date, hr;
 
     for (let chat of chats) {
+        button = $("<button>").addClass(" button-user w-full text-left").attr("aria-label", "Open Chat");
         chatDiv = $("<div>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-18 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center").attr("role", "listitem");
         containerImage = $("<div>").addClass("container-image w-20 h-20 sm:w-28 sm:h-28 md:w-20 md:h-14 flex justify-center items-center");
         profileImage = $("<img>").addClass("profile-image h-20 w-20 sm:min-h-20 sm:min-w-20 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-11 min-w-11 max-h-16 max-w-16 rounded-full").attr("src", chat['imageUrl']).attr("alt", "profile image");
@@ -20,7 +21,8 @@ export function generateChats(chats) {
         dateContainer.append(date);
 
         chatDiv.append(containerImage).append(containerInfo).append(dateContainer);
-        html.append(chatDiv);
+        button.append(chatDiv);
+        html.append(button);
 
         hr = $("<hr>").addClass(`contact-separator border-t-2 m-1 sm:mx-8 sm:my-0.5 md:mx-4 md:my-4 lg:mt-4 lg:mx-4`).attr("style", 'border-color: var(--background-color)').attr("aria-hidden", "true");
         html.append(hr);

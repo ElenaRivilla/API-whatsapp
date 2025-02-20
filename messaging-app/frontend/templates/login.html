@@ -1,37 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login Dove</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="../js/app.js"></script>
     <link rel="stylesheet" href="../css/login.css">
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="icon" href="../assets/svg/dove.svg" type="image/x-icon">
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <section class="bg-white p-20 rounded-2xl shadow-lg w-full max-w-xl h-screen sm:h-auto">
+    <section class="bg-white p-20 rounded-2xl shadow-lg w-full max-w-xl h-screen sm:h-auto" aria-labelledby="loginFormTitle">
         <div class="text-center mb-16">
-            <img src="../assets/svg/dove.svg" class="mx-auto mb-4 w-24 h-24">
-            <p id="slogan" class="text-xl font-semibold text-gray-700">Conversa sin límites, conecta con el mundo.</p>
+            <img src="../assets/svg/dove.svg" class="mx-auto mb-4 w-24 h-24" alt="Logo de Dove" role="img" aria-label="Logo de Dove">
+            <p id="slogan" class="text-xl font-semibold text-gray-700" aria-live="polite">Conversa sin límites, conecta con el mundo.</p>
         </div>
 
-        <form id="loginForm" method="post" class="space-y-6">
-            <p class="error text-red-500 text-center h-12"></p>
+        <form id="loginForm" method="post" class="space-y-6" aria-labelledby="loginFormTitle" aria-describedby="loginFormDescription">
+            <p class="error text-red-500 text-center h-12" id="loginFormError" role="alert" aria-live="assertive"></p>
+            
+            <h2 id="loginFormTitle" class="sr-only">Formulario de inicio de sesión</h2>
+            <p id="loginFormDescription" class="sr-only">Ingresa tus credenciales para iniciar sesión.</p>
+
             <div class="space-y-4">
+                <label for="username" class="sr-only">Nombre de usuario</label>
                 <input type="text" id="username" name="username" required placeholder="Introduce tu nombre de usuario"
-                    class="w-full p-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]">
+                    class="w-full p-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]" aria-describedby="usernameHelp">
+
+                <label for="password" class="sr-only">Contraseña</label>
                 <input type="password" id="password" name="password" required placeholder="Introduce tu contraseña"
-                    class="w-full p-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]">
+                    class="w-full p-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#468FAF] focus:border-[#468FAF]" aria-describedby="passwordHelp">
             </div>
-            <button type="submit" class="w-full p-3 text-base text-white rounded-2xl bg-[var(--send-button-color)] hover:bg-[var(--accent-color)]">Iniciar sesión</button>
+            <button type="submit" class="w-full p-3 text-base text-white rounded-2xl bg-[var(--send-button-color)] hover:bg-[var(--accent-color)]" aria-label="Iniciar sesión">Iniciar sesión</button>
 
             <div class="flex justify-between items-center mt-4 sm:flex-row sm:space-x-16 sm:mx-8 sm:items-center sm:justify-start sm:space-y-0 flex-col space-y-2">
                 <div class="flex items-center">
-                    <input type="checkbox" id="rememberMe" name="rememberMe" class="h-4 w-4 text-white border-gray-300 rounded accent-[#468FAF] hover:accent-[#2C7DA0]">
+                    <input type="checkbox" id="rememberMe" name="rememberMe" class="h-4 w-4 text-white border-gray-300 rounded accent-[#468FAF] hover:accent-[#2C7DA0]" aria-checked="false">
                     <label for="rememberMe" class="ml-2 text-gray-600">Recuérdame</label>
                 </div>
-                <a href="#" class="text-sm sm:mt-0 mt-2 text-[var(--send-button-color)] hover:text-[var(--accent-color)]">Has olvidado tu contraseña?</a>
+                <a href="#" class="text-sm sm:mt-0 mt-2 text-[var(--send-button-color)] hover:text-[var(--accent-color)]" aria-label="Has olvidado tu contraseña?">Has olvidado tu contraseña?</a>
             </div>
         </form>
     </section>
