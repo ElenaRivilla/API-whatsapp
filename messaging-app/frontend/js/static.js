@@ -106,12 +106,13 @@ export function errorMessage() {
         justifyContent: 'space-between',
         backgroundColor: '#f3f4f6e1',
         zIndex: 999,
-        top: 0,
+        top: '-6rem', // Start above the viewport
         left: 0,
         width: '100%',
         height: '6rem',
         paddingLeft: '5%',
-        paddingRight: '5%'
+        paddingRight: '5%',
+        transition: 'top 0.5s' // Add transition for smooth sliding
     });
     const textError = $('<p>').addClass('text-red-500 flex flex-col justify-center items-center font-bold ');
     const buttonError = $('<button>').addClass('ml-2').append($('<img>').attr('src', '../assets/svg/close.svg').css({ width: '2rem', marginLeft: '2rem' })
@@ -119,5 +120,15 @@ export function errorMessage() {
 
     containerError.append(textError, buttonError);
     $('body').prepend(containerError); // Add the error message container to the top of the body
-    buttonError.on('click', () => containerError.remove());
+
+    // Slide down effect
+    setTimeout(() => {
+        containerError.css('top', '0');
+    }, 100);
+
+    buttonError.on('click', () => {
+        // Slide up effect before removing
+        containerError.css('top', '-6rem');
+        setTimeout(() => containerError.remove(), 500); // Wait for the slide up transition to complete
+    });
 }
