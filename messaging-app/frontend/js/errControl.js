@@ -39,8 +39,6 @@ export function SettingsAccountValidation(newName, newBio) {
 
         if (isValid) {
             resolve();
-        } else {
-            reject(new Error("Validation failed"));
         }
     });
 }

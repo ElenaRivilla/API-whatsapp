@@ -1,7 +1,5 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid, SettingsAccountValidation, manageErrors } from "./errControl.js";
-import { userExists, getUsersHome, getMessagesUser, getContacts, createGroup,sendMessage, updateUserProfile} from "./apiManager.js";
-import { loginValid, SettingsAccountValidation } from "./errControl.js";
 import { userExists, getUsersHome, getMessagesUser, getContacts, createGroup, sendMessage, updateUserProfile } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
