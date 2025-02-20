@@ -1,7 +1,7 @@
 export function generateRightPanelFund() {
     const html = $("<div>");
     const groupTextContainer = $("<div>").addClass("group-text-container flex flex-col items-center justify-center h-[95%]");
-    const imageSVG = $("<img>").addClass("h-28 mb-4").attr({"src": "../assets/svg/dove.svg"}).attr("alt", "logo dove");;
+    const imageSVG = $("<img>").addClass("h-28 mb-4").attr({ "src": "../assets/svg/dove.svg" }).attr("alt", "logo dove");;
     const doveContainer = $("<h2>").addClass("mb-2 font-bold").text("Dove");
     const textContainer = $("<h2>").addClass("font-bold").text("Conversa sin límites, conecta con el mundo.");
 
@@ -61,7 +61,7 @@ export let receivedMsg = rootStyles.getPropertyValue('--received-msg-color').tri
 export let textBar = rootStyles.getPropertyValue('--typebar-color').trim();
 export let sendButton = rootStyles.getPropertyValue('--send-button-color').trim();
 
-export function setDarkMode(){
+export function setDarkMode() {
     document.documentElement.style.setProperty('--background-color', '#012A4A');
     document.documentElement.style.setProperty('--accent-color', '#89C2D9');
     document.documentElement.style.setProperty('--container-color', '#01497C');
@@ -80,7 +80,7 @@ export function setDarkMode(){
     sendButton = rootStyles.getPropertyValue('--send-button-color').trim();
 }
 
-export function setLightMode(){
+export function setLightMode() {
     document.documentElement.style.setProperty('--background-color', '#468FAF');
     document.documentElement.style.setProperty('--accent-color', '#A9D6E5');
     document.documentElement.style.setProperty('--container-color', '#f3f4f6');
@@ -97,4 +97,15 @@ export function setLightMode(){
     receivedMsg = rootStyles.getPropertyValue('--received-msg-color').trim();
     textBar = rootStyles.getPropertyValue('--typebar-color').trim();
     sendButton = rootStyles.getPropertyValue('--send-button-color').trim();
+}
+
+function errorMessage() {
+    const containerError = $('<div>').addClass('display: flex; position: fixed; justify-content: space-between; background-color: #f3f4f6e1; z-index: 999; top: 0; left: 0; width: 100%; height: 6rem; padding-left: 5%; padding-right: 5%;');
+    const textError = $('<p>').addClass('text-red-500 flex flex-col justify-center items-center font-bold ').text('Ha ocurrido un error');
+    const buttonError = $('<button>').addClass('ml-2').append($('<img>').attr('src', '../assets/svg/close.svg').css({ width: '2rem', marginLeft: '2rem' })
+    );
+
+    containerError.append(textError, buttonError);
+    $('body').prepend(containerError); // Add the error message container to the top of the body
+    buttonError.on('click', () => containerError.remove());
 }

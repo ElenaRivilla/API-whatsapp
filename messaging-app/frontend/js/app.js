@@ -1,10 +1,10 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid, SettingsAccountValidation } from "./errControl.js";
-import { userExists, getUsersHome, getMessagesUser, getContacts, createGroup,sendMessage, updateUserProfile} from "./apiManager.js";
+import { userExists, getUsersHome, getMessagesUser, getContacts, createGroup, sendMessage, updateUserProfile } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
-import { generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode } from "./static.js";
+import { generateRightPanelFund, generateSearchBar, setDarkMode, setLightMode, errorMessage } from "./static.js";
 import { generateContacts } from "./contactsList.js";
 import { formGroup, generateGroupContainer } from "./createGroup.js";
 
@@ -83,13 +83,13 @@ function home() {
 
     function addEvents(node, event) {
         const buttons = node.find(".button-user");
-        buttons.each(function() {
+        buttons.each(function () {
             $(this).on("click", () => {
                 event(getUsernameFromNode(this));
             });
         });
     }
-    
+
     function getUsernameFromNode(node) {
         return node.querySelector(".username").innerText;
     }
@@ -112,17 +112,15 @@ function home() {
 
             let scrollTimeOut;
             chat[0].addEventListener('scroll', () => {
-                console.log("hace scroll")
                 clearTimeout(scrollTimeOut);
                 if (chat[0].scrollTop === 0) {
                     scrollTimeOut = setTimeout(() => {
-                        console.log("hace el evento")
                         loadMessages(user.username, user2, 20, false);
                     }, 500);
                 }
             });
 
-            if (fisrtTime){
+            if (fisrtTime) {
                 // Desplazar el contenedor hacia abajo
                 setTimeout(() => {
                     chat.scrollTop(chat[0].scrollHeight);
@@ -132,7 +130,7 @@ function home() {
             await loadFriends(false);
             return;
         } catch (error) {
-            console.error("Error fetching users:", error);
+            manageErrors(error);
         }
     }
 
@@ -142,12 +140,12 @@ function home() {
             const response = await getUsersHome();
             const chats = generateChats(response.contacts); // Genera los chats.
             updateDOM(chats.html(), leftContainer);  // Actualiza el DOM con los chats generados.
-            if(fade){
+            if (fade) {
                 leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
             }
             addEvents(leftContainer, loadChat); // Añade los eventos en el panel izquierdo al hacer click sobre un contacto.
         } catch (error) {
-            console.error("Error fetching users:", error);
+            manageErrors(error);
         }
     }
 
@@ -161,7 +159,7 @@ function home() {
         try {
             const response = await getMessagesUser(user1, user2, loadSize);
             updateDOM(generateChat(response, user2).html(), rightContainer);
-            if (fade){
+            if (fade) {
                 rightContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
             }
             user.setOpenChat(user2);
@@ -180,7 +178,7 @@ function home() {
             });
         }
         catch (error) {
-            console.error("Error:", error);
+            manageErrors(error);
         }
     }
 
@@ -201,7 +199,7 @@ function home() {
                 await loadFriends(false);
             }
             catch (error) {
-                console.error("Error:", error);
+                manageErrors(error);
             }
         }
         return;
@@ -215,18 +213,18 @@ function home() {
         updateDOM(generateSettings(user).html(), leftContainer);
         leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
 
-            $('.back-button')[0].addEventListener("click", () => {
-                if (window.innerWidth < 768) {
-                    header.removeClass("hidden").addClass("block");
-                    $(".chats").removeClass("block").css('display', '');
-                }
-                if (!user.hasOpenChat) {
-                    updateDOM(generateRightPanelFund().html(), rightContainer);
-                    $(".chats").css('display', '');
-                    rightContainer.hide().fadeIn(400);
-                }
-                loadFriends();
-            });
+        $('.back-button')[0].addEventListener("click", () => {
+            if (window.innerWidth < 768) {
+                header.removeClass("hidden").addClass("block");
+                $(".chats").removeClass("block").css('display', '');
+            }
+            if (!user.hasOpenChat) {
+                updateDOM(generateRightPanelFund().html(), rightContainer);
+                $(".chats").css('display', '');
+                rightContainer.hide().fadeIn(400);
+            }
+            loadFriends();
+        });
 
         $("#account")[0].addEventListener("click", async () => {
             const settingsHtml = accountSettings(user);
@@ -234,7 +232,7 @@ function home() {
             user.setOpenChat(false);
 
             const message = $(".send-message")[0];
-            
+
             const sendButton = $(".send-button")[0];
             sendButton.addEventListener("click", async (event) => {
                 event.preventDefault(); // Previene el envío del formulario por defecto
@@ -254,12 +252,12 @@ function home() {
                     setTimeout(() => { // TODO los botones del leftContainer dejan de funcionar al utilizar el segundo updateDOM.
                         updateDOM(generateRightPanelFund().html(), rightContainer);
                         settingsFunctions();
-                    }, 3000); 
+                    }, 3000);
                 } catch (error) {
-                    console.error(error);
+                    manageErrors(error);
                 }
             });
-            
+
         });
 
         //addSettingEvent($("#privacy")[0], privacitySettings, rightContainer);
@@ -306,7 +304,7 @@ function home() {
                 creationGroup();
                 user.setOpenChat("");
             });
-            
+
             $(document).on("click", ".back-button-contact", function () {
                 header.removeClass("hidden").addClass("block");
                 if (!user.hasOpenChat) {
@@ -317,7 +315,7 @@ function home() {
                 loadFriends();
             });
         } catch (error) {
-            console.error("Error fetching contacts:", error);
+            manageErrors(error);
         }
     }
 
@@ -340,41 +338,41 @@ function home() {
     function creationGroup() {
         // Check if the add group button was clicked.
         if (!isAddGroupButtonClicked) {
-            return; 
+            return;
         }
         const selectedContacts = [];
-    
+
         // Add click event to each user container.
-        $(".container-user").each(function() {
-            $(this).on("click", function() {
+        $(".container-user").each(function () {
+            $(this).on("click", function () {
                 $(this).fadeOut(200); // Fade out the user container.
                 $(this).next(".contact-separator").remove(); // Remove the separator.
-    
+
                 // Extract attributes from the user container.
                 const username = $(this).find(".username").text();
                 const bio = $(this).find(".message").text();
                 const imageUrl = $(this).find(".profile-image").attr("src");
-    
+
                 // Create an object with the extracted attributes.
                 const contact = {
                     username: username,
                     bio: bio,
                     image: imageUrl
                 };
-    
+
                 // Add the object to the selected contacts array.
                 selectedContacts.push(contact);
-    
+
                 // Generate the group container with the selected contacts.
                 const newGroupContainer = generateGroupContainer(selectedContacts);
-                
+
                 // Add the new group container to the users container in formGroup.
                 const containerUsers = $(".container-users");
                 containerUsers.empty(); // Clear the container before adding new contacts.
                 containerUsers.append(newGroupContainer.html()).hide().fadeIn(400); // Append the new group container with fadeIn effect.
             });
         });
-    }  
+    }
 
     window.addEventListener('resize', () => {
         updateDOM(generateSearchBar().html(), searchBar);
@@ -382,7 +380,7 @@ function home() {
             searchBar.empty()
             $(".contacts").removeClass("hidden").addClass("block");
             $(".chats").removeClass("block").addClass("hidden md:block sm:hidden");
-            
+
             loadFriends();
         }
     });
@@ -393,7 +391,7 @@ function home() {
         $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
         chats();
     }
-    
+
     initialize();
     return;
 }
