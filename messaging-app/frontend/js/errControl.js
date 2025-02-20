@@ -40,6 +40,7 @@ export function SettingsAccountValidation(newName, newBio) {
         if (isValid) {
             resolve();
         }
+        reject(new Error("Validación incorrecta"))
     });
 }
 
