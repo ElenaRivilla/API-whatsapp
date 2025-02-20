@@ -99,9 +99,9 @@ export function setLightMode() {
     sendButton = rootStyles.getPropertyValue('--send-button-color').trim();
 }
 
-function errorMessage() {
+export function errorMessage() {
     const containerError = $('<div>').addClass('display: flex; position: fixed; justify-content: space-between; background-color: #f3f4f6e1; z-index: 999; top: 0; left: 0; width: 100%; height: 6rem; padding-left: 5%; padding-right: 5%;');
-    const textError = $('<p>').addClass('text-red-500 flex flex-col justify-center items-center font-bold ').text('Ha ocurrido un error');
+    const textError = $('<p>').addClass('text-red-500 flex flex-col justify-center items-center font-bold ');
     const buttonError = $('<button>').addClass('ml-2').append($('<img>').attr('src', '../assets/svg/close.svg').css({ width: '2rem', marginLeft: '2rem' })
     );
 

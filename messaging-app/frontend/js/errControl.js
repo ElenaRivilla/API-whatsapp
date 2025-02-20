@@ -1,3 +1,5 @@
+import { errorMessage } from "./static.js";
+
 export function loginValid(username, password) {
     return new Promise((resolve, reject) => {
         // El required ya está puesto en el html.
