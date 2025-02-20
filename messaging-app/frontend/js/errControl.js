@@ -85,4 +85,10 @@ export function responseValid(response) {
 
         reject(new Error(errorMessage));
     });
+
+    function manageErrors(error) {
+        const errorContainer = document.querySelector("#errorText");
+        errorContainer.innerText = error.message;  // Display the error message in the UI.
+        return;
+    }
 }
