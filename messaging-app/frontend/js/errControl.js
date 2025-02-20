@@ -87,8 +87,13 @@ export function responseValid(response) {
     });
 
     function manageErrors(error) {
+        errorMessage();
         const errorContainer = document.querySelector("#errorText");
         errorContainer.innerText = error.message;  // Display the error message in the UI.
+        const errorButton = document.querySelector("#closeError");
+        errorButton.addEventListener("click", () => {
+            document.querySelector("body").removeChild(document.querySelector("#errorHome"))
+        })
         return;
     }
 }
