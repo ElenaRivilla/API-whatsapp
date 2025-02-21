@@ -161,22 +161,25 @@ export function sendMessage(message) {
 export function updateUserProfile(updateUser) {
     const url = `${domain}updateProfile`;
 
-    return fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        mode: 'cors',
-        credentials: "include",
-        body: JSON.stringify(updateUser)
-    }).then((response) => {
-        return responseValid(response).then(() => {
-            resolve(response.json().then((body) => {
-                return body;
-            }));
-        }).catch((error) => {
-            reject(error);
+    return new Promise((resolve, reject) => {
+        return fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            credentials: "include",
+            body: JSON.stringify(updateUser)
+        }).then((response) => {
+            return responseValid(response).then(() => {
+                resolve(response.json().then((body) => {
+                    return body;
+                }));
+            }).catch((error) => {
+                reject(error);
+            });
+
         });
     });
 }

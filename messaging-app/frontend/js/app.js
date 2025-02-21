@@ -1,6 +1,6 @@
 // Import necessary modules for error handling and API interaction.
 import { loginValid, SettingsAccountValidation, manageErrors } from "./errControl.js";
-import { userExists, getUsersHome, getMessagesUser, getContacts, createGroup, sendMessage, updateUserProfile} from "./apiManager.js";
+import { userExists, getUsersHome, getMessagesUser, getContacts, createGroup, sendMessage, updateUserProfile } from "./apiManager.js";
 import { User } from "./user.js"
 import { generateChats, generateChat } from "./chat.js";
 import { generateSettings, accountSettings, privacitySettings, chatSettings, notificationSettings, helpSettings, closeSession } from "./settings.js";
@@ -16,6 +16,38 @@ const homeUrl = liveServerPrefix + "/messaging-app/frontend/templates/home.html"
 function getCookie(name) {
     const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
     return match ? decodeURIComponent(match[2]) : null;
+}
+
+function redirectToLogin() {
+    window.location.href = loginUrl;
+}
+
+function checkSession() {
+    const token = getCookie('token');
+
+    if (!token) {
+        redirectToLogin();
+    }
+}
+function inactivityTimer() {
+    let timeout;
+
+    function resetTimer() {
+        clearTimeout(timeout); // Cancel the time out execution.
+        timeout = setTimeout(() => {
+            redirectToLogin();
+        }, 15 * 60 * 1000);
+    }
+
+    window.onload = resetTimer;
+    window.onmousemove = resetTimer;
+    window.onclick = resetTimer;
+    window.onkeydown = resetTimer;
+    window.addEventListener("scroll", resetTimer);
+}
+
+function setupSessionCheckInterval() {
+    setInterval(checkSession, 10 * 60 * 1000); // Verify session every 5 minutes
 }
 
 // Function to handle the login process, including validation and authentication.
@@ -68,6 +100,10 @@ function login() {
 }
 
 function home() {
+    checkSession();
+    inactivityTimer();
+    setupSessionCheckInterval();
+
     const user = new User(JSON.parse(getCookie('user')));
     const leftContainer = $(".scrollbar-custom");
     const rightContainer = $(".chats");

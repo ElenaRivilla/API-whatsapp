@@ -10,7 +10,6 @@ from typing import List
 from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer
 from base64 import urlsafe_b64decode
-
 import hashlib
 import base64
 import os

@@ -119,7 +119,7 @@ export function errorMessage() {
     );
 
     containerError.append(textError, buttonError);
-    $('body').prepend(containerError); // Add the error message container to the top of the body
+    $('body').append(containerError); // Add the error message container to the top of the body
 
     // Slide down effect
     setTimeout(() => {
