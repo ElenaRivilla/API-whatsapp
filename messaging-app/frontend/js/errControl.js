@@ -1,5 +1,7 @@
 import { errorMessage } from "./static.js";
 
+let errorDisplayed = false;
+
 export function loginValid(username, password) {
     return new Promise((resolve, reject) => {
         // El required ya está puesto en el html.
@@ -88,12 +90,16 @@ export function responseValid(response) {
     });
 }
 export function manageErrors(error) {
-    errorMessage();
-    const errorContainer = document.querySelector(".errorText");
-    errorContainer.innerText = error.message;  // Display the error message in the UI.
-    const errorButton = document.querySelector("#closeError");
-    errorButton.addEventListener("click", () => {
-        document.querySelector("body").removeChild(document.querySelector("#errorHome"))
-    })
+    if(!errorDisplayed) {
+        errorMessage();
+        errorDisplayed = true;
+        const errorContainer = document.querySelector(".errorText");
+        errorContainer.innerText = error.message;  // Display the error message in the UI.
+        const errorButton = document.querySelector("#closeError");
+        errorButton.addEventListener("click", () => {
+            document.querySelector("body").removeChild(document.querySelector("#errorHome"))
+            errorDisplayed = false;
+        })
+    }
     return;
 }
