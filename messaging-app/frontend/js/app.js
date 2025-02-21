@@ -27,7 +27,13 @@ function checkSession() {
 
     if (!token) {
         redirectToLogin();
-    }
+    } else {  // atob = Decodes a Base64 string into plain text.
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const expirationDate = new Date(payload.exp * 1000);
+        if (expirationDate < new Date()) {
+            redirectToLogin(); // If you try to enter to Home
+        }
+    } 
 }
 function inactivityTimer() {
     let timeout;
@@ -47,7 +53,7 @@ function inactivityTimer() {
 }
 
 function setupSessionCheckInterval() {
-    setInterval(checkSession, 10 * 60 * 1000); // Verify session every 5 minutes
+    setInterval(checkSession, 5 * 60 * 1000); // Verify session every 5 minutes
 }
 
 // Function to handle the login process, including validation and authentication.
