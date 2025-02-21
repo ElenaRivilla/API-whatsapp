@@ -271,7 +271,7 @@ function home() {
         $("#account")[0].addEventListener("click", async () => {
             const settingsHtml = accountSettings(user);
             rightContainer.hide().html(settingsHtml).fadeIn(400); // Asegura de que el contenedor derecho se actualiza correctamente
-            user.setOpenChat(false);
+            user.setOpenChat('');
 
             const message = $(".send-message")[0];
 
@@ -306,7 +306,7 @@ function home() {
         $("#chats")[0].addEventListener('click', () => {
             updateDOM(chatSettings().html(), rightContainer);
             rightContainer.hide().fadeIn(400);
-            user.setOpenChat(false);
+            user.setOpenChat('');
             $(".modeChanger")[0].addEventListener('click', () => {
                 if (user.lightMode) {
                     setDarkMode();
@@ -321,7 +321,7 @@ function home() {
         //addSettingEvent($("#notifications")[0], notificationSettings, rightContainer);
         //addSettingEvent($("#help")[0], helpSettings, rightContainer);
         $("#logout")[0].addEventListener("click", () => {
-            user.setOpenChat(false);
+            user.setOpenChat('');
             closeSession(loginUrl);
         });
     }
