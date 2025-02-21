@@ -254,6 +254,7 @@ function home() {
         }
         updateDOM(generateSettings(user).html(), leftContainer);
         leftContainer.hide().fadeIn(400);  // Añade un efecto de fadeIn al contenedor izquierdo.
+        user.setUserInHome(false);
 
         $('.back-button')[0].addEventListener("click", () => {
             if (window.innerWidth < 768) {
@@ -265,6 +266,7 @@ function home() {
                 $(".chats").css('display', '');
                 rightContainer.hide().fadeIn(400);
             }
+            user.setUserInHome(true);
             loadFriends();
         });
 
@@ -349,6 +351,7 @@ function home() {
             const contactsHTML = generateContacts(response.friends);
             updateDOM2(contactsHTML, leftContainer);
             leftContainer.hide().fadeIn(400);
+            user.setUserInHome(false);
     
             // Volver a enlazar el evento de búsqueda
             $(".input-search").on("input", function () {
@@ -375,6 +378,7 @@ function home() {
                     rightContainer.hide().fadeIn(400);
                     $(".chats").css('display', '');
                 }
+                user.setUserInHome(true);
                 loadFriends();
             });
             addContactEvents(loadChat);
@@ -394,6 +398,7 @@ function home() {
                 loadFriends();
                 updateDOM(generateRightPanelFund().html(), rightContainer);
                 rightContainer.hide().fadeIn(400);
+                user.setUserInHome(true);
             }
         });
     }
@@ -457,7 +462,7 @@ function home() {
     function initialize() {
         loadFriends();
         setInterval(() => {
-            loadFriends(false);
+            if(user.userInHome) loadFriends(false);
             //if(user.hasOpenChat) loadChat(user.hasOpenChat, false);
         }, 1000)
         settingsButton.addEventListener("click", settingsFunctions);

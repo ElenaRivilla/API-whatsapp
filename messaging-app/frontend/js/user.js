@@ -5,8 +5,13 @@ export class User {
         this.image = newUser['image'];
         this.hasOpenChat = "";
         this.lightMode = true;
+        this.userInHome = true;
     }
 
+    setUserInHome(bool){
+        this.userInHome = bool;
+    }
+    
     setOpenChat(user) {
         if (typeof (user) == "string") {
             this.hasOpenChat = user;
