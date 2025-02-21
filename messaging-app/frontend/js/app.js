@@ -326,6 +326,15 @@ function home() {
         });
     }
 
+    function addContactEvents(event){
+        const contacts = $(".bottom-container");
+        for(let contact of contacts.find(".container-user")){
+            contact.addEventListener('click', () => {
+                event(getUsernameFromNode(contact));
+            })
+        }
+    }
+
     // La parte de Contacts:
     async function contacts(user) {
         try {
@@ -347,6 +356,7 @@ function home() {
                 const filteredContacts = response.friends.filter(contact => contact.username.toLowerCase().includes(searchUser));
                 $(".bottom-container").find(".container-user, .contact-separator").remove();
                 $(".bottom-container").append(generateContacts(filteredContacts).find(".container-user, .contact-separator"));
+                addContactEvents(loadChat);
             });
 
             $(".add-group-button")[0].addEventListener("click", function () {
@@ -367,6 +377,7 @@ function home() {
                 }
                 loadFriends();
             });
+            addContactEvents(loadChat);
             
         } catch (error) {
             manageErrors(error);
