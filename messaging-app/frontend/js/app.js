@@ -456,6 +456,10 @@ function home() {
 
     function initialize() {
         loadFriends();
+        setInterval(() => {
+            loadFriends(false);
+            //if(user.hasOpenChat) loadChat(user.hasOpenChat, false);
+        }, 1000)
         settingsButton.addEventListener("click", settingsFunctions);
         $(".contact-button")[0].addEventListener('click', () => contacts(user.username));
         chats();
