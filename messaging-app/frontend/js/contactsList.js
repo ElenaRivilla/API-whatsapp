@@ -35,39 +35,37 @@ export function generateContacts(user) {
 
     chatContainer.append(contactsName, separator);
 
-    function renderContacts(allContacts) {
-        chatContainer.find(".container-user, .contact-separator").remove(); // Eliminamos los contactos y los separadores.
-
-        allContacts.forEach(contact => {
-            const chatDiv = $("<div>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-18 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center").attr("role", "listitem");
-
-            const containerImage = $("<div>").addClass("container-image w-20 h-20 sm:w-28 sm:h-28 md:w-20 md:h-14 flex justify-center items-center");
-            const profileImage = $("<img>").addClass("profile-image sm:min-h-18 sm:min-w-18 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", contact.image).attr("alt", `Imagen de ${contact.username}`);
-            containerImage.append(profileImage);
-
-            const containerInfo = $("<div>").addClass("container-info truncate w-full p-2 h-20 md:p-1 lg:p-4 flex flex-col justify-center items-start");
-            const username = $("<h3>").addClass("username text-base sm:text-2xl md:text-lg lg:text-lg font-bold block md:hidden lg:block").text(contact.username);
-            const bio = $("<p>").addClass("message truncate block sm:block md:hidden lg:block text-xs w-56 sm:w-62 md:w-62 truncate").text(contact.bio);
-            containerInfo.append(username).append(bio);
-
-            chatDiv.append(containerImage).append(containerInfo);
-            chatContainer.append(chatDiv);
-
-            const hr = $("<hr>").addClass(`contact-separator border-t-2 border-[${backgroundColor}] m-1 sm:mx-8 sm:my-0.5 md:mx-4 md:my-4 lg:mt-4 lg:mx-4`);
-            chatContainer.append(hr);
-        });
-    }
-
-    renderContacts(user);
-
-    searchInput.on("input", function () { // La barra del buscador 
-        const searchUser = $(this).val().toLowerCase(); // Recoge el string escrito en el input del buscador y lo convierte en minúsculas.
-        const filteredContacts = user.filter(contact => contact.username.toLowerCase().includes(searchUser)); // Filtra la lista original de contactos con el texto puesto en 'searchUser'.
-        renderContacts(filteredContacts); // Actualizamos la lista de contactos con los contactos que coinciden con el texto introducido
-    });
+    // Llamar a la nueva función para generar la lista de contactos
+    const contactsList = generateContactsList(user);
+    chatContainer.append(contactsList);
 
     html.append(chatContainer);
     return html;
+}
+
+function generateContactsList(allContacts) {
+    const contactsContainer = $("<div>").addClass('bottom-container');
+
+    allContacts.forEach(contact => {
+        const chatDiv = $("<div>").addClass("container-user flex h-18 my-2 mx-3 sm:w-1/8 sm:h-20 sm:m-2 md:my-0 md:mb-0 md:mx-3 lg:mb-0 max-h-24 lg:h-18 sm:mb-1 md:flex sm:items-center md:items-center lg:items-center").attr("role", "listitem");
+
+        const containerImage = $("<div>").addClass("container-image w-20 h-20 sm:w-28 sm:h-28 md:w-20 md:h-14 flex justify-center items-center");
+        const profileImage = $("<img>").addClass("profile-image sm:min-h-18 sm:min-w-18 md:max-w-20 lg:max-w-24 lg:max-h-22 min-h-14 min-w-14 max-h-14 max-w-14 rounded-full").attr("src", contact.image).attr("alt", `Imagen de ${contact.username}`);
+        containerImage.append(profileImage);
+
+        const containerInfo = $("<div>").addClass("container-info truncate w-full p-2 h-20 md:p-1 lg:p-4 flex flex-col justify-center items-start");
+        const username = $("<h3>").addClass("username text-base sm:text-2xl md:text-lg lg:text-lg font-bold block md:hidden lg:block").text(contact.username);
+        const bio = $("<p>").addClass("message truncate block sm:block md:hidden lg:block text-xs w-56 sm:w-62 md:w-62 truncate").text(contact.bio);
+        containerInfo.append(username).append(bio);
+
+        chatDiv.append(containerImage).append(containerInfo);
+        contactsContainer.append(chatDiv);
+
+        const hr = $("<hr>").addClass(`contact-separator border-t-2 border-[${backgroundColor}] m-1 sm:mx-8 sm:my-0.5 md:mx-4 md:my-4 lg:mt-4 lg:mx-4`);
+        contactsContainer.append(hr);
+    });
+
+    return contactsContainer;
 }
 
 export function contactsList(response) {

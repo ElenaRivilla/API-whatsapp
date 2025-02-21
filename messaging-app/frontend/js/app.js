@@ -325,12 +325,23 @@ function home() {
         try {
             const response = await getContacts(user);
             response.friends.sort((a, b) => a.username.localeCompare(b.username));
-
+    
             if (window.innerWidth < 768) {
                 header.removeClass("block").addClass("hidden");
             }
-            updateDOM(generateContacts(response.friends).html(), leftContainer);
+            
+            // En lugar de usar .html(), usa directamente el objeto jQuery
+            const contactsHTML = generateContacts(response.friends);
+            updateDOM2(contactsHTML, leftContainer);
             leftContainer.hide().fadeIn(400);
+    
+            // Volver a enlazar el evento de búsqueda
+            $(".input-search").on("input", function () {
+                const searchUser = $(this).val().toLowerCase();
+                const filteredContacts = response.friends.filter(contact => contact.username.toLowerCase().includes(searchUser));
+                $(".bottom-container").find(".container-user, .contact-separator").remove();
+                $(".bottom-container").append(generateContacts(filteredContacts).find(".container-user, .contact-separator"));
+            });
 
             $(".add-group-button")[0].addEventListener("click", function () {
                 $(".container-group").remove();
@@ -350,9 +361,14 @@ function home() {
                 }
                 loadFriends();
             });
+            
         } catch (error) {
             manageErrors(error);
         }
+    }
+    
+    function updateDOM2(content, section) {
+        section.empty().append(content); // Si 'content' es un objeto jQuery, mantiene los eventos
     }
 
     function chats() {
