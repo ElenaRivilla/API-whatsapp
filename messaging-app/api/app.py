@@ -123,9 +123,9 @@ def getGroupMessages(loadSize: int, idGroup: int): # podriamos hacer una query p
 @app.post("/createGroup")
 def createGroup(request: CreateGroupRequest):
     try:
-        for user in request.USERS:
+        """ for user in request.USERS: """
             # Verificar que los usuarios existen INNACABADO
-            group_id = db.createGroup(request.NAME, request.DESCRIPTION)
+        group_id = db.createGroup(request.NAME, request.DESCRIPTION)
         
         # Agregar al administrador al grupo
         db.addUserToGroup(group_id, request.ADMIN, admin=True)
@@ -185,9 +185,9 @@ def getHome(request: Request):
 @app.get('/getFriends/{username}')
 def getFriends(username: str, request: Request):
     try:
-        userId = verify_token(request.cookies.get("token"))
-        if userId == int(db.getUserId(username)):
-            friendsList = db.getFriends(db.getUserId(username))
+        #userId = verify_token(request.cookies.get("token"))
+        #if userId == int(db.getUserId(username)):
+        friendsList = db.getFriends(db.getUserId(username))
         data = {
             "friends": [
             {
@@ -198,7 +198,7 @@ def getFriends(username: str, request: Request):
             ]
         }
         return data
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acceso denegado")
+        raise HTTPException(status_code=444, detail="Acceso denegado")
     except Exception as e:
         raise e
     
