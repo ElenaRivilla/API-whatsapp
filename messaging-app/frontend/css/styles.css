@@ -1,0 +1,58 @@
+@font-face {
+    font-family: montserrat;
+    src: url("../assets/fonts/Montserrat-Regular.ttf");
+}
+
+:root {
+    --background-color: #468FAF;
+    --accent-color: #61A5C2;
+    --container-color: #f3f4f6;
+    --text-color: #000000;
+    --received-msg-color: #e5e7eb;
+    --sent-msg-color: #A9D6E5;
+    --typebar-color: #ffffff;
+    --send-button-color: #2C7DA0;
+}
+
+body{
+    background-color: var(--background-color);
+    font-family: "montserrat";
+    color: var(--text-color);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.custom-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.container-group svg {
+    fill: var(--background-color); /* Cambiar el color del relleno del SVG */
+}
+
+.container-group svg path {
+    stroke: #ffffff; /* Cambiar el color del relleno del círculo */
+}
+
+.filterButton {
+    background-color: var(--container-color);
+}
+
+/* .filterButton:hover {
+} */
+
+.modeChanger:checked{
+    background-color: var(--background-color);
+}
+
+.text-bio::-webkit-scrollbar {
+    display: none; /* Oculta la barra en Chrome, Edge y Safari */
+}
+
+.text-bio {
+    -ms-overflow-style: none;  /* Oculta la barra en Internet Explorer y Edge */
+    scrollbar-width: none;  /* Oculta la barra en Firefox */
+}

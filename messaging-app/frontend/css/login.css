@@ -1,0 +1,21 @@
+@font-face {
+    font-family: montserrat;
+    src: url("../assets/fonts/Montserrat-Regular.ttf");
+}
+
+body {
+    font-family: "montserrat";
+}
+
+#slogan{
+    font-style: italic;
+    font-size: .8rem;
+}
+
+button {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+    transition: color 0.3s ease;
+}

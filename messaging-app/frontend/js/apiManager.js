@@ -1,33 +1,185 @@
-export async function userExists(username, password) {
-    const endpoint = ""; //URL del endpoint de la API 
+import { responseValid } from "./errControl.js"; // Import all functions from error control module
 
-    //Construir la url con los parámetros de consulta
-    let url = `${endpoint}?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+const domain = "http://127.0.0.1:8000/";
+// Function to check if a user exists by sending a POST request with username and password
+export function userExists(username, password) {
+    const url = `${domain}login`;
 
-    try {
-        // Realizar la solicitud GET usando fetch
-        let response = await fetch(url, {
-            method: "GET",
+    // Perform the GET request using fetch
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "POST", // Use POST method for sending data
             headers: {
-                // "Content-Type": "application/json", Configura el tipo de contenido, en el objeto headers se pueden pasar auth ej: 'Authorization': 'Bearer tu-token'
+                "Content-Type": "application/json", // Set content type to JSON
+                "Accept": "application/json" // Accept JSON response
             },
-        });
-        return response.json["exists"];
-
-    } catch (error) {
-        throw error;
-    }
+            mode: 'cors',
+            body: JSON.stringify({
+                'USERNAME': username, // Include username in the request body
+                'PASSWORD': password // Include password in the request body
+            })
+        }).then((response) => {
+            // Validate the response using the error control module
+            return responseValid(response).then(() => {
+                resolve(response.json().then((body) => {
+                    return body;
+                }));
+            }).catch((error) => {
+                reject(error);
+            });
+        })
+    });
 }
 
-//USO DE LA FUNCIÓN
-/* userExists("helen", "123abc")
-        .then(data => {
-            if (data) {
-                return true;
-            } else {
-                return false;
-            }
+export function getUsersHome() {
+    const url = `${domain}home`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            credentials: "include"
+        }).then((response) => {
+            return responseValid(response).then(() => {
+                resolve(response.json().then((body) => {
+                    return body;
+                }));
+            }).catch((error) => {
+                reject(error);
+            });
         })
-        .catch(error => {
-            console.error("Error al llamar a la función userExists:", error);
-        }); */
+    });
+}
+
+export function getMessagesUser(user1, user2, loadSize) {
+    const url = `${domain}getMessages/${loadSize}/${user1}/${user2}`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            credentials: 'include'
+        }).then((response) => {
+            return responseValid(response).then(() => {
+                resolve(response.json().then((body) => {
+                    return body;
+                }));
+            }).catch((error) => {
+                reject(error);
+            });
+        })
+    });
+}
+
+export function getContacts(user) {
+    const url = `${domain}getFriends/${user}`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            credentials: "include"
+        }).then((response) => {
+            return responseValid(response).then(() => {
+                resolve(response.json().then((body) => {
+                    return body;
+                }));
+            }).catch((error) => {
+                reject(error);
+            });
+        })
+    });
+}
+
+export function createGroup(name, description, userList, admin) {
+    const url = `${domain}createGroup`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            credentials: "include",
+            body: JSON.stringify({
+                'NAME': name, // Include name in the request body for the group
+                'DESCRIPTION': description, // Include description in the request body for the group
+                'USERS': userList, // Include users for the group
+                'ADMIN': admin // Include admin for the group
+            })
+        }).then((response) => {
+            return responseValid(response).then(() => {
+                resolve(response.json().then((body) => {
+                    return body;
+                }));
+            }).catch((error) => {
+                reject(error);
+            });
+        })
+    });
+}
+
+export function sendMessage(message) {
+    const url = `${domain}sendMessage`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            credentials: "include",
+            body: JSON.stringify(message)
+        }).then((response) => {
+            return responseValid(response).then(() => {
+                resolve(response.json().then((body) => {
+                    return body;
+                }));
+            }).catch((error) => {
+                reject(error);
+            });
+        })
+    });
+}
+
+export function updateUserProfile(updateUser) {
+    const url = `${domain}updateProfile`;
+
+    return new Promise((resolve, reject) => {
+        return fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: 'cors',
+            credentials: "include",
+            body: JSON.stringify(updateUser)
+        }).then((response) => {
+            return responseValid(response).then(() => {
+                resolve(response.json().then((body) => {
+                    return body;
+                }));
+            }).catch((error) => {
+                reject(error);
+            });
+
+        });
+    });
+}
